@@ -45,5 +45,4 @@ tasks:
     cmds:
       - rm -rf .taskfiles
       - git clone https://github.com/frozenfoxx/taskfiles.git .taskfiles
-      - git reset --hard
       - git pull --rebase
