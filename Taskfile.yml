@@ -3,6 +3,9 @@ version: "3"
 
 dotenv: [".env"]
 
+env:
+  ROOT_DIR: "{{.ROOT_DIR}}"
+
 includes:
   git:
     taskfile: .taskfiles/git.tasks.yml

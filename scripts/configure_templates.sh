@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Variables
-ROOT_DIR=${ROOT_DIR:-''}
+ROOT_DIR=${ROOT_DIR:-'.'}
 
 # Functions
 
