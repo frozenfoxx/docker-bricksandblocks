@@ -3,8 +3,8 @@ services:
     image: trueosiris/vrising
     container_name: vrising
     environment:
-      - TZ=America/Los_Angeles
-      - SERVERNAME=${VRISING_SERVERNAME}
+      - TZ="America/Los_Angeles"
+      - SERVERNAME="${VRISING_SERVERNAME}"
     volumes:
       - type: bind
         source: ${DATA_PREFIX}/vrising/server
