@@ -11,6 +11,8 @@ services:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.linode.acme.dnschallenge=true"
+      - "--certificatesresolvers.linode.acme.dnschallenge.delayBeforeCheck=60"
+      - "--certificatesresolvers.linode.acme.dnschallenge.disablePropagationCheck=true"
       - "--certificatesresolvers.linode.acme.dnschallenge.provider=linodev4"
       - "--certificatesresolvers.linode.acme.email=${TRAEFIK_EMAIL}"
       - "--certificatesresolvers.linode.acme.storage=/data/acme.json"
