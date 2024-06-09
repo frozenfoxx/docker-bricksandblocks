@@ -10,10 +10,10 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=linodev4"
-      - "--certificatesresolvers.myresolver.acme.email=${TRAEFIK_EMAIL}"
-      - "--certificatesresolvers.myresolver.acme.storage=/data/acme.json"
+      - "--certificatesresolvers.linode.acme.dnschallenge=true"
+      - "--certificatesresolvers.linode.acme.dnschallenge.provider=linodev4"
+      - "--certificatesresolvers.linode.acme.email=${TRAEFIK_EMAIL}"
+      - "--certificatesresolvers.linode.acme.storage=/data/acme.json"
     environment:
       - LINODE_TOKEN=${TRAEFIK_LINODE_TOKEN}
     restart: always
