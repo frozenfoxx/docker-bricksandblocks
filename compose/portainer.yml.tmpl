@@ -4,8 +4,8 @@ services:
     container_name: portainer
     restart: always
     ports:
-      - "8000:8000"
-      - "9443:9443"
+      #- "8000:8000"
+      #- "9443:9443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DATA_PREFIX}/portainer:/data
@@ -14,3 +14,7 @@ services:
       - "traefik.http.routers.portainer.rule=Host(`portainer.bricksandblocks.net`)"
       - "traefik.http.routers.portainer.entrypoints=websecure"
       - "traefik.http.routers.portainer.tls.certresolver=linode"
+      - "traefik.http.services.portainer.loadBalancer.port=9443"
+    networks:
+      traefik:
+        external: true

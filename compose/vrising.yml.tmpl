@@ -2,9 +2,13 @@ services:
   vrising:
     image: trueosiris/vrising
     container_name: vrising
+    ports:
+      - '9876:9876/udp'
+      - '9877:9877/udp'
     environment:
       - TZ=America/Los_Angeles
       - SERVERNAME=${VRISING_SERVERNAME}
+    restart: unless-stopped
     volumes:
       - type: bind
         source: ${DATA_PREFIX}/vrising/server
@@ -16,8 +20,7 @@ services:
         target: /mnt/vrising/persistentdata
         bind:
           create_host_path: true
-    ports:
-      - '9876:9876/udp'
-      - '9877:9877/udp'
-    restart: unless-stopped
     network_mode: bridge
+#    networks:
+#      traefik:
+#        external: true
