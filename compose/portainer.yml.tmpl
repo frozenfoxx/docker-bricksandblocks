@@ -14,7 +14,8 @@ services:
       - "traefik.http.routers.portainer.rule=Host(`portainer.bricksandblocks.net`)"
       - "traefik.http.routers.portainer.entrypoints=websecure"
       - "traefik.http.routers.portainer.tls.certresolver=linode"
-      - "traefik.http.services.portainer.loadBalancer.port=9443"
+    networks:
+      - traefik
 
 networks:
   traefik:
