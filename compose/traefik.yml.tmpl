@@ -15,8 +15,9 @@ services:
       - "--certificatesresolvers.letsencrypt.acme.email=${TRAEFIK_EMAIL}"
       - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
     environment:
-      - CLOUDFLARE_EMAIL=${TRAEFIK_EMAIL}
-      - CLOUDFLARE_API_KEY=${TRAEFIK_CLOUDFLARE_API_KEY}
+      - CF_API_EMAIL=${TRAEFIK_EMAIL}
+      - CLOUDFLARE_DNS_API_TOKEN=${TRAEFIK_CLOUDFLARE_API_KEY}
+      - CLOUDFLARE_ZONE_API_TOKEN=${TRAEFIK_CLOUDFLARE_API_KEY}
     restart: always
     ports:
       - "80:80"
