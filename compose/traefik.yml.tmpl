@@ -10,12 +10,10 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.cloudflare.acme.dnschallenge=true"
-      #- "--certificatesresolvers.cloudflare.acme.dnschallenge.delayBeforeCheck=60"
-      #- "--certificatesresolvers.cloudflare.acme.dnschallenge.disablePropagationCheck=true"
-      - "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
-      - "--certificatesresolvers.cloudflare.acme.email=${TRAEFIK_EMAIL}"
-      - "--certificatesresolvers.cloudflare.acme.storage=/data/acme.json"
+      - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.letsencrypt.acme.email=${TRAEFIK_EMAIL}"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
     environment:
       - CF_API_EMAIL=${TRAEFIK_EMAIL}
       - CF_API_KEY=${TRAEFIK_CLOUDFLARE_API_KEY}
