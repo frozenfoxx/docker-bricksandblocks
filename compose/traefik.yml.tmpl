@@ -3,11 +3,7 @@ services:
     image: traefik:latest
     container_name: traefik
     command:
-      #- "--log.level=DEBUG"
-      - "--log.level=ERROR"
       #- "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
@@ -16,6 +12,12 @@ services:
       #- "--certificatesResolvers.letsencrypt.acme.dnsChallenge.resolvers=1.1.1.1:53,1.0.0.1:53"
       - "--certificatesresolvers.letsencrypt.acme.email=${TRAEFIK_EMAIL}"
       - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
+      #- "--log.level=DEBUG"
+      - "--log.level=ERROR"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.directory=/data/conf"
+      - "--providers.file.watch=true"
     environment:
       - CF_API_EMAIL=${TRAEFIK_EMAIL}
       - CLOUDFLARE_DNS_API_TOKEN=${TRAEFIK_CLOUDFLARE_API_KEY}
