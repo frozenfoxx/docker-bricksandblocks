@@ -29,7 +29,7 @@ services:
       POSTGRES_PORT: 5432
       POSTGRES_DB: mealie
     depends_on:
-      postgres-mealie:
+      mealie-postgres:
         condition: service_healthy
     labels:
       - "traefik.enable=true"
