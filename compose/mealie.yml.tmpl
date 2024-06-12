@@ -25,6 +25,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.mealie.rule=Host(`mealie.bricksandblocks.net`)"
       - "traefik.http.routers.mealie.entrypoints=websecure"
+      - "traefik.http.routers.mealie.middlewares=forward-auth"
       - "traefik.http.routers.mealie.tls.certresolver=letsencrypt"
       - "traefik.http.routers.mealie.service=mealie"
       - "traefik.http.services.mealie.loadbalancer.server.port=9925"
