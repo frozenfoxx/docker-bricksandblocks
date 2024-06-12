@@ -27,4 +27,4 @@ services:
       - "traefik.http.routers.mealie.tls.certresolver=letsencrypt"
       - "traefik.http.routers.mealie.service=mealie"
       - "traefik.http.services.mealie.loadbalancer.server.port=9925"
-      - "traefik.http.services.mealie.loadbalancer.server.scheme=http"
+      - "traefik.http.services.mealie.loadbalancer.server.scheme=https"
