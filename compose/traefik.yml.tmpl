@@ -18,7 +18,7 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--providers.file.directory=/data/conf"
       - "--providers.file.watch=true"
-      - "--serverstransport.insecureskipverify=true"
+      #- "--serverstransport.insecureskipverify=true"
     environment:
       - CF_API_EMAIL=${TRAEFIK_EMAIL}
       - CLOUDFLARE_DNS_API_TOKEN=${TRAEFIK_CLOUDFLARE_API_KEY}
