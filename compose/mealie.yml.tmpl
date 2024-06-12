@@ -23,6 +23,7 @@ services:
       BASE_URL: https://mealie.bricksandblocks.net
       # Database Settings
       DB_ENGINE: postgres
+      PG_USER: ${MEALIE_PG_USER}
       POSTGRES_USER: ${MEALIE_PG_USER}
       POSTGRES_PASSWORD: ${MEALIE_PG_PASSWORD}
       POSTGRES_SERVER: mealie-postgres
