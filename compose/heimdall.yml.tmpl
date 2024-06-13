@@ -8,8 +8,8 @@ services:
       TZ: America/Los_Angeles
     volumes:
       - ${DATA_PREFIX}/heimdall:/config
-    ports:
-      - 443:443
+    #ports:
+    #  - 443:443
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -19,4 +19,4 @@ services:
       - "traefik.http.routers.heimdall.service=heimdall"
       - "traefik.http.services.heimdall.loadbalancer.server.port=443"
       - "traefik.http.services.heimdall.loadbalancer.server.scheme=https"
-      - "traefik.http.middlewares.heimdall.ipallowlist.sourcerange=${HEIMDALL_ALLOWRANGE}"
+      - "traefik.http.middlewares.heimdall.ipallowlist.sourcerange=foxhole@docker"
