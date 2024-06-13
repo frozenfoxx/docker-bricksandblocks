@@ -26,6 +26,7 @@ services:
       - "traefik.http.services.frontend.loadbalancer.server.port=9000"
       - "traefik.http.routers.frontend.service=frontend"
       - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.middlewares.frontend.ipallowlist.sourcerange=${PORTAINER_FRONTEND_ALLOWRANGE}"
 
       # Edge
       - "traefik.http.routers.edge.rule=Host(`edge.bricksandblocks.net`)"
@@ -33,3 +34,4 @@ services:
       - "traefik.http.services.edge.loadbalancer.server.port=8000"
       - "traefik.http.routers.edge.service=edge"
       - "traefik.http.routers.edge.tls.certresolver=letsencrypt"
+      - "traefik.http.middlewares.edge.ipallowlist.sourcerange=${PORTAINER_EDGE_ALLOWRANGE}"
