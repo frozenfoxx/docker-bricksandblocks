@@ -25,7 +25,7 @@ services:
       - "traefik.http.routers.frontend.entrypoints=websecure"
       - "traefik.http.routers.frontend.service=frontend"
       - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.frontend.middlewares=foxhole-ips"
+      - "traefik.http.routers.frontend.middlewares=foxhole-ips@docker"
       - "traefik.http.services.frontend.loadbalancer.server.port=9000"
 
       # Edge
@@ -33,5 +33,5 @@ services:
       - "traefik.http.routers.edge.entrypoints=websecure"
       - "traefik.http.routers.edge.service=edge"
       - "traefik.http.routers.edge.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.edge.middlewares=foxhole-ips"
+      - "traefik.http.routers.edge.middlewares=foxhole-ips@docker"
       - "traefik.http.services.edge.loadbalancer.server.port=8000"
