@@ -18,5 +18,5 @@ services:
       - "traefik.http.routers.heimdall.tls.certresolver=letsencrypt"
       - "traefik.http.routers.heimdall.service=heimdall"
       - "traefik.http.services.heimdall.loadbalancer.server.port=443"
-      - "traefik.http.services.heimdall.loadbalancer.server.scheme=http"
+      - "traefik.http.services.heimdall.loadbalancer.server.scheme=https"
       - "traefik.http.middlewares.heimdall.ipallowlist.sourcerange=${HEIMDALL_ALLOWRANGE}"
