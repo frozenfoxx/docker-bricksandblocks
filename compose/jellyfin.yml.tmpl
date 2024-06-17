@@ -10,10 +10,7 @@ services:
     volumes:
       - ${DATA_PREFIX}/jellyfin/library:/config
       - ${MEDIA_PREFIX}/Music:/data/Music
-      - ${MEDIA_PREFIX}/Movies:/data/Movies
-      - ${MEDIA_PREFIX}/Movies-4k:/data/Movies-4k
-      - ${MEDIA_PREFIX}/Shows:/data/Shows
-      - ${MEDIA_PREFIX}/Shows-4k:/data/Shows-4k
+      - ${MEDIA_PREFIX}/Videos:/data/Videos
     ports:
       - 8096:8096
       - 8920:8920 #optional
