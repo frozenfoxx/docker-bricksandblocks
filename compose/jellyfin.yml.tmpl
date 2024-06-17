@@ -1,0 +1,31 @@
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - JELLYFIN_PublishedServerUrl=jellyfin.bricksandblocks.net
+    volumes:
+      - ${DATA_PREFIX}/jellyfin/library:/config
+      - ${MEDIA_PREFIX}/Music:/data/Music
+      - ${MEDIA_PREFIX}/Movies:/data/Movies
+      - ${MEDIA_PREFIX}/Movies-4k:/data/Movies-4k
+      - ${MEDIA_PREFIX}/Shows:/data/Shows
+      - ${MEDIA_PREFIX}/Shows-4k:/data/Shows-4k
+    ports:
+      - 8096:8096
+      - 8920:8920 #optional
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.bricksandblocks.net`)"
+      - "traefik.http.routers.jellyfin.entrypoints=websecure"
+      - "traefik.http.routers.jellyfin.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.jellyfin.service=jellyfin"
+      #- "traefik.http.routers.jellyfin.middlewares=foxhole@docker"
+      - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
+      - "traefik.http.services.jellyfin.loadbalancer.server.scheme=http"
