@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.heimdall.rule=Host(`heimdall.bricksandblocks.net`)"
+      - "traefik.http.routers.heimdall.rule=Host(`heimdall.${NETWORK_DOMAIN}`)"
       - "traefik.http.routers.heimdall.entrypoints=websecure"
       - "traefik.http.routers.heimdall.tls.certresolver=letsencrypt"
       - "traefik.http.routers.heimdall.service=heimdall"

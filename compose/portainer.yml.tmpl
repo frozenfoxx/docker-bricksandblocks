@@ -12,7 +12,7 @@ services:
       - ${DATA_PREFIX}/portainer:/data
     labels:
       #- "traefik.enable=true"
-      #- "traefik.http.routers.portainer.rule=Host(`portainer.bricksandblocks.net`)"
+      #- "traefik.http.routers.portainer.rule=Host(`portainer.${NETWORK_DOMAIN}`)"
       #- "traefik.http.routers.portainer.entrypoints=websecure"
       #- "traefik.http.routers.portainer.tls.certresolver=letsencrypt"
       #- "traefik.http.routers.portainer.service=portainer"
@@ -21,7 +21,7 @@ services:
 
       # Frontend
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`portainer.bricksandblocks.net`)"
+      - "traefik.http.routers.frontend.rule=Host(`portainer.${NETWORK_DOMAIN}`)"
       - "traefik.http.routers.frontend.entrypoints=websecure"
       - "traefik.http.routers.frontend.service=frontend"
       - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
@@ -29,7 +29,7 @@ services:
       - "traefik.http.services.frontend.loadbalancer.server.port=9000"
 
       # Edge
-      - "traefik.http.routers.edge.rule=Host(`edge.bricksandblocks.net`)"
+      - "traefik.http.routers.edge.rule=Host(`edge.${NETWORK_DOMAIN}`)"
       - "traefik.http.routers.edge.entrypoints=websecure"
       - "traefik.http.routers.edge.service=edge"
       - "traefik.http.routers.edge.tls.certresolver=letsencrypt"

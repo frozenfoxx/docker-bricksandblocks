@@ -20,7 +20,7 @@ services:
       TZ: America/Los_Angeles
       MAX_WORKERS: 1
       WEB_CONCURRENCY: 1
-      BASE_URL: https://mealie.bricksandblocks.net
+      BASE_URL: https://mealie.${NETWORK_DOMAIN}
       # Database Settings
       DB_ENGINE: postgres
       PG_USER: ${MEALIE_PG_USER}
@@ -34,7 +34,7 @@ services:
         condition: service_healthy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.mealie.rule=Host(`mealie.bricksandblocks.net`)"
+      - "traefik.http.routers.mealie.rule=Host(`mealie.${NETWORK_DOMAIN}`)"
       - "traefik.http.routers.mealie.entrypoints=websecure"
       - "traefik.http.routers.mealie.tls.certresolver=letsencrypt"
       - "traefik.http.routers.mealie.service=mealie"

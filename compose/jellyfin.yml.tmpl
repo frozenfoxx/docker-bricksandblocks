@@ -6,7 +6,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
-      - JELLYFIN_PublishedServerUrl=jellyfin.bricksandblocks.net
+      - JELLYFIN_PublishedServerUrl=jellyfin.${NETWORK_DOMAIN}
     volumes:
       - ${DATA_PREFIX}/jellyfin/library:/config
       - ${MEDIA_PREFIX}/Music:/data/Music
@@ -22,7 +22,7 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.bricksandblocks.net`)"
+      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.${NETWORK_DOMAIN}`)"
       - "traefik.http.routers.jellyfin.entrypoints=websecure"
       - "traefik.http.routers.jellyfin.tls.certresolver=letsencrypt"
       - "traefik.http.routers.jellyfin.service=jellyfin"
