@@ -9,6 +9,7 @@ services:
       - "9443:9443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
       - ${DATA_PREFIX}/portainer:/data
     labels:
       #- "traefik.enable=true"
