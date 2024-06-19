@@ -4,6 +4,7 @@ services:
     container_name: traefik
     command:
       #- "--api.insecure=true"
+      - "--entrypoints.mqttsecure.address=:8883"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
