@@ -1,0 +1,21 @@
+services:
+  kavita:
+    image: jvmilazz0/kavita:latest    # Using the stable branch from the official dockerhub repo.
+    container_name: kavita
+    volumes:
+      - ${DATA_PREFIX}/kavita:/kavita/config
+      - ${MEDIA_PREFIX}/Documents/KavitaLibrary:/data/
+    environment:
+      - TZ=America/Los_Angeles
+    #ports:
+    #  - "5000:5000"
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kavita.rule=Host(`kavita.${NETWORK_DOMAIN}`)"
+      - "traefik.http.routers.kavita.entrypoints=websecure"
+      - "traefik.http.routers.kavita.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.kavita.service=kavita"
+      #- "traefik.http.routers.kavita.middlewares=foxhole@docker"
+      - "traefik.http.services.kavita.loadbalancer.server.port=5000"
+      - "traefik.http.services.kavita.loadbalancer.server.scheme=http"
