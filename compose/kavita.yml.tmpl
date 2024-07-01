@@ -7,8 +7,8 @@ services:
       - ${MEDIA_PREFIX}/Documents/KavitaLibrary:/data/
     environment:
       - TZ=America/Los_Angeles
-    #ports:
-    #  - "5000:5000"
+    ports:
+      - "5000:5000"
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
