@@ -19,6 +19,7 @@ services:
       # TCP
       - "traefik.tcp.routers.mqtt.rule=HostSNI(`mqtt.${NETWORK_DOMAIN}`)"
       - "traefik.tcp.routers.mqtt.entrypoints=mqttsecure"
+      - "traefik.tcp.routers.mqtt.tls=true"
       - "traefik.tcp.routers.mqtt.tls.certresolver=letsencrypt"
       - "traefik.tcp.routers.mqtt.service=mqtt"
       - "traefik.tcp.services.mqtt.loadbalancer.server.port=1883"
