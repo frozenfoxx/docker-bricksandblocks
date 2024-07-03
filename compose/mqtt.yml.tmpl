@@ -6,10 +6,10 @@ services:
       - ${DATA_PREFIX}/mqtt/config:/mosquitto/config
       - ${DATA_PREFIX}/mqtt/data:/mosquitto/data
       - ${DATA_PREFIX}/mqtt/log:/mosquitto/log
-    #ports:
-    #  - 1883:1883
+    ports:
+      - 1883:1883
     #  - 8883:8883
-    #  - 9001:9001
+      - 9001:9001
     stdin_open: true
     tty: true
     restart: unless-stopped
