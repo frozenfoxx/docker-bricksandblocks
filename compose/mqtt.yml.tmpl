@@ -15,13 +15,17 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
+
+      # TCP
       - "traefik.tcp.routers.mqtt.rule=HostSNI(`mqtt.${NETWORK_DOMAIN}`)"
       - "traefik.tcp.routers.mqtt.entrypoints=mqttsecure"
-      - "traefik.tcp.routers.mqtt.tls=true"
+      - "traefik.tcp.routers.mqtt.tls.certresolver=letsencrypt"
       - "traefik.tcp.routers.mqtt.service=mqtt"
       - "traefik.tcp.services.mqtt.loadbalancer.server.port=1883"
-      - "traefik.tcp.routers.mqtt.rule=HostSNI(`mqtt.${NETWORK_DOMAIN}`)"
-      - "traefik.tcp.routers.mqtt.entrypoints=websocket"
-      - "traefik.tcp.routers.mqtt.tls=true"
-      - "traefik.tcp.routers.mqtt.service=mqtt-websocket"
+      
+      # Websocket
+      - "traefik.tcp.routers.mqtt-ws.rule=HostSNI(`mqtt.${NETWORK_DOMAIN}`)"
+      - "traefik.tcp.routers.mqtt-ws.entrypoints=websocket"
+      - "traefik.tcp.routers.mqtt-ws.tls.certresolver=letsencrypt"
+      - "traefik.tcp.routers.mqtt-ws.service=mqtt-websocket"
       - "traefik.tcp.services.mqtt-websocket.loadbalancer.server.port=9001"
