@@ -4,11 +4,11 @@ services:
     container_name: traefik
     command:
       #- "--api.insecure=true"
-      - "--entrypoints.mqtt.address=:1883"
+      #- "--entrypoints.mqtt.address=:1883"
       - "--entrypoints.mqttsecure.address=:8883"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--entrypoints.websocket.address=:9001"
+      #- "--entrypoints.websocket.address=:9001"
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare"
       - "--certificatesresolvers.letsencrypt.acme.dnsChallenge.delayBeforeCheck=30"
