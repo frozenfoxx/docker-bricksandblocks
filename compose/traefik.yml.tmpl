@@ -4,19 +4,27 @@ services:
     container_name: traefik
     command:
       #- "--api.insecure=true"
-      #- "--entrypoints.mqtt.address=:1883"
+
+      # Entrypoints
+      - "--entrypoints.mqtt.address=:1883"
       - "--entrypoints.mqttsecure.address=:8883"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       #- "--entrypoints.websocket.address=:9001"
+
+      # Certificate Resolvers
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare"
       - "--certificatesresolvers.letsencrypt.acme.dnsChallenge.delayBeforeCheck=30"
       - "--certificatesResolvers.letsencrypt.acme.dnsChallenge.resolvers=1.1.1.1:53,1.0.0.1:53"
       - "--certificatesresolvers.letsencrypt.acme.email=${TRAEFIK_EMAIL}"
       - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
+
+      # Logging
       #- "--log.level=DEBUG"
       - "--log.level=ERROR"
+
+      # Providers
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.file.directory=/data/conf"
@@ -30,7 +38,9 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "1883:1883"
       #- "8080:8080"
+      - "8883:8883"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DATA_PREFIX}/traefik:/data
