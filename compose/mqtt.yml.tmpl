@@ -9,7 +9,7 @@ services:
     ports:
       - 1883:1883
     #  - 8883:8883
-      - 9001:9001
+    #  - 9001:9001
     stdin_open: true
     tty: true
     restart: unless-stopped
@@ -24,8 +24,8 @@ services:
       - "traefik.tcp.services.mqtt.loadbalancer.server.port=1883"
       
       # Websocket
-      - "traefik.tcp.routers.mqtt-ws.rule=HostSNI(`mqtt.${NETWORK_DOMAIN}`)"
-      - "traefik.tcp.routers.mqtt-ws.entrypoints=websocket"
-      - "traefik.tcp.routers.mqtt-ws.tls.certresolver=letsencrypt"
-      - "traefik.tcp.routers.mqtt-ws.service=mqtt-websocket"
-      - "traefik.tcp.services.mqtt-websocket.loadbalancer.server.port=9001"
+      #- "traefik.tcp.routers.mqtt-ws.rule=HostSNI(`mqtt.${NETWORK_DOMAIN}`)"
+      #- "traefik.tcp.routers.mqtt-ws.entrypoints=websocket"
+      #- "traefik.tcp.routers.mqtt-ws.tls.certresolver=letsencrypt"
+      #- "traefik.tcp.routers.mqtt-ws.service=mqtt-websocket"
+      #- "traefik.tcp.services.mqtt-websocket.loadbalancer.server.port=9001"
