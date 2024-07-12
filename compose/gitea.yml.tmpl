@@ -10,7 +10,7 @@ services:
       - USER_UID=1000
       - USER_GID=1000
       - GITEA__database__DB_TYPE=postgres
-      - GITEA__database__HOST=db:5432
+      - GITEA__database__HOST=gitea-postgres:5432
       - GITEA__database__NAME=${GITEA_DATABASE_NAME}
       - GITEA__database__USER=${GITEA_DATABASE_USER}
       - GITEA__database__PASSWD=${GITEA_DATABASE_PASSWD}
@@ -25,7 +25,8 @@ services:
       - "3000:3000"
       - "222:22"
     depends_on:
-      - db
+      gitea-postgres:
+        condition: service_healthy
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.gitea.rule=Host(`gitea.${NETWORK_DOMAIN}`)"
@@ -36,7 +37,7 @@ services:
       - "traefik.http.services.gitea.loadbalancer.server.port=3000"
       - "traefik.http.services.gitea.loadbalancer.server.scheme=http"
 
-  db:
+  gitea-postgres:
     image: postgres:15
     container_name: gitea-postgres
     restart: always
@@ -48,3 +49,8 @@ services:
 #      - gitea
     volumes:
       - ${DATA_PREFIX}/gitea-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
