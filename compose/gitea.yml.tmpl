@@ -1,6 +1,6 @@
-networks:
-  gitea:
-    external: false
+#networks:
+#  gitea:
+#    external: false
 
 services:
   server:
@@ -15,8 +15,8 @@ services:
       - GITEA__database__USER=${GITEA_DATABASE_USER}
       - GITEA__database__PASSWD=${GITEA_DATABASE_PASSWD}
     restart: always
-    networks:
-      - gitea
+#    networks:
+#      - gitea
     volumes:
       - ${DATA_PREFIX}/gitea:/data
       - /etc/timezone:/etc/timezone:ro
@@ -44,7 +44,7 @@ services:
       - POSTGRES_USER=${GITEA_DATABASE_USER}
       - POSTGRES_PASSWORD=${GITEA_DATABASE_PASSWD}
       - POSTGRES_DB=${GITEA_DATABASE_NAME}
-    networks:
-      - gitea
+#    networks:
+#      - gitea
     volumes:
       - ${DATA_PREFIX}/gitea-postgres:/var/lib/postgresql/data
