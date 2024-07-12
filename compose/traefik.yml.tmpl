@@ -6,8 +6,8 @@ services:
       #- "--api.insecure=true"
 
       # Entrypoints
-      #- "--entrypoints.mqtt.address=:1883"
-      #- "--entrypoints.mqttsecure.address=:8883"
+      - "--entrypoints.mqtt.address=:1883"
+      - "--entrypoints.mqttsecure.address=:8883"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       #- "--entrypoints.websocket.address=:9001"
