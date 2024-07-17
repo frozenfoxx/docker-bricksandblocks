@@ -2,18 +2,21 @@
 
 # Variables
 ROOT_DIR=${ROOT_DIR:-'.'}
+HOSTNAME=$(/usr/bin/hostname)
 
 # Functions
 
 ## Export variables to replace in the templates
 export_vars()
 {
+    export HOSTNAME
     export ROOT_DIR
 }
 
 ## Unset variables for safety
 unset_vars()
 {
+    unset HOSTNAME
     unset ROOT_DIR
 }
 
