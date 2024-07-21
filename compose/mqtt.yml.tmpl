@@ -25,7 +25,7 @@ services:
       - "traefik.tcp.routers.mqtt.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.mqtt.entrypoints=mqttsecure"
       - "traefik.tcp.routers.mqtt.tls=true"
-      - "traefik.tcp.routers.mqtt.tls.certresolver=letsencrypt"
+      #- "traefik.tcp.routers.mqtt.tls.certresolver=letsencrypt"
       - "traefik.tcp.routers.mqtt.service=mqtt"
       
       # Websocket
