@@ -17,23 +17,23 @@ services:
       - "traefik.enable=true"
 
       # TCP Insecure
-      - "traefik.tcp.routers.mqtt.rule=HostSNI(`mqtt.${NETWORK_DOMAIN}`)"
+      - "traefik.tcp.routers.mqtt.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.mqtt.entrypoints=mqtt"
       - "traefik.tcp.routers.mqtt.service=mqtt"
 
       # TCP Secure
-      - "traefik.tcp.routers.mqtt.rule=HostSNI(`mqtt.${NETWORK_DOMAIN}`)"
+      - "traefik.tcp.routers.mqtt.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.mqtt.entrypoints=mqttsecure"
       - "traefik.tcp.routers.mqtt.tls=true"
       - "traefik.tcp.routers.mqtt.tls.certresolver=letsencrypt"
       - "traefik.tcp.routers.mqtt.service=mqtt"
       
       # Websocket
-      - "traefik.tcp.routers.mqtt-ws.rule=HostSNI(`mqtt.${NETWORK_DOMAIN}`)"
-      - "traefik.tcp.routers.mqtt-ws.entrypoints=websocket"
-      - "traefik.tcp.routers.mqtt-ws.tls.certresolver=letsencrypt"
-      - "traefik.tcp.routers.mqtt-ws.service=mqtt-websocket"
-      - "traefik.tcp.services.mqtt-websocket.loadbalancer.server.port=9001"
+      #- "traefik.tcp.routers.mqtt-ws.rule=HostSNI(`*`)"
+      #- "traefik.tcp.routers.mqtt-ws.entrypoints=mqttwebsocket"
+      #- "traefik.tcp.routers.mqtt-ws.tls.certresolver=letsencrypt"
+      #- "traefik.tcp.routers.mqtt-ws.service=mqtt-websocket"
+      #- "traefik.tcp.services.mqtt-ws.loadbalancer.server.port=9001"
 
       # Load Balancer
       - "traefik.tcp.services.mqtt.loadbalancer.server.port=1883"

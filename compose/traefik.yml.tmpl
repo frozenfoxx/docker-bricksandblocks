@@ -8,9 +8,9 @@ services:
       # Entrypoints
       - "--entrypoints.mqtt.address=:1883"
       - "--entrypoints.mqttsecure.address=:8883"
+      #- "--entrypoints.mqttwebsocket.address=:9001"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      #- "--entrypoints.websocket.address=:9001"
 
       # Certificate Resolvers
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
@@ -38,9 +38,10 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      #- "1883:1883"
+      - "1883:1883"
       #- "8080:8080"
-      #- "8883:8883"
+      - "8883:8883"
+      #- "9001:9001"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DATA_PREFIX}/traefik:/data
