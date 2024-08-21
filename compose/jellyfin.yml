@@ -6,11 +6,11 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/Los_Angeles
-      - JELLYFIN_PublishedServerUrl=jellyfin.${NETWORK_DOMAIN}
+      - JELLYFIN_PublishedServerUrl=jellyfin.${NETWORK_DOMAIN-bricksandblocks.net}
     volumes:
-      - ${DATA_PREFIX}/jellyfin/library:/config
-      - ${MEDIA_PREFIX}/Music:/data/Music
-      - ${MEDIA_PREFIX}/Videos:/data/Videos
+      - ${DATA_PREFIX-/data}/jellyfin/library:/config
+      - ${MEDIA_PREFIX-/mnt}/Music:/data/Music
+      - ${MEDIA_PREFIX-/mnt}/Videos:/data/Videos
     ports:
       - 8096:8096
       - 8920:8920 #optional
@@ -19,7 +19,7 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.${NETWORK_DOMAIN}`)"
+      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       - "traefik.http.routers.jellyfin.entrypoints=websecure"
       - "traefik.http.routers.jellyfin.tls.certresolver=letsencrypt"
       - "traefik.http.routers.jellyfin.service=jellyfin"
