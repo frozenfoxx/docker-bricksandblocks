@@ -3,10 +3,10 @@ services:
     image: gitea/act_runner:latest
     environment:
       CONFIG_FILE: /data/config.yaml
-      GITEA_INSTANCE_URL: "https://gitea.${NETWORK_DOMAIN}"
+      GITEA_INSTANCE_URL: "https://gitea.${NETWORK_DOMAIN-bricksandblocks.net}"
       GITEA_RUNNER_REGISTRATION_TOKEN: "${GITEA_RUNNER_REGISTRATION_TOKEN}"
       GITEA_RUNNER_NAME: "gitea-runner-${HOSTNAME}"
       GITEA_RUNNER_LABELS: "${GITEA_RUNNER_LABELS}"
     volumes:
-      - ${DATA_PREFIX}/${HOSTNAME}/gitea-runner:/data
+      - ${DATA_PREFIX-/data}/${HOSTNAME}/gitea-runner:/data
       - /var/run/docker.sock:/var/run/docker.sock
