@@ -11,14 +11,14 @@ services:
       - USER_GID=1000
       - GITEA__database__DB_TYPE=postgres
       - GITEA__database__HOST=gitea-postgres:5432
-      - GITEA__database__NAME=${GITEA_DATABASE_NAME}
+      - GITEA__database__NAME=${GITEA_DATABASE_NAME-gitea}
       - GITEA__database__USER=${GITEA_DATABASE_USER}
       - GITEA__database__PASSWD=${GITEA_DATABASE_PASSWD}
     restart: always
 #    networks:
 #      - gitea
     volumes:
-      - ${DATA_PREFIX}/gitea:/data
+      - ${DATA_PREFIX-/data}/gitea:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
@@ -29,7 +29,7 @@ services:
         condition: service_healthy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.gitea.rule=Host(`gitea.${NETWORK_DOMAIN}`)"
+      - "traefik.http.routers.gitea.rule=Host(`gitea.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       - "traefik.http.routers.gitea.entrypoints=websecure"
       - "traefik.http.routers.gitea.tls.certresolver=letsencrypt"
       - "traefik.http.routers.gitea.service=gitea"
@@ -44,11 +44,11 @@ services:
     environment:
       - POSTGRES_USER=${GITEA_DATABASE_USER}
       - POSTGRES_PASSWORD=${GITEA_DATABASE_PASSWD}
-      - POSTGRES_DB=${GITEA_DATABASE_NAME}
+      - POSTGRES_DB=${GITEA_DATABASE_NAME-gitea}
 #    networks:
 #      - gitea
     volumes:
-      - ${DATA_PREFIX}/gitea-postgres:/var/lib/postgresql/data
+      - ${DATA_PREFIX-/data}/gitea-postgres:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready"]
       interval: 30s
