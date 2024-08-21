@@ -7,7 +7,7 @@ services:
       PGID: 1000
       TZ: America/Los_Angeles
     volumes:
-      - ${DATA_PREFIX}/heimdall:/config
+      - ${DATA_PREFIX-/data}/heimdall:/config
     #ports:
     #  - 443:443
     restart: unless-stopped
