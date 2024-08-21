@@ -1,0 +1,26 @@
+services:
+  northstar-attrition:
+    image: ghcr.io/pg9182/northstar-dedicated:1-tf2.0.11.0
+    pull_policy: always
+    environment:
+      NS_PORT: 37015
+      # uncomment for Northstar v1.12 and older
+      #NS_PORT_AUTH: 8081
+      NS_SERVER_NAME: "Cult of Foxx - Attrition"
+      NS_SERVER_DESC: "Cult of Foxx Attrition server"
+      NS_EXTRA_ARGUMENTS: |
+        +setplaylist aitdm # Attrition
+        +mp_gamemode aitdm # Attrition
+        +map mp_angel_city
+        +ns_private_match_countdown_length 0
+        +ns_should_return_to_lobby 0
+        +net_compresspackets_minsize 64
+        +net_compresspackets 1
+        +spewlog_enable 0
+        +sv_maxrate 127000
+    volumes:
+      - ${DATA_PREFIX}/titanfall2:/mnt/titanfall:ro
+      - ${DATA_PREFIX}/titanfall2/mods:/mnt/mods:ro
+    ports:
+      - "${NORTHSTAR_PORT}:37015/udp"
+    restart: always
