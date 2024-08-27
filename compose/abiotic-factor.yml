@@ -7,7 +7,7 @@ services:
       - "${DATA_PREFIX}/abiotic-factor/server:/server"
       - "${DATA_PREFIX}/abiotic-factor/Saved:/server/AbioticFactor/Saved"
     environment:
-      - MaxServerPlayers=${ABIOTICFACTOR_PLAYERS}
+      - MaxServerPlayers=${ABIOTICFACTOR_PLAYERS-6}
       - Port=7777
       - QueryPort=27015
       - ServerPassword=${ABIOTICFACTOR_PASSWORD}

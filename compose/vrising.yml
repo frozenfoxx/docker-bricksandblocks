@@ -7,16 +7,16 @@ services:
       - '9877:9877/udp'
     environment:
       - TZ=America/Los_Angeles
-      - SERVERNAME=${VRISING_SERVERNAME}
+      - SERVERNAME=${VRISING_SERVERNAME-Cult of Foxx - PVE}
     restart: unless-stopped
     volumes:
       - type: bind
-        source: ${DATA_PREFIX}/vrising/server
+        source: ${DATA_PREFIX-/data}/vrising/server
         target: /mnt/vrising/server
         bind:
           create_host_path: true
       - type: bind
-        source: ${DATA_PREFIX}/vrising/persistentdata
+        source: ${DATA_PREFIX-/data}/vrising/persistentdata
         target: /mnt/vrising/persistentdata
         bind:
           create_host_path: true

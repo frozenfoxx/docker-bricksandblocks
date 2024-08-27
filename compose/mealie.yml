@@ -10,7 +10,7 @@ services:
         limits:
           memory: 1000M # 
     volumes:
-      - ${DATA_PREFIX}/mealie:/app/data/
+      - ${DATA_PREFIX-/data}/mealie:/app/data/
     environment:
       # Set Backend ENV Variables Here
       ALLOW_SIGNUP: false
@@ -20,7 +20,7 @@ services:
       TZ: America/Los_Angeles
       MAX_WORKERS: 1
       WEB_CONCURRENCY: 1
-      BASE_URL: https://mealie.${NETWORK_DOMAIN}
+      BASE_URL: https://mealie.${NETWORK_DOMAIN-bricksandblocks.net}
       # Database Settings
       DB_ENGINE: postgres
       PG_USER: ${MEALIE_PG_USER}
@@ -34,7 +34,7 @@ services:
         condition: service_healthy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.mealie.rule=Host(`mealie.${NETWORK_DOMAIN}`)"
+      - "traefik.http.routers.mealie.rule=Host(`mealie.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       - "traefik.http.routers.mealie.entrypoints=websecure"
       - "traefik.http.routers.mealie.tls.certresolver=letsencrypt"
       - "traefik.http.routers.mealie.service=mealie"
@@ -46,7 +46,7 @@ services:
     container_name: mealie-postgres
     restart: always
     volumes:
-      - ${DATA_PREFIX}/mealie-postgres:/var/lib/postgresql/data
+      - ${DATA_PREFIX-/data}/mealie-postgres:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: ${MEALIE_PG_PASSWORD}
       POSTGRES_USER: ${MEALIE_PG_USER}

@@ -8,4 +8,4 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
-      - ${DATA_PREFIX}/portainer_agent:/data
+      - ${DATA_PREFIX-/data}/portainer_agent:/data

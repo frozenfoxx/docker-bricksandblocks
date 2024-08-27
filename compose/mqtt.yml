@@ -3,9 +3,9 @@ services:
     image: eclipse-mosquitto
     container_name: mosquitto
     volumes:
-      - ${DATA_PREFIX}/mqtt/config:/mosquitto/config
-      - ${DATA_PREFIX}/mqtt/data:/mosquitto/data
-      - ${DATA_PREFIX}/mqtt/log:/mosquitto/log
+      - ${DATA_PREFIX-/data}/mqtt/config:/mosquitto/config
+      - ${DATA_PREFIX-/data}/mqtt/data:/mosquitto/data
+      - ${DATA_PREFIX-/data}/mqtt/log:/mosquitto/log
     #ports:
     #  - 1883:1883
     #  - 8883:8883

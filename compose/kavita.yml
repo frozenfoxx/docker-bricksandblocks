@@ -8,14 +8,14 @@ services:
       - PGID=1000
       - TZ=America/Los_Angeles
     volumes:
-      - ${DATA_PREFIX}/kavita:/config
-      - ${MEDIA_PREFIX}/Documents/KavitaLibrary:/data
+      - ${DATA_PREFIX-/data}/kavita:/config
+      - ${MEDIA_PREFIX-/mnt}/Documents/KavitaLibrary:/data
     ports:
       - 5000:5000
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.kavita.rule=Host(`kavita.${NETWORK_DOMAIN}`)"
+      - "traefik.http.routers.kavita.rule=Host(`kavita.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       - "traefik.http.routers.kavita.entrypoints=websecure"
       - "traefik.http.routers.kavita.tls.certresolver=letsencrypt"
       - "traefik.http.routers.kavita.service=kavita"

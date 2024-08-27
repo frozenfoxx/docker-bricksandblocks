@@ -4,8 +4,6 @@ services:
     pull_policy: always
     environment:
       NS_PORT: 37015
-      # uncomment for Northstar v1.12 and older
-      #NS_PORT_AUTH: 8081
       NS_SERVER_NAME: "Cult of Foxx - Attrition"
       NS_SERVER_DESC: "Cult of Foxx Attrition server"
       NS_EXTRA_ARGUMENTS: |
@@ -19,8 +17,11 @@ services:
         +spewlog_enable 0
         +sv_maxrate 127000
     volumes:
-      - ${DATA_PREFIX}/titanfall2:/mnt/titanfall:ro
+      - ${DATA_PREFIX}/titanfall2/game_data:/mnt/titanfall:ro
       - ${DATA_PREFIX}/titanfall2/mods:/mnt/mods:ro
+      - ${DATA_PREFIX}/titanfall2/navs:/mnt/navs:ro
+      - ${DATA_PREFIX}/titanfall2/plugins:/mnt/plugins:ro
+      - ${DATA_PREFIX}/titanfall2/save_data:/mnt/save_data:rw
     ports:
       - "${NORTHSTAR_PORT}:37015/udp"
     restart: always

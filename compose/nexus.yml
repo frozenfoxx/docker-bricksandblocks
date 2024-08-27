@@ -7,16 +7,16 @@ services:
       - -INSTALL4J_ADD_VM_PARAMS="-Xms2703m -Xmx2703m -XX:MaxDirectMemorySize=2703m -Djava.util.prefs.userRoot=/nexus-license"
     ports:
       #- "9081:8081"
-      - "${NEXUS_DOCKER_PORT}:${NEXUS_DOCKER_PORT}"
+      - "${NEXUS_DOCKER_PORT-9081}:${NEXUS_DOCKER_PORT-9081}"
     volumes:
-      - ${DATA_PREFIX}/nexus/data:/nexus-data
-      - ${DATA_PREFIX}/nexus/license:/nexus-license
+      - ${DATA_PREFIX-/data}/nexus/data:/nexus-data
+      - ${DATA_PREFIX-/data}/nexus/license:/nexus-license
     labels:
       - "traefik.enable=true"
       #- "traefik.http.routers.heimdall.middlewares=foxhole-ips@docker"
 
       # Default registries
-      - "traefik.http.routers.nexus.rule=Host(`nexus.${NETWORK_DOMAIN}`)"
+      - "traefik.http.routers.nexus.rule=Host(`nexus.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       - "traefik.http.routers.nexus.entrypoints=websecure"
       - "traefik.http.routers.nexus.tls.certresolver=letsencrypt"
       - "traefik.http.routers.nexus.service=nexus"
@@ -24,8 +24,8 @@ services:
       - "traefik.http.services.nexus.loadbalancer.server.scheme=http"
 
       # Docker
-      - "traefik.http.routers.nexus-docker.rule=Host(`docker.${NETWORK_DOMAIN}`)"
+      - "traefik.http.routers.nexus-docker.rule=Host(`docker.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       - "traefik.http.routers.nexus-docker.entrypoints=websecure"
       - "traefik.http.routers.nexus-docker.tls.certresolver=letsencrypt"
       - "traefik.http.routers.nexus-docker.service=docker-registry-service"
-      - "traefik.http.services.docker-registry-service.loadbalancer.server.port=${NEXUS_DOCKER_PORT}"
+      - "traefik.http.services.docker-registry-service.loadbalancer.server.port=${NEXUS_DOCKER_PORT-9081}"
