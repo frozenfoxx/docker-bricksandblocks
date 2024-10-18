@@ -12,6 +12,6 @@ services:
       - PLEX_CLAIM=${PLEX_CLAIM} #optional
     volumes:
       - ${DATA_PREFIX-/data}/plex/config:/config
-      - ${DATA_PREFIX-/data}/plex/Videos:/mnt/Videos
-      - ${DATA_PREFIX-/data}/plex/Music:/mnt/Music
+      - ${DATA_PREFIX-/data}/plex/Videos:/mnt/Videos:ro
+      - ${DATA_PREFIX-/data}/plex/Music:/mnt/Music:ro
     restart: unless-stopped
