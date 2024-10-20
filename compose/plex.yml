@@ -11,7 +11,7 @@ services:
       - VERSION=docker
       - PLEX_CLAIM=${PLEX_CLAIM} #optional
     volumes:
-      - ${DATA_PREFIX-/data}/plex/config:/config
+      - ${LOCAL_PREFIX-/local}/plex/config:/config
       - ${MEDIA_PREFIX-/mnt}/Music:/data/Music:ro
       - ${MEDIA_PREFIX-/mnt}/Videos:/data/Videos:ro
     restart: unless-stopped
