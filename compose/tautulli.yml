@@ -1,0 +1,22 @@
+version: '3'
+services:
+  tautulli:
+    image: tautulli/tautulli:latest
+    container_name: tautulli
+    volumes:
+      - ${DATA_PREFIX-/data}/tautulli:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    #ports:
+      #- 8181:8181
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tautulli.rule=Host(`tautulli.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      - "traefik.http.routers.tautulli.entrypoints=websecure"
+      - "traefik.http.routers.tautulli.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.tautulli.service=tautulli"
+      - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
+      - "traefik.http.services.tautulli.loadbalancer.server.scheme=http"
+    restart: unless-stopped
