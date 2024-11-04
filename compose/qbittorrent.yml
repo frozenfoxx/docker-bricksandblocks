@@ -11,7 +11,7 @@ services:
     volumes:
       - ${DATA_PREFIX-/data}/qbittorrent/config:/config
       - ${DATA_PREFIX-/data}/qbittorrent/downloads:/downloads
-    network_mode: "service:gluetun_protonvpn"
+    network_mode: "container:gluetun_protonvpn"
     #ports:
       #- 6881:6881
       #- 6881:6881/udp
