@@ -11,6 +11,7 @@ services:
       - 6881:6881 # qbittorrent listening port for TCP
       - 6881:6881/udp # qbittorrent listening port UDP
     environment:
+      - VPN_PORT_FORWARDING=on
       - VPN_SERVICE_PROVIDER=protonvpn
       - VPN_TYPE=wireguard
       - WIREGUARD_PRIVATE_KEY=${GLUETUN_WIREGUARD_PRIVATE_KEY}

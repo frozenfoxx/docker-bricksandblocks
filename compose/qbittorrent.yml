@@ -11,11 +11,11 @@ services:
     volumes:
       - ${DATA_PREFIX-/data}/qbittorrent/config:/config
       - ${DATA_PREFIX-/data}/qbittorrent/downloads:/downloads
-    network_mode: "container:gluetun_protonvpn"
+    network_mode: "service:gluetun_protonvpn"
     #ports:
       #- 6881:6881
       #- 6881:6881/udp
       #- "${QBITTORRENT_WEBUI-49893}:${QBITTORRENT_WEBUI-49893}"
     restart: unless-stopped
-    depends_on:
-      - gluetun_protonvpn
+    #depends_on:
+    #  - gluetun_protonvpn
