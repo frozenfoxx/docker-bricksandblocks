@@ -17,3 +17,5 @@ services:
       #- 6881:6881/udp
       #- "${QBITTORRENT_WEBUI-49893}:${QBITTORRENT_WEBUI-49893}"
     restart: unless-stopped
+    depends_on:
+      - gluetun_protonvpn
