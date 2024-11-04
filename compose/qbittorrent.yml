@@ -6,14 +6,14 @@ services:
       - PUID: 1000
       - PGID: 1000
       - TZ: America/Los_Angeles
-      - WEBUI_PORT: "${QBITORRENT_WEBUI-49893}"
+      - WEBUI_PORT: "${QBITTORRENT_WEBUI-49893}"
       - TORRENTING_PORT: 6881
     volumes:
       - ${DATA_PREFIX-/data}/qbittorrent/config:/config
       - ${DATA_PREFIX-/data}/qbittorrent/downloads:/downloads
-    network_mode: "container:${QBITORRENT_VPN-gluetun_protonvpn}"
+    network_mode: "container:gluetun_protonvpn"
     ports:
       - 6081:6881
       - 6081:6881/udp
-      - "${QBITORRENT_WEBUI-49893}:${QBITORRENT_WEBUI-49893}"
+      - "${QBITTORRENT_WEBUI-49893}:${QBITTORRENT_WEBUI-49893}"
     restart: unless-stopped
