@@ -8,8 +8,8 @@ services:
       - /dev/net/tun:/dev/net/tun
     ports:
       - 49893:49893 # qbitorrent WebUI
-      - 6081:6881 # listening port for TCP
-      - 6081:6881/udp # listening port UDP
+      - 6081:6881 # qbittorrent listening port for TCP
+      - 6081:6881/udp # qbittorrent listening port UDP
     environment:
       - VPN_SERVICE_PROVIDER=protonvpn
       - VPN_TYPE=wireguard
