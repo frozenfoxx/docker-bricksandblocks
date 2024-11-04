@@ -13,7 +13,7 @@ services:
       - ${DATA_PREFIX-/data}/qbittorrent/downloads:/downloads
     network_mode: "container:gluetun_protonvpn"
     #ports:
-      #- 6081:6881
-      #- 6081:6881/udp
+      #- 6881:6881
+      #- 6881:6881/udp
       #- "${QBITTORRENT_WEBUI-49893}:${QBITTORRENT_WEBUI-49893}"
     restart: unless-stopped
