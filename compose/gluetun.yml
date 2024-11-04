@@ -10,7 +10,6 @@ services:
       - 49893:49893 # qbitorrent WebUI
       - 6081:6881 # listening port for TCP
       - 6081:6881/udp # listening port UDP
-      - 6011:6011
     environment:
       - VPN_SERVICE_PROVIDER=protonvpn
       - VPN_TYPE=wireguard
