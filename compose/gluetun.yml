@@ -8,10 +8,11 @@ services:
       - /dev/net/tun:/dev/net/tun
     ports:
       - 49893:49893 # qbitorrent WebUI
-      - 6881:6881 # qbittorrent listening port for TCP
-      - 6881:6881/udp # qbittorrent listening port UDP
+      #- 6881:6881 # qbittorrent listening port for TCP
+      #- 6881:6881/udp # qbittorrent listening port UDP
     environment:
       - VPN_PORT_FORWARDING=on
+      - VPN_PORT_FORWARDING_PROVIDER=protonvpn
       - VPN_SERVICE_PROVIDER=protonvpn
       - VPN_TYPE=wireguard
       - WIREGUARD_PRIVATE_KEY=${GLUETUN_WIREGUARD_PRIVATE_KEY}
