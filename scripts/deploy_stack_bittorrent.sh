@@ -23,7 +23,7 @@ deploy_stack()
     QBITTORRENT_TOR_PORT="$(docker exec -it gluetun_protonvpn cat /tmp/gluetun/forwarded_port)"
     
     echo "Port found! Forwarding ${QBITTORRENT_TOR_PORT}, starting BitTorrent..."
-    QBITTORRENT_TOR_PORT="${QBITTORRENT_TOR_PORT}" docker compose -f compose/qbittorrent.yml -d
+    QBITTORRENT_TOR_PORT="${QBITTORRENT_TOR_PORT}" docker compose -f compose/qbittorrent.yml up -d
 }
 
 # Logic
