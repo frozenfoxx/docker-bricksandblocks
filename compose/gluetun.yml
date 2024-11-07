@@ -1,5 +1,5 @@
 services:
-  gluetun_protonvpn:
+  gluetun_protonvpn-ovpn:
     image: qmcgaw/gluetun:latest
     container_name: gluetun_protonvpn-ovpn
     cap_add:
@@ -20,7 +20,7 @@ services:
       - ${DATA_PREFIX-/data}/gluetun:/gluetun
     restart: unless-stopped
 
-gluetun_protonvpn:
+gluetun_protonvpn-wg:
     image: qmcgaw/gluetun:latest
     container_name: gluetun_protonvpn-wg
     cap_add:
