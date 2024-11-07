@@ -11,5 +11,5 @@ services:
     volumes:
       - ${DATA_PREFIX-/data}/qbittorrent/config:/config
       - ${DATA_PREFIX-/data}/qbittorrent/downloads:/downloads
-    network_mode: "container:gluetun_protonvpn-ovpn"
+    network_mode: "container:gluetun_protonvpn"
     restart: unless-stopped
