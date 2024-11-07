@@ -1,3 +1,4 @@
 include:
-  - gluetun.yml
-  - qbittorrent.yml
+  - traefik.yml
+  - heimdall.yml
+  - jellyfin.yml

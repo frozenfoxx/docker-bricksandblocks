@@ -30,6 +30,18 @@ tasks:
         vars:
           CLI_ARGS: "{{.CLI_ARGS}}"
 
+  deploy:stack:bittorrent:
+    desc: Deploy BitTorrent stack
+    cmds:
+      - "{{.ROOT_DIR}}/scripts/deploy_stack_bittorrent.sh"
+
+  destroy:
+    desc: Destroy containers
+    cmds:
+      - task: docker:compose:destroy
+        vars:
+          CLI_ARGS: "{{.CLI_ARGS}}"
+
   lint:
     desc: Check the syntax on scripts
     cmds:
@@ -46,3 +58,10 @@ tasks:
       - rm -rf .taskfiles
       - git clone https://github.com/frozenfoxx/taskfiles.git .taskfiles
       - git pull --rebase
+
+  upgrade:
+    desc: "Upgrade a container"
+    cmds:
+      - task: docker:compose:upgrade
+        vars:
+          CLI_ARGS: "{{.CLI_ARGS}}"
