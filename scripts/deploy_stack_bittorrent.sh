@@ -10,7 +10,7 @@ QBITTORRENT_TOR_PORT=""
 deploy_stack()
 {
     # Deploy Gluetun VPN
-    docker compose -f compose/gluetun.yml up
+    docker compose -f compose/gluetun.yml up -d
 
     # Check for the forwarded port
     while [[ ! $(docker exec -it gluetun_protonvpn cat /tmp/gluetun/forwarded_port) ]];
@@ -23,7 +23,7 @@ deploy_stack()
     QBITTORRENT_TOR_PORT="$(docker exec -it gluetun_protonvpn cat /tmp/gluetun/forwarded_port)"
     
     echo "Port found! Forwarding ${QBITTORRENT_TOR_PORT}, starting BitTorrent..."
-    QBITTORRENT_TOR_PORT="${QBITTORRENT_TOR_PORT}" docker compose -f compose/qbittorrent.yml
+    QBITTORRENT_TOR_PORT="${QBITTORRENT_TOR_PORT}" docker compose -f compose/qbittorrent.yml -d
 }
 
 # Logic
