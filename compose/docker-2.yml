@@ -1,0 +1,6 @@
+include:
+  - tautulli.yml
+  - plex.yml
+  - kavita.yml
+  - vrising.yml
+  - portainer_agent.yml
