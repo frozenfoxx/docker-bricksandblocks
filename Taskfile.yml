@@ -8,12 +8,12 @@ env:
 
 includes:
   git:
-    taskfile: taskfiles/git.tasks.yml
+    taskfile: .taskfiles/git.tasks.yml
     optional: true
     internal: true
 
   docker:
-    taskfile: taskfiles/docker.tasks.yml
+    taskfile: .taskfiles/docker.tasks.yml
     optional: true
     internal: true
 
@@ -55,8 +55,8 @@ tasks:
   update:
     desc: "Update repo"
     cmds:
-      - rm -rf taskfiles
-      - git clone https://github.com/frozenfoxx/taskfiles.git taskfiles
+      - rm -rf .taskfiles
+      - git clone https://github.com/frozenfoxx/taskfiles.git .taskfiles
       - git pull --rebase
 
   upgrade:
