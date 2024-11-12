@@ -45,7 +45,6 @@ services:
       #- "9001:9001"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-#      - ${DATA_PREFIX-/data}/traefik:/data
       - traefik-data:/data
     labels:
       - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
