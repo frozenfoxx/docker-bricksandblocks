@@ -4,8 +4,7 @@ services:
     image: tautulli/tautulli:latest
     container_name: tautulli
     volumes:
-      #- ${DATA_PREFIX-/data}/tautulli:/config
-      - tautulli-data:/data
+      - tautulli-data:/config
     environment:
       - PUID=1000
       - PGID=1000
