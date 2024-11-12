@@ -20,13 +20,11 @@ task setup
 
 # Usage
 
-## Deploy All
-
-To deploy all manifests run:
-
-```
-task deploy
-```
+* **Deploy a service**: `task deploy -- compose/[role].yml`
+* **Deploy all services for a host**: `task deploy -- compose/[hostname].yml`
+* **Destroy a service**: `task destroy -- compose/[role].yml`
+* **Pull the latest containers for a service**: `task upgrade -- compose/[role].yml`
+* **Update repository**: `task update`
 
 # Contribution
 

@@ -37,18 +37,26 @@ services:
       - CLOUDFLARE_ZONE_API_TOKEN=${TRAEFIK_CLOUDFLARE_API_KEY}
     restart: always
     ports:
-      - "80:80"
-      - "443:443"
-      - "1883:1883"
+      - "80:80"     # HTTP
+      - "443:443"   # HTTPS
+      - "1883:1883" # MQTT
       #- "8080:8080"
-      - "8883:8883"
+      - "8883:8883" # MQTT
       #- "9001:9001"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${DATA_PREFIX-/data}/traefik:/data
+      - traefik-data:/data
     labels:
       - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
       - "traefik.http.routers.http-catchall.entrypoints=web"
       - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
       - "traefik.http.middlewares.foxhole-ips.ipallowlist.sourcerange=${TRAEFIK_ALLOWRANGE}"
+
+volumes:
+  traefik-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/data/traefik"
