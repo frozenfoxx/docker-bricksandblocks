@@ -8,8 +8,8 @@ services:
       - PGID=1000
       - TZ=America/Los_Angeles
     volumes:
-      - ${DATA_PREFIX-/data}/kavita:/config
-      - ${MEDIA_PREFIX-/mnt}/Documents/KavitaLibrary:/data
+      - kavita-data:/config
+      - kavita-library:/data:ro
     ports:
       - 5000:5000
     restart: unless-stopped
@@ -22,3 +22,18 @@ services:
       #- "traefik.http.routers.kavita.middlewares=foxhole@docker"
       - "traefik.http.services.kavita.loadbalancer.server.port=5000"
       - "traefik.http.services.kavita.loadbalancer.server.scheme=http"
+
+volumes:
+  kavita-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/kavita"
+
+  kavita-library:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${MEDIA_HOST},nolock,soft,ro"
+      device: ":/volume1/Documents/KavitaLibrary"
