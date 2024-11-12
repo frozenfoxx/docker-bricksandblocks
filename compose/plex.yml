@@ -10,21 +10,21 @@ services:
       - VERSION=docker
       - PLEX_CLAIM=${PLEX_CLAIM} #optional
     volumes:
-      - plex-data:/config
+      #- plex-data:/config
       - plex-music:/data/Music:ro
       - plex-videos:/data/Videos:ro
-      #- ${LOCAL_PREFIX-/local}/plex/config:/config
+      - ${LOCAL_PREFIX-/local}/plex/config:/config
       #- ${MEDIA_PREFIX-/mnt}/Music:/data/Music:ro
       #- ${MEDIA_PREFIX-/mnt}/Videos:/data/Videos:ro
     restart: unless-stopped
 
 volumes:
-  plex-data:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/plex/config"
+  #plex-data:
+  #  driver: local
+  #  driver_opts:
+  #    type: nfs
+  #    o: "addr=${DATA_HOST},nolock,soft,rw"
+  #    device: ":/volume1/Docker/plex/config"
 
   plex-music:
     driver: local
