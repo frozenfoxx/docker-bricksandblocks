@@ -59,4 +59,4 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/data/traefik"
+      device: ":/volume1/Docker/traefik"
