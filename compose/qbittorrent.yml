@@ -9,7 +9,22 @@ services:
       - TZ=America/Los_Angeles
       - WEBUI_PORT="${QBITTORRENT_WEBUI-49893}"
     volumes:
-      - ${DATA_PREFIX-/data}/qbittorrent/config:/config
-      - ${DATA_PREFIX-/data}/qbittorrent/downloads:/downloads
+      - qbittorrent-data:/config
+      - qbittorrent-downloads:/downloads
     network_mode: "container:gluetun_protonvpn"
     restart: unless-stopped
+
+volumes:
+  qbittorrent-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/qbittorrent/config"
+
+  qbittorrent-downloads:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/qbittorrent/downloads"
