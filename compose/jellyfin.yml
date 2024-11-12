@@ -8,9 +8,9 @@ services:
       - TZ=America/Los_Angeles
       - JELLYFIN_PublishedServerUrl=jellyfin.${NETWORK_DOMAIN-bricksandblocks.net}
     volumes:
-      - ${DATA_PREFIX-/data}/jellyfin/library:/config
-      - ${MEDIA_PREFIX-/mnt}/Music:/data/Music
-      - ${MEDIA_PREFIX-/mnt}/Videos:/data/Videos
+      - jellyfin-data:/config
+      - jellyfin-music:/data/Music:ro
+      - jellyfin-videos:/data/Videos:ro
     ports:
       - 8096:8096
       - 8920:8920 #optional
@@ -26,3 +26,25 @@ services:
       #- "traefik.http.routers.jellyfin.middlewares=foxhole@docker"
       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
       - "traefik.http.services.jellyfin.loadbalancer.server.scheme=http"
+
+volumes:
+  jellyfin-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/jellyfin/library"
+
+  jellyfin-music:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${MEDIA_HOST},nolock,soft,ro"
+      device: ":/volume1/Music"
+
+  jellyfin-videos:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${MEDIA_HOST},nolock,soft,ro"
+      device: ":/volume1/Videos"
