@@ -1,4 +1,3 @@
----
 services:
   plex:
     image: lscr.io/linuxserver/plex:latest
@@ -11,7 +10,32 @@ services:
       - VERSION=docker
       - PLEX_CLAIM=${PLEX_CLAIM} #optional
     volumes:
-      - ${LOCAL_PREFIX-/local}/plex/config:/config
-      - ${MEDIA_PREFIX-/mnt}/Music:/data/Music:ro
-      - ${MEDIA_PREFIX-/mnt}/Videos:/data/Videos:ro
+      - plex-data:/config
+      - plex-music:/data/Music:ro
+      - plex-videos:/data/Videos:ro
+      #- ${LOCAL_PREFIX-/local}/plex/config:/config
+      #- ${MEDIA_PREFIX-/mnt}/Music:/data/Music:ro
+      #- ${MEDIA_PREFIX-/mnt}/Videos:/data/Videos:ro
     restart: unless-stopped
+
+volumes:
+  plex-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/plex"
+
+  plex-music:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,ro"
+      device: ":/volume1/Music"
+
+  plex-videos:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,ro"
+      device: ":/volume1/Videos"
