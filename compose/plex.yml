@@ -24,7 +24,7 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/plex"
+      device: ":/volume1/Docker/plex/config"
 
   plex-music:
     driver: local
