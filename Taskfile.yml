@@ -47,6 +47,13 @@ tasks:
     cmds:
       - shellcheck "{{.ROOT_DIR}}/scripts/*.sh"
 
+  logs:
+    desc: "Check a container's logs"
+    cmds:
+      - task: docker:compose:logs
+        vars:
+          CLI_ARGS: "{{.CLI_ARGS}}"
+
   setup:
     desc: "Configure repository for use"
     cmds:
