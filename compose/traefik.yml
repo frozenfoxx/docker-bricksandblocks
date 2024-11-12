@@ -46,7 +46,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DATA_PREFIX-/data}/traefik:/data
-#      - traefik-data/traefik:/data
+#      - traefik-data:/data
     labels:
       - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
       - "traefik.http.routers.http-catchall.entrypoints=web"
@@ -60,4 +60,4 @@ services:
 #    driver_opts:
 #      type: nfs
 #      o: "addr=${DATA_HOST},nolock,soft,rw"
-#      device: ":/volume1/Docker"
+#      device: ":/volume1/Docker/traefik"
