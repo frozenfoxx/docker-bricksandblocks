@@ -8,5 +8,13 @@ services:
       GITEA_RUNNER_NAME: "gitea-runner-${HOSTNAME}"
       GITEA_RUNNER_LABELS: "${GITEA_RUNNER_LABELS}"
     volumes:
-      - ${DATA_PREFIX-/data}/${HOSTNAME}/gitea-runner:/data
+      - gitea-runner-data:/data
       - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  gitea-runner-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/${HOSTNAME}/gitea-runner"
