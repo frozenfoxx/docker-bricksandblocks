@@ -3,9 +3,9 @@ services:
     image: eclipse-mosquitto
     container_name: mosquitto
     volumes:
-      - ${DATA_PREFIX-/data}/mqtt/config:/mosquitto/config
-      - ${DATA_PREFIX-/data}/mqtt/data:/mosquitto/data
-      - ${DATA_PREFIX-/data}/mqtt/log:/mosquitto/log
+      - mosquitto-config:/mosquitto/config
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-log:/mosquitto/log
     #ports:
     #  - 1883:1883
     #  - 8883:8883
@@ -36,3 +36,25 @@ services:
       # Load Balancer
       - "traefik.tcp.services.mqtt.loadbalancer.server.port=1883"
       - "traefik.tcp.services.mqttsecure.loadbalancer.server.port=8883"
+
+volumes:
+  mosquitto-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/mqtt/config"
+
+  mosquitto-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/mqtt/data"
+
+  mosquitto-log:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/mqtt/log"

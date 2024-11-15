@@ -10,7 +10,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
-      - ${DATA_PREFIX-/data}/portainer:/data
+      - portainer-data:/data
     labels:
       #- "traefik.enable=true"
       #- "traefik.http.routers.portainer.rule=Host(`portainer.${NETWORK_DOMAIN-bricksandblocks.net}`)"
@@ -36,3 +36,11 @@ services:
       - "traefik.http.routers.edge.tls.certresolver=letsencrypt"
       #- "traefik.http.routers.edge.middlewares=foxhole-ips@docker"
       - "traefik.http.services.edge.loadbalancer.server.port=8000"
+
+volumes:
+  portainer-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/portainer"

@@ -9,8 +9,8 @@ services:
       #- "9081:8081"
       - "${NEXUS_DOCKER_PORT-9081}:${NEXUS_DOCKER_PORT-9081}"
     volumes:
-      - ${DATA_PREFIX-/data}/nexus/data:/nexus-data
-      - ${DATA_PREFIX-/data}/nexus/license:/nexus-license
+      - nexus-data:/nexus-data
+      - nexus-license:/nexus-license
     labels:
       - "traefik.enable=true"
       #- "traefik.http.routers.heimdall.middlewares=foxhole-ips@docker"
@@ -29,3 +29,18 @@ services:
       - "traefik.http.routers.nexus-docker.tls.certresolver=letsencrypt"
       - "traefik.http.routers.nexus-docker.service=docker-registry-service"
       - "traefik.http.services.docker-registry-service.loadbalancer.server.port=${NEXUS_DOCKER_PORT-9081}"
+
+volumes:
+  nexus-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/nexus/data"
+
+  nexus-license:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/nexus/license"
