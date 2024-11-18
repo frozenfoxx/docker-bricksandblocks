@@ -5,7 +5,10 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TORRENTING_PORT="${QBITTORRENT_TOR_PORT}"
+      - DOCKER_MODS=ghcr.io/t-anc/gsp-qbittorent-gluetun-sync-port-mod:main
+      - GSP_GTN_API_KEY=${GSP_GTN_API_KEY}
+      - GSP_MINIMAL_LOGS=false
+      #- TORRENTING_PORT="${QBITTORRENT_TOR_PORT}"
       - TZ=America/Los_Angeles
       - WEBUI_PORT="${QBITTORRENT_WEBUI-49893}"
     volumes:
