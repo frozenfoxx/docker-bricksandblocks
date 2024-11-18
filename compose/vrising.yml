@@ -10,14 +10,20 @@ services:
       - SERVERNAME=${VRISING_SERVERNAME-Cult of Foxx - PVE}
     restart: unless-stopped
     volumes:
-      - type: bind
-        source: ${DATA_PREFIX-/data}/vrising/server
-        target: /mnt/vrising/server
-        bind:
-          create_host_path: true
-      - type: bind
-        source: ${DATA_PREFIX-/data}/vrising/persistentdata
-        target: /mnt/vrising/persistentdata
-        bind:
-          create_host_path: true
+      - vrising-persistent-data:/mnt/vrising/persistentdata
+      - vrising-server-data:/mnt/vrising/server
     network_mode: bridge
+
+volumes:
+  vrising-persistent-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/vrising/presistentdata"
+  vrising-server-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/vrising/server"
