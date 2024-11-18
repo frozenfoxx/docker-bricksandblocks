@@ -21,6 +21,7 @@ volumes:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
       device: ":/volume1/Docker/vrising/presistentdata"
+
   vrising-server-data:
     driver: local
     driver_opts:
