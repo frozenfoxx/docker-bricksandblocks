@@ -20,7 +20,7 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/vrising/presistentdata"
+      device: ":/volume1/Docker/vrising/persistentdata"
 
   vrising-server-data:
     driver: local
