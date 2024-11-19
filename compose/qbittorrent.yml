@@ -10,7 +10,7 @@ services:
       - GSP_MINIMAL_LOGS=false
       #- TORRENTING_PORT="${QBITTORRENT_TOR_PORT}"
       - TZ=America/Los_Angeles
-      - WEBUI_PORT="${QBITTORRENT_WEBUI-49893}"
+      - WEBUI_PORT=${QBITTORRENT_WEBUI-49893}
     volumes:
       - qbittorrent-data:/config
       - qbittorrent-downloads:/downloads
