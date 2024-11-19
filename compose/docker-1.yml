@@ -4,7 +4,7 @@ include:
   - jellyfin.yml
   - mealie.yml
   - gluetun.yml
-  #- qbittorrent.yml
+  - qbittorrent.yml
   - portainer.yml
   - gitea.yml
   - mqtt.yml
