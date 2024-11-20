@@ -30,11 +30,6 @@ tasks:
         vars:
           CLI_ARGS: "{{.CLI_ARGS}}"
 
-  deploy:stack:bittorrent:
-    desc: Deploy BitTorrent stack
-    cmds:
-      - "{{.ROOT_DIR}}/scripts/deploy_stack_bittorrent.sh"
-
   destroy:
     desc: Destroy containers
     cmds:
