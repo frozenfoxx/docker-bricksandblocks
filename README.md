@@ -4,7 +4,8 @@ Docker deployment files for bricksandblocks.net
 
 # Requirements
 
-* [git](http://git-scm.com)
+* [Docker](https://docker.io)
+* [git](https://git-scm.com)
 * [Task](https://taskfile.dev)
 
 # Configuration
