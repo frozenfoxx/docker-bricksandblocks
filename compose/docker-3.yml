@@ -1,0 +1,4 @@
+include:
+  - gluetun.yml
+  - qbittorrent.yml
+  - portainer_agent.yml
