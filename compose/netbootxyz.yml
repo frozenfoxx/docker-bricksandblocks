@@ -16,6 +16,9 @@ services:
     ports:
       - "69:69/udp"
       #- "3000:3000"
+    volumes:
+      - netboot-config:/config
+      - netboot-assets:/assets
     security_opt:
       - no-new-privileges:true
     restart: unless-stopped
@@ -61,6 +64,6 @@ volumes:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${MEDIA_HOST},nolock,soft,rw"
+      o: "addr=${DATA_HOST},nolock,soft,rw"
       device: ":/volume1/Docker/netbootxyz/assets"
 
