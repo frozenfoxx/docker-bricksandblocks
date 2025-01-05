@@ -26,35 +26,34 @@ services:
       - "traefik.enable=true"
 
       # web configuration interface
-      - "traefik.http.middlewares.test-ipallowlist.ipallowlist.sourcerange=192.168.2.0/24"
-      - "traefik.http.routers.netbootxyz.entrypoints=web"
       - "traefik.http.routers.netbootxyz.rule=Host(`netbootxyz.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      - "traefik.http.routers.netbootxyz.entrypoints=web"
       - "traefik.http.middlewares.netbootxyz-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.netbootxyz.middlewares=netbootxyz-https-redirect"
-      - "traefik.http.routers.netbootxyz.middlewares=foxhole-ips@docker"
+      - "traefik.http.routers.netbootxyz.middlewares=foxhole-ips"
 
-      - "traefik.http.routers.netbootxyz-secure.entrypoints=websecure"
       - "traefik.http.routers.netbootxyz-secure.rule=Host(`netbootxyz.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      - "traefik.http.routers.netbootxyz-secure.entrypoints=websecure"
       - "traefik.http.routers.netbootxyz-secure.tls=true"
       - "traefik.http.routers.netbootxyz-secure.service=netbootxyz"
       - "traefik.http.services.netbootxyz.loadbalancer.server.port=3000"
       - "traefik.http.services.netbootxyz.loadbalancer.passhostheader=true"
-      - "traefik.http.routers.netbootxyz-secure.middlewares=foxhole-ips@docker"
+      - "traefik.http.routers.netbootxyz-secure.middlewares=foxhole-ips"
 
       # NGINX server for hosting assets
-      - "traefik.http.routers.netboot-assets.entrypoints=web"
       - "traefik.http.routers.netboot-assets.rule=Host(`netboot-assets.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      - "traefik.http.routers.netboot-assets.entrypoints=web"
       - "traefik.http.middlewares.netboot-assets-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.netboot-assets.middlewares=netboot-assets-https-redirect"
-      - "traefik.http.routers.netboot-assets.middlewares=foxhole-ips@docker"
+      - "traefik.http.routers.netboot-assets.middlewares=foxhole-ips"
 
-      - "traefik.http.routers.netboot-assets-secure.entrypoints=websecure"
       - "traefik.http.routers.netboot-assets-secure.rule=Host(`netboot-assets.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      - "traefik.http.routers.netboot-assets-secure.entrypoints=websecure"
       - "traefik.http.routers.netboot-assets-secure.tls=true"
       - "traefik.http.routers.netboot-assets-secure.service=netboot-assets"
       - "traefik.http.services.netboot-assets.loadbalancer.server.port=80"
       - "traefik.http.services.netboot-assets.loadbalancer.passhostheader=true"
-      - "traefik.http.routers.netboot-assets-secure.middlewares=foxhole-ips@docker"
+      - "traefik.http.routers.netboot-assets-secure.middlewares=foxhole-ips"
 
 volumes:
   netboot-config:
