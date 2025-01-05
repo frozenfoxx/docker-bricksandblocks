@@ -1,0 +1,66 @@
+services:
+  server:
+    image: netbootxyz/netbootxyz:latest
+    container_name: netbootxyz
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      #- MENU_VERSION=1.9.9
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 2s
+      timeout: 2s
+      retries: 10
+      start_period: 3s
+    ports:
+      - "69:69/udp"
+      #- "3000:3000"
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+
+      # web configuration interface
+      - "traefik.http.routers.netbootxyz.entrypoints=web"
+      - "traefik.http.routers.netbootxyz.rule=Host(`netbootxyz.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      - "traefik.http.middlewares.netbootxyz-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.netbootxyz.middlewares=netbootxyz-https-redirect"
+
+      - "traefik.http.routers.netbootxyz-secure.entrypoints=websecure"
+      - "traefik.http.routers.netbootxyz-secure.rule=Host(`netbootxyz.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      - "traefik.http.routers.netbootxyz-secure.tls=true"
+      - "traefik.http.routers.netbootxyz-secure.service=netbootxyz"
+      - "traefik.http.services.netbootxyz.loadbalancer.server.port=3000"
+      - "traefik.http.services.netbootxyz.loadbalancer.passhostheader=true"
+      - "traefik.docker.network=proxy"
+
+      # NGINX server for hosting assets
+      - "traefik.http.routers.netboot-assets.entrypoints=web"
+      - "traefik.http.routers.netboot-assets.rule=Host(`netboot-assets.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      - "traefik.http.middlewares.netboot-assets-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.netboot-assets.middlewares=netboot-assets-https-redirect"
+
+      - "traefik.http.routers.netboot-assets-secure.entrypoints=websecure"
+      - "traefik.http.routers.netboot-assets-secure.rule=Host(`netboot-assets.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      - "traefik.http.routers.netboot-assets-secure.tls=true"
+      - "traefik.http.routers.netboot-assets-secure.service=netboot-assets"
+      - "traefik.http.services.netboot-assets.loadbalancer.server.port=80"
+      - "traefik.http.services.netboot-assets.loadbalancer.passhostheader=true" 
+
+volumes:
+  netboot-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/netbootxyz/config"
+
+  netboot-assets:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${MEDIA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/netbootxyz/assets"
+
