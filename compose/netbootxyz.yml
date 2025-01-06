@@ -25,34 +25,23 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
+      - "traefik.http.middlewares.netbootxyz-ips.ipallowlist.sourcerange=${TRAEFIK_ALLOWRANGE}"
 
       # web configuration interface
       - "traefik.http.routers.netbootxyz.rule=Host(`netbootxyz.${NETWORK_DOMAIN-bricksandblocks.net}`)"
-      - "traefik.http.routers.netbootxyz.entrypoints=web"
-      - "traefik.http.middlewares.netbootxyz-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.netbootxyz-ips.ipallowlist.sourcerange=${TRAEFIK_ALLOWRANGE}"
-      - "traefik.http.routers.netbootxyz.middlewares=netbootxyz-https-redirect,netbootxyz-ips"
-
-      - "traefik.http.routers.netbootxyz-secure.rule=Host(`netbootxyz.${NETWORK_DOMAIN-bricksandblocks.net}`)"
-      - "traefik.http.routers.netbootxyz-secure.entrypoints=websecure"
-      - "traefik.http.routers.netbootxyz-secure.middlewares=netbootxyz-ips"
-      - "traefik.http.routers.netbootxyz-secure.tls=true"
-      - "traefik.http.routers.netbootxyz-secure.service=netbootxyz"
+      - "traefik.http.routers.netbootxyz.entrypoints=websecure"
+      - "traefik.http.routers.netbootxyz.middlewares=netbootxyz-ips"
+      - "traefik.http.routers.netbootxyz.tls=true"
+      - "traefik.http.routers.netbootxyz.service=netbootxyz"
       - "traefik.http.services.netbootxyz.loadbalancer.server.port=3000"
       - "traefik.http.services.netbootxyz.loadbalancer.passhostheader=true"
 
-      # NGINX server for hosting assets
+      # asset hosting
       - "traefik.http.routers.netboot-assets.rule=Host(`netboot-assets.${NETWORK_DOMAIN-bricksandblocks.net}`)"
-      - "traefik.http.routers.netboot-assets.entrypoints=web"
-      - "traefik.http.middlewares.netboot-assets-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.netboot-assets-ips.ipallowlist.sourcerange=${TRAEFIK_ALLOWRANGE}"
-      - "traefik.http.routers.netboot-assets.middlewares=netboot-assets-https-redirect,netboot-assets-ips"
-
-      - "traefik.http.routers.netboot-assets-secure.rule=Host(`netboot-assets.${NETWORK_DOMAIN-bricksandblocks.net}`)"
-      - "traefik.http.routers.netboot-assets-secure.entrypoints=websecure"
-      - "traefik.http.routers.netbootxyz-secure.middlewares=netboot-assets-ips"
-      - "traefik.http.routers.netboot-assets-secure.tls=true"
-      - "traefik.http.routers.netboot-assets-secure.service=netboot-assets"
+      - "traefik.http.routers.netboot-assets.entrypoints=websecure"
+      - "traefik.http.routers.netboot-assets.middlewares=netbootxyz-ips"
+      - "traefik.http.routers.netboot-assets.tls=true"
+      - "traefik.http.routers.netboot-assets.service=netboot-assets"
       - "traefik.http.services.netboot-assets.loadbalancer.server.port=80"
       - "traefik.http.services.netboot-assets.loadbalancer.passhostheader=true"
 
