@@ -33,7 +33,7 @@ services:
       - "traefik.http.routers.gitea.entrypoints=websecure"
       - "traefik.http.routers.gitea.tls.certresolver=letsencrypt"
       - "traefik.http.routers.gitea.service=gitea"
-      #- "traefik.http.routers.gitea.middlewares=foxhole@docker"
+      #- "traefik.http.routers.gitea.middlewares=internal-allowlist@file"
       - "traefik.http.services.gitea.loadbalancer.server.port=3000"
       - "traefik.http.services.gitea.loadbalancer.server.scheme=http"
 
