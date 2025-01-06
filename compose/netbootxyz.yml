@@ -29,7 +29,7 @@ services:
       # web configuration interface
       - "traefik.http.routers.netbootxyz.rule=Host(`netbootxyz.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       - "traefik.http.routers.netbootxyz.entrypoints=websecure"
-      - "traefik.http.routers.netbootxyz.middlewares=internal-ips@docker"
+      - "traefik.http.routers.netbootxyz.middlewares=internal-allowlist@file"
       - "traefik.http.routers.netbootxyz.tls=true"
       - "traefik.http.routers.netbootxyz.service=netbootxyz"
       - "traefik.http.services.netbootxyz.loadbalancer.server.port=3000"
@@ -38,7 +38,7 @@ services:
       # asset hosting
       - "traefik.http.routers.netboot-assets.rule=Host(`netboot-assets.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       - "traefik.http.routers.netboot-assets.entrypoints=websecure"
-      - "traefik.http.routers.netboot-assets.middlewares=internal-ips@docker"
+      - "traefik.http.routers.netboot-assets.middlewares=internal-allowlist@file"
       - "traefik.http.routers.netboot-assets.tls=true"
       - "traefik.http.routers.netboot-assets.service=netboot-assets"
       - "traefik.http.services.netboot-assets.loadbalancer.server.port=80"
