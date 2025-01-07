@@ -15,8 +15,8 @@ services:
       start_period: 3s
     ports:
       - "69:69/udp"
-      #- "3000:3000"
-      #- "8080:80"
+      #- "3000:3000" # web interface
+      #- "8007:80" # asset hosting
     volumes:
       - netboot-config:/config
       - netboot-assets:/assets
