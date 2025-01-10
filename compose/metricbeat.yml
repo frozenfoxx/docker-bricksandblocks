@@ -1,0 +1,28 @@
+services:
+  metricbeat:
+    image: docker.elastic.co/beats/metricbeat:${ELASTIC_VERSION-8.17.0}
+    container_name: metricbeat
+    command: -e
+    environment:
+      - ELASTICSEARCH_HOSTS="${ELASTICSEARCH_HOSTS-https://es01:9200}"
+      - ELASTICSEARCH_USERNAME="${ELASTICSEARCH_USERNAME-elastic}"
+      - ELASTICSEARCH_PASSWORD="${ELASTICSEARCH_PASSWORD}"
+      - KIBANA_HOST="${KIBANA_HOST}:${KIBANA_PORT-5601}"
+      - xpack.security.http.ssl.certificate_authorities=${ELASTICSEARCH_CERTS_DIR}/ca/ca.crt
+    network_mode: "host"
+    volumes:
+      - elasticsearch-certs:${ELASTICSEARCH_CERTS_DIR}
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      #- "/var/lib/docker/containers:/var/lib/docker/containers:ro"
+      - "/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro"
+      - "/proc:/hostfs/proc:ro"
+      - "/:/hostfs:ro"
+    restart: unless-stopped
+
+volumes:
+  elasticsearch-certs:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,ro"
+      device: ":/data/elasticsearch/certs"
