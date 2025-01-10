@@ -1,0 +1,285 @@
+services:
+  setup:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTICSEARCH_VERSION}
+    volumes:
+      - elasticsearch-certs:${ELASTICSEARCH_CERTS_DIR}
+    user: "0"
+    command: >
+      bash -c '
+        if [ x${ELASTICSEARCH_PASSWORD} == x ]; then
+          echo "Set the ELASTICSEARCH_PASSWORD environment variable in the .env file";
+          exit 1;
+        elif [ x${KIBANA_PASSWORD} == x ]; then
+          echo "Set the KIBANA_PASSWORD environment variable in the .env file";
+          exit 1;
+        fi;
+        if [ ! -f ${ELASTICSEARCH_CERTS_DIR}/ca.zip ]; then
+          echo "Creating CA";
+          bin/elasticsearch-certutil ca --silent --pem -out ${ELASTICSEARCH_CERTS_DIR}/ca.zip;
+          unzip ${ELASTICSEARCH_CERTS_DIR}/ca.zip -d ${ELASTICSEARCH_CERTS_DIR};
+        fi;
+        if [ ! -f ${ELASTICSEARCH_CERTS_DIR}/certs.zip ]; then
+          echo "Creating certs";
+          echo -ne \
+          "instances:\n"\
+          "  - name: es01\n"\
+          "    dns:\n"\
+          "      - es01\n"\
+          "      - localhost\n"\
+          "    ip:\n"\
+          "      - 127.0.0.1\n"\
+          "  - name: es02\n"\
+          "    dns:\n"\
+          "      - es02\n"\
+          "      - localhost\n"\
+          "    ip:\n"\
+          "      - 127.0.0.1\n"\
+          "  - name: es03\n"\
+          "    dns:\n"\
+          "      - es03\n"\
+          "      - localhost\n"\
+          "    ip:\n"\
+          "      - 127.0.0.1\n"\
+          > ${ELASTICSEARCH_CERTS_DIR}/instances.yml;
+          bin/elasticsearch-certutil cert --silent --pem -out ${ELASTICSEARCH_CERTS_DIR}/certs.zip --in ${ELASTICSEARCH_CERTS_DIR}/instances.yml --ca-cert ${ELASTICSEARCH_CERTS_DIR}/ca/ca.crt --ca-key ${ELASTICSEARCH_CERTS_DIR}/ca/ca.key;
+          unzip ${ELASTICSEARCH_CERTS_DIR}/certs.zip -d ${ELASTICSEARCH_CERTS_DIR};
+        fi;
+        echo "Setting file permissions"
+        chown -R 1000:1000 ${ELASTICSEARCH_CERTS_DIR};
+        find . -type d -exec chmod 750 \{\} \;;
+        find . -type f -exec chmod 640 \{\} \;;
+        echo "Waiting for Elasticsearch availability";
+        until curl -s --cacert ${ELASTICSEARCH_CERTS_DIR}/ca/ca.crt https://es01:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
+        echo "Setting kibana_system password";
+        until curl -s -X POST --cacert ${ELASTICSEARCH_CERTS_DIR}/ca/ca.crt -u "elastic:${ELASTICSEARCH_PASSWORD}" -H "Content-Type: application/json" https://es01:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+        echo "All done!";
+      '
+    healthcheck:
+      test: ["CMD-SHELL", "[ -f ${ELASTICSEARCH_CERTS_DIR}/es01/es01.crt ]"]
+      interval: 1s
+      timeout: 5s
+      retries: 120
+
+  es01:
+    depends_on:
+      setup:
+        condition: service_healthy
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTICSEARCH_VERSION}
+    volumes:
+      - elasticsearch-certs:${ELASTICSEARCH_CERTS_DIR}
+      - elasticsearch-data-es01:/usr/share/elasticsearch/data
+    ports:
+      - ${ELASTICSEARCH_PORT}:9200
+    environment:
+      - node.name=es01
+      - cluster.name=${ELASTICSEARCH_CLUSTER_NAME}
+      - cluster.initial_master_nodes=es01,es02,es03
+      - discovery.seed_hosts=es02,es03
+      - ELASTIC_PASSWORD=${ELASTICSEARCH_PASSWORD}
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=${ELASTICSEARCH_CERTS_DIR}/es01/es01.key
+      - xpack.security.http.ssl.certificate=${ELASTICSEARCH_CERTS_DIR}/es01/es01.crt
+      - xpack.security.http.ssl.certificate_authorities=${ELASTICSEARCH_CERTS_DIR}/ca/ca.crt
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.key=${ELASTICSEARCH_CERTS_DIR}/es01/es01.key
+      - xpack.security.transport.ssl.certificate=${ELASTICSEARCH_CERTS_DIR}/es01/es01.crt
+      - xpack.security.transport.ssl.certificate_authorities=${ELASTICSEARCH_CERTS_DIR}/ca/ca.crt
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.license.self_generated.type=${ELASTICSEARCH_LICENSE}
+      - xpack.ml.use_auto_machine_memory_percent=true
+    #labels:
+      #- "traefik.enable=true"
+      #- "traefik.http.routers.elastic.entrypoints=web"
+      #- "traefik.http.routers.elastic.rule=Host(`elasticsearch.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      #- "traefik.http.routers.elastic-sec.entrypoints=websecure"
+      #- "traefik.http.routers.elastic-sec.rule=Host(`elasticsearch.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      #- "traefik.http.routers.elastic-sec.tls=true"
+      #- "traefik.http.routers.elastic-sec.tls.certresolver=letsencrypt"
+      #- "traefik.http.services.elastic-sec.loadbalancer.server.port=9200"
+      #- "traefik.http.services.elastic-sec.loadbalancer.server.scheme=https"
+    mem_limit: ${ELASTICSEARCH_MEM_LIMIT}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s --cacert ${ELASTICSEARCH_CERTS_DIR}/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+
+  es02:
+    depends_on:
+      - es01
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTICSEARCH_VERSION}
+    volumes:
+      - elasticsearch-certs:${ELASTICSEARCH_CERTS_DIR}
+      - elasticsearch-data-es02:/usr/share/elasticsearch/data
+    environment:
+      - node.name=es02
+      - cluster.name=${ELASTICSEARCH_CLUSTER_NAME}
+      - cluster.initial_master_nodes=es01,es02,es03
+      - discovery.seed_hosts=es01,es03
+      - ELASTIC_PASSWORD=${ELASTICSEARCH_PASSWORD}
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=${ELASTICSEARCH_CERTS_DIR}/es02/es02.key
+      - xpack.security.http.ssl.certificate=${ELASTICSEARCH_CERTS_DIR}/es02/es02.crt
+      - xpack.security.http.ssl.certificate_authorities=${ELASTICSEARCH_CERTS_DIR}/ca/ca.crt
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.key=${ELASTICSEARCH_CERTS_DIR}/es02/es02.key
+      - xpack.security.transport.ssl.certificate=${ELASTICSEARCH_CERTS_DIR}/es02/es02.crt
+      - xpack.security.transport.ssl.certificate_authorities=${ELASTICSEARCH_CERTS_DIR}/ca/ca.crt
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.license.self_generated.type=${ELASTICSEARCH_LICENSE}
+      - xpack.ml.use_auto_machine_memory_percent=true
+    mem_limit: ${ELASTICSEARCH_MEM_LIMIT}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s --cacert ${ELASTICSEARCH_CERTS_DIR}/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+
+  es03:
+    depends_on:
+      - es02
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTICSEARCH_VERSION}
+    volumes:
+      - elasticsearch-certs:${ELASTICSEARCH_CERTS_DIR}
+      - elasticsearch-data-es03:/usr/share/elasticsearch/data
+    environment:
+      - node.name=es03
+      - cluster.name=${ELASTICSEARCH_CLUSTER_NAME}
+      - cluster.initial_master_nodes=es01,es02,es03
+      - discovery.seed_hosts=es01,es02
+      - ELASTIC_PASSWORD=${ELASTICSEARCH_PASSWORD}
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=${ELASTICSEARCH_CERTS_DIR}/es03/es03.key
+      - xpack.security.http.ssl.certificate=${ELASTICSEARCH_CERTS_DIR}/es03/es03.crt
+      - xpack.security.http.ssl.certificate_authorities=${ELASTICSEARCH_CERTS_DIR}/ca/ca.crt
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.key=${ELASTICSEARCH_CERTS_DIR}/es03/es03.key
+      - xpack.security.transport.ssl.certificate=${ELASTICSEARCH_CERTS_DIR}/es03/es03.crt
+      - xpack.security.transport.ssl.certificate_authorities=${ELASTICSEARCH_CERTS_DIR}/ca/ca.crt
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.license.self_generated.type=${ELASTICSEARCH_LICENSE}
+      - xpack.ml.use_auto_machine_memory_percent=true
+    mem_limit: ${ELASTICSEARCH_MEM_LIMIT}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s --cacert ${ELASTICSEARCH_CERTS_DIR}/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+
+  kibana:
+    depends_on:
+      es01:
+        condition: service_healthy
+      es02:
+        condition: service_healthy
+      es03:
+        condition: service_healthy
+    image: docker.elastic.co/kibana/kibana:${ELASTICSEARCH_VERSION}
+    volumes:
+      - elasticsearch-certs:/usr/share/kibana/config/certs
+      - kibana-data:/usr/share/kibana/data
+    ports:
+      - ${KIBANA_PORT}:5601
+    environment:
+      - SERVERNAME=kibana.${NETWORK_DOMAIN-bricksandblocks.net}
+      - SERVER_HOST="0.0.0.0"
+      - ELASTICSEARCH_HOSTS="https://es01:9200"
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
+      - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=/usr/share/kibana/config/certs/ca/ca.crt
+      - xpack.encryptedSavedObjects.encryptionKey=${KIBANA_KEYS_SAVEDOBJECTS}
+      - xpack.reporting.encryptionKey=${KIBANA_KEYS_REPORTING}
+      - xpack.security.encryptionKey=${KIBANA_KEYS_SECURITY}
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.kibana.entrypoints=web"
+    #   - "traefik.http.routers.kibana.rule=Host(`kibana.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+    #   - "traefik.http.routers.kibana-sec.entrypoints=websecure"
+    #   - "traefik.http.routers.kibana-sec.rule=Host(`kibana.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+    #   - "traefik.http.routers.kibana-sec.tls=true"
+    #   - "traefik.http.routers.kibana-sec.tls.certresolver=letsencrypt"
+    #   - "traefik.http.services.kibana-sec.loadbalancer.server.port=5601"
+    #   - "traefik.http.services.kibana-sec.loadbalancer.server.scheme=https"
+    mem_limit: ${KIBANA_MEM_LIMIT}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+
+volumes:
+  elasticsearch-certs:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/data/elasticsearch/certs"
+  
+  elasticsearch-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/data/elasticsearch/config"
+
+  elasticsearch-data-es01:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/data/es01/elasticsearch/data"
+  
+  elasticsearch-data-es02:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/data/es02/elasticsearch/data"
+  
+  elasticsearch-data-es03:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/data/es03/elasticsearch/data"
+  
+  kibana-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/data/kibana"
