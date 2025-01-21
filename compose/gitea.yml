@@ -27,7 +27,7 @@ services:
     depends_on:
       gitea-postgres:
         condition: service_healthy
-    labels:
+    #labels:
       #- "traefik.enable=true"
       #- "traefik.http.routers.gitea.rule=Host(`gitea.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       #- "traefik.http.routers.gitea.entrypoints=websecure"
