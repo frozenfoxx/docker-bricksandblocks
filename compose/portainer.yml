@@ -21,21 +21,21 @@ services:
       #- "traefik.http.services.portainer.loadbalancer.server.scheme=https"
 
       # Frontend
-      - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`portainer.${NETWORK_DOMAIN-bricksandblocks.net}`)"
-      - "traefik.http.routers.frontend.entrypoints=websecure"
-      - "traefik.http.routers.frontend.service=frontend"
-      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+      #- "traefik.enable=true"
+      #- "traefik.http.routers.frontend.rule=Host(`portainer.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      #- "traefik.http.routers.frontend.entrypoints=websecure"
+      #- "traefik.http.routers.frontend.service=frontend"
+      #- "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
       #- "traefik.http.routers.frontend.middlewares=internal-allowlist@file"
-      - "traefik.http.services.frontend.loadbalancer.server.port=9000"
+      #- "traefik.http.services.frontend.loadbalancer.server.port=9000"
 
       # Edge
-      - "traefik.http.routers.edge.rule=Host(`edge.${NETWORK_DOMAIN-bricksandblocks.net}`)"
-      - "traefik.http.routers.edge.entrypoints=websecure"
-      - "traefik.http.routers.edge.service=edge"
-      - "traefik.http.routers.edge.tls.certresolver=letsencrypt"
+      #- "traefik.http.routers.edge.rule=Host(`edge.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      #- "traefik.http.routers.edge.entrypoints=websecure"
+      #- "traefik.http.routers.edge.service=edge"
+      #- "traefik.http.routers.edge.tls.certresolver=letsencrypt"
       #- "traefik.http.routers.edge.middlewares=internal-allowlist@file"
-      - "traefik.http.services.edge.loadbalancer.server.port=8000"
+      #- "traefik.http.services.edge.loadbalancer.server.port=8000"
 
 volumes:
   portainer-data:
