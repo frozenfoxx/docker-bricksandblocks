@@ -1,6 +1,4 @@
 include:
-  - traefik.yml
-  - heimdall.yml
   - jellyfin.yml
   - mealie.yml
   - portainer.yml

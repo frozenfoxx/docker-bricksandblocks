@@ -1,4 +1,6 @@
 include:
+  - traefik.yml
+  - heimdall.yml
   - gluetun.yml
   - qbittorrent.yml
   - portainer_agent.yml
