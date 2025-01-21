@@ -18,13 +18,13 @@ services:
       - 1900:1900/udp #optional
     restart: unless-stopped
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.${NETWORK_DOMAIN-bricksandblocks.net}`)"
-      - "traefik.http.routers.jellyfin.entrypoints=websecure"
-      - "traefik.http.routers.jellyfin.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.jellyfin.service=jellyfin"
-      - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
-      - "traefik.http.services.jellyfin.loadbalancer.server.scheme=http"
+      #- "traefik.enable=true"
+      #- "traefik.http.routers.jellyfin.rule=Host(`jellyfin.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      #- "traefik.http.routers.jellyfin.entrypoints=websecure"
+      #- "traefik.http.routers.jellyfin.tls.certresolver=letsencrypt"
+      #- "traefik.http.routers.jellyfin.service=jellyfin"
+      #- "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
+      #- "traefik.http.services.jellyfin.loadbalancer.server.scheme=http"
 
 volumes:
   jellyfin-data:

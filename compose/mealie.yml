@@ -33,13 +33,13 @@ services:
       mealie-postgres:
         condition: service_healthy
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.mealie.rule=Host(`mealie.${NETWORK_DOMAIN-bricksandblocks.net}`)"
-      - "traefik.http.routers.mealie.entrypoints=websecure"
-      - "traefik.http.routers.mealie.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.mealie.service=mealie"
-      - "traefik.http.services.mealie.loadbalancer.server.port=9000"
-      - "traefik.http.services.mealie.loadbalancer.server.scheme=http"
+      #- "traefik.enable=true"
+      #- "traefik.http.routers.mealie.rule=Host(`mealie.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      #- "traefik.http.routers.mealie.entrypoints=websecure"
+      #- "traefik.http.routers.mealie.tls.certresolver=letsencrypt"
+      #- "traefik.http.routers.mealie.service=mealie"
+      #- "traefik.http.services.mealie.loadbalancer.server.port=9000"
+      #- "traefik.http.services.mealie.loadbalancer.server.scheme=http"
 
   mealie-postgres:
     image: postgres:15
