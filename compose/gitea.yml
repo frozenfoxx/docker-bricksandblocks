@@ -28,14 +28,14 @@ services:
       gitea-postgres:
         condition: service_healthy
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.gitea.rule=Host(`gitea.${NETWORK_DOMAIN-bricksandblocks.net}`)"
-      - "traefik.http.routers.gitea.entrypoints=websecure"
-      - "traefik.http.routers.gitea.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.gitea.service=gitea"
+      #- "traefik.enable=true"
+      #- "traefik.http.routers.gitea.rule=Host(`gitea.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      #- "traefik.http.routers.gitea.entrypoints=websecure"
+      #- "traefik.http.routers.gitea.tls.certresolver=letsencrypt"
+      #- "traefik.http.routers.gitea.service=gitea"
       #- "traefik.http.routers.gitea.middlewares=internal-allowlist@file"
-      - "traefik.http.services.gitea.loadbalancer.server.port=3000"
-      - "traefik.http.services.gitea.loadbalancer.server.scheme=http"
+      #- "traefik.http.services.gitea.loadbalancer.server.port=3000"
+      #- "traefik.http.services.gitea.loadbalancer.server.scheme=http"
 
   gitea-postgres:
     image: postgres:15
