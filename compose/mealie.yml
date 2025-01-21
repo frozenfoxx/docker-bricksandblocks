@@ -32,7 +32,7 @@ services:
     depends_on:
       mealie-postgres:
         condition: service_healthy
-    labels:
+    #labels:
       #- "traefik.enable=true"
       #- "traefik.http.routers.mealie.rule=Host(`mealie.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       #- "traefik.http.routers.mealie.entrypoints=websecure"
