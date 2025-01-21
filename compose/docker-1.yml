@@ -4,4 +4,3 @@ include:
   - portainer.yml
   - gitea.yml
   - mqtt.yml
-  - netbootxyz.yml

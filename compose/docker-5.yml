@@ -1,2 +1,3 @@
 include:
   - portainer_agent.yml
+  - netbootxyz.yml
