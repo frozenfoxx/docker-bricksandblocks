@@ -4,4 +4,3 @@ include:
   - plex.yml
   - kavita.yml
   - vrising.yml
-  - portainer_agent.yml

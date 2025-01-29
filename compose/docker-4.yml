@@ -5,7 +5,5 @@ include:
   - qbittorrent.yml
   - jellyfin.yml
   - mealie.yml
-  - portainer.yml
   - gitea.yml
   - mqtt.yml
-  - portainer_agent.yml
