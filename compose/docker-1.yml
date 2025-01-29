@@ -1,6 +1,0 @@
-include:
-  - jellyfin.yml
-  - mealie.yml
-  - portainer.yml
-  - gitea.yml
-  - mqtt.yml

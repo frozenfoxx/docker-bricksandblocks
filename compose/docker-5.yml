@@ -1,3 +1,7 @@
 include:
-  - portainer_agent.yml
   - netbootxyz.yml
+  - tautulli.yml
+  - plex.yml
+  - kavita.yml
+  - vrising.yml
+  - portainer_agent.yml
