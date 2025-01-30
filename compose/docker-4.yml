@@ -1,9 +1,6 @@
 include:
-  - traefik.yml
-  - heimdall.yml
-  - gluetun.yml
-  - qbittorrent.yml
-  - jellyfin.yml
-  - mealie.yml
-  - gitea.yml
-  - mqtt.yml
+  - netbootxyz.yml
+  - tautulli.yml
+  - plex.yml
+  - kavita.yml
+  - vrising.yml
