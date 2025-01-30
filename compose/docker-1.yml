@@ -1,0 +1,5 @@
+include:
+  - traefik.yml
+  - heimdall.yml
+  - mqtt.yml
+  - netbootxyz.yml

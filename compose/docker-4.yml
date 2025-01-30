@@ -1,6 +1,4 @@
 include:
-  - netbootxyz.yml
   - tautulli.yml
   - plex.yml
-  - kavita.yml
   - vrising.yml
