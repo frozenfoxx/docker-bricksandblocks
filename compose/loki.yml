@@ -5,7 +5,7 @@ services:
     command: -config.file=/etc/loki/loki-config.yaml
     restart: always
     volumes:
-      - loki-config:/etc/loki/loki-config.yaml
+      - loki-config/loki-config.yaml:/etc/loki/loki-config.yaml
       - loki-data:/loki
     ports:
       - "3100:3100"
