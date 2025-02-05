@@ -20,11 +20,11 @@ services:
       - "traefik.tcp.routers.mqtt.service=mqtt"
 
       # TCP Secure
-      - "traefik.tcp.routers.mqttsecure.rule=HostSNI(`*`)"
-      - "traefik.tcp.routers.mqttsecure.entrypoints=mqttsecure"
-      - "traefik.tcp.routers.mqttsecure.tls=true"
+      #- "traefik.tcp.routers.mqttsecure.rule=HostSNI(`*`)"
+      #- "traefik.tcp.routers.mqttsecure.entrypoints=mqttsecure"
+      #- "traefik.tcp.routers.mqttsecure.tls=true"
       #- "traefik.tcp.routers.mqtt.tls.certresolver=letsencrypt"
-      - "traefik.tcp.routers.mqttsecure.service=mqttsecure"
+      #- "traefik.tcp.routers.mqttsecure.service=mqttsecure"
       
       # Websocket
       #- "traefik.tcp.routers.mqtt-ws.rule=HostSNI(`*`)"
@@ -35,7 +35,7 @@ services:
 
       # Load Balancer
       - "traefik.tcp.services.mqtt.loadbalancer.server.port=1883"
-      - "traefik.tcp.services.mqttsecure.loadbalancer.server.port=8883"
+      #- "traefik.tcp.services.mqttsecure.loadbalancer.server.port=8883"
 
 volumes:
   mosquitto-config:
