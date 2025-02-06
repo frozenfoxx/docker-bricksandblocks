@@ -1,0 +1,17 @@
+services:
+  enigmabbs:
+    image: enigmabbs/enigma-bbs:latest
+    container_name: enigmabbs
+    ports:
+      - "8888:8888"
+    volumes:
+      - enigmabbs:/enigma-bbs
+      #- enigmabbs-mail:/mail
+
+volumes:
+  enigmabbs:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/enigmabbs"
