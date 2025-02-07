@@ -1,0 +1,33 @@
+services:
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp" # DHCP
+      - "8880:80/tcp"
+    environment:
+      - TZ=America/Los_Angeles
+      - WEBPASSWORD=${PIHOLE_PASSWORD}
+    volumes:
+      - pihole-conf:/etc/pihole
+      - pihole-dnsmasq:/etc/dnsmasq.d
+    restart: unless-stopped
+
+volumes:
+  pihole-conf:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/pihole/conf"
+
+  pihole-dnsmasq:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/pihole/dnsmasq"
