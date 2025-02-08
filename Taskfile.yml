@@ -4,6 +4,7 @@ version: "3"
 dotenv: [".env"]
 
 env:
+  HOSTNAME: "$(hostname)"
   ROOT_DIR: "{{.ROOT_DIR}}"
 
 includes:
@@ -35,7 +36,7 @@ tasks:
     cmds:
       - task: docker:compose:deploy
         vars:
-          CLI_ARGS: "compose/${HOSTNAME}.yml"
+          CLI_ARGS: "compose/{{.HOSTNAME}}.yml"
 
   destroy:
     desc: Destroy containers
@@ -49,7 +50,7 @@ tasks:
     cmds:
       - task: docker:compose:destroy
         vars:
-          CLI_ARGS: "compose/${HOSTNAME}.yml"
+          CLI_ARGS: "compose/{{.HOSTNAME}}.yml"
 
   lint:
     desc: Check the syntax on scripts
@@ -87,4 +88,4 @@ tasks:
     cmds:
       - task: docker:compose:upgrade
         vars:
-          CLI_ARGS: "compose/${HOSTNAME}.yml"
+          CLI_ARGS: "compose/{{.HOSTNAME}}.yml"
