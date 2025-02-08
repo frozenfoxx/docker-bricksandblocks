@@ -7,7 +7,7 @@ services:
     ports:
       - "53:53/tcp"
       - "53:53/udp"
-      - "67:67/udp" # DHCP
+      #- "67:67/udp" # DHCP
       - "8880:80/tcp"
     environment:
       - TZ=America/Los_Angeles
