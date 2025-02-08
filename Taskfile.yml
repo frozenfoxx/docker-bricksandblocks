@@ -81,3 +81,10 @@ tasks:
       - task: docker:compose:upgrade
         vars:
           CLI_ARGS: "{{.CLI_ARGS}}"
+
+  upgrade:host:
+    desc: "Upgrade all containers for a host"
+    cmds:
+      - task: docker:compose:upgrade
+        vars:
+          CLI_ARGS: "compose/${HOSTNAME}.yml"
