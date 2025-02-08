@@ -1,6 +1,6 @@
 include:
   - traefik.yml
-  - pihole.yml
+  #- pihole.yml
   - heimdall.yml
   - mqtt.yml
   - netbootxyz.yml
