@@ -1,6 +1,7 @@
 services:
   traefik:
-    image: traefik:latest
+    #image: traefik:latest
+    image: traefik:3.3.2
     container_name: traefik
     command:
       #- "--api.insecure=true"
