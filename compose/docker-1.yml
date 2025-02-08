@@ -3,5 +3,5 @@ include:
   #- pihole.yml
   - heimdall.yml
   - mqtt.yml
-  - netbootxyz.yml
+  #- netbootxyz.yml
   - loki.yml
