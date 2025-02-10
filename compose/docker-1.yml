@@ -5,3 +5,5 @@ include:
   - mqtt.yml
   #- netbootxyz.yml
   - loki.yml
+  - promtail.yml
+  - grafana.yml
