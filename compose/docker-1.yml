@@ -4,4 +4,4 @@ include:
   - heimdall.yml
   - mqtt.yml
   #- netbootxyz.yml
-  #- loki.yml
+  - loki.yml
