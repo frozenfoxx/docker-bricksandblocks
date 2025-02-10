@@ -23,7 +23,7 @@ services:
       - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
 
       # Logging
-      - "--log.level=${TRAEFIK_LOGLEVEL:-ERROR}"
+      - "--log.level=${TRAEFIK_LOGLEVEL:-ERROR}" # Levels, DEBUG and ERROR
 
       # Providers
       - "--providers.docker=true"
