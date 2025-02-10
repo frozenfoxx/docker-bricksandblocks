@@ -22,8 +22,8 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - "3000:3000"
-      - "222:22"
+      - "3000:3000" 
+      - "2022:22"
     depends_on:
       gitea-postgres:
         condition: service_healthy
