@@ -9,6 +9,7 @@ services:
       - "--entrypoints.mqtt.address=:1883"
       - "--entrypoints.mqttsecure.address=:8883"
       #- "--entrypoints.mqttwebsocket.address=:9001"
+      - "--entrypoints.ssh.address=:2022"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
 
@@ -40,6 +41,7 @@ services:
       - "80:80"     # HTTP
       - "443:443"   # HTTPS
       - "1883:1883" # MQTT
+      - "2022:2022" # SSH
       #- "8080:8080"
       - "8883:8883" # MQTT
       #- "9001:9001"
