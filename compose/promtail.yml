@@ -18,4 +18,4 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/promtail/config"
+      device: ":/volume1/Docker/${HOSTNAME}/promtail/config"
