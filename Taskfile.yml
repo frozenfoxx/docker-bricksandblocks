@@ -4,7 +4,8 @@ version: "3"
 dotenv: [".env"]
 
 env:
-  HOSTNAME: "$(hostname)"
+  HOSTNAME:
+    sh: hostname
   ROOT_DIR: "{{.ROOT_DIR}}"
 
 includes:
