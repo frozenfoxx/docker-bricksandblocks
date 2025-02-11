@@ -1,5 +1,5 @@
 services:
-  promtail:
+  grafana:
     image: grafana/grafana:latest
     container_name: grafana
     restart: always
