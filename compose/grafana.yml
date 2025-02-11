@@ -5,6 +5,7 @@ services:
     restart: always
     environment:
       - GF_PLUGINS_PREINSTALL="${GRAFANA_PLUGINS}"
+      - GF_SERVER_DOMAIN="grafana.${NETWORK_DOMAIN-bricksandblocks.net}"
     volumes:
       - grafana-data:/var/lib/grafana
     ports:
