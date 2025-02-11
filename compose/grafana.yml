@@ -3,6 +3,8 @@ services:
     image: grafana/grafana:latest
     container_name: grafana
     restart: always
+    environment:
+      - GF_PLUGINS_PREINSTALL="${GRAFANA_PLUGINS}"
     volumes:
       - grafana-data:/var/lib/grafana
     ports:
