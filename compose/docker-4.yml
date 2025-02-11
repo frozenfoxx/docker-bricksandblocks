@@ -2,3 +2,4 @@ include:
   - tautulli.yml
   - plex.yml
   - vrising.yml
+  - promtail.yml

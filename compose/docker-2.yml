@@ -2,3 +2,4 @@ include:
   - jellyfin.yml
   - kavita.yml
   - linkwarden.yml
+  - promtail.yml
