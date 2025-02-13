@@ -6,4 +6,4 @@ include:
   #- netbootxyz.yml
   - loki.yml
   - grafana.yml
-  #- vector.yml
+  #- vector-agent.yml
