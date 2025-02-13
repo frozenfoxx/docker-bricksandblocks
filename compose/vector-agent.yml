@@ -1,0 +1,19 @@
+services:
+  vector:
+    image: timberio/vector:latest-alpine
+    container_name: vector-agent
+    restart: always
+    volumes:
+      - /var/log:/var/log
+      - /var/run/docker.sock:/var/run/docker.sock
+      - vector-config:/etc/vector:ro
+    ports:
+      - "8686:8686"
+
+volumes:
+  vector-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,ro"
+      device: ":/volume1/Docker/vector-agent/config"
