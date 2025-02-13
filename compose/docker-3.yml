@@ -3,4 +3,4 @@ include:
   - qbittorrent.yml
   - mealie.yml
   - gitea.yml
-  - promtail.yml
+  #- vector.yml
