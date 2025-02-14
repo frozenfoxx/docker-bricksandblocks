@@ -2,4 +2,4 @@ include:
   - jellyfin.yml
   - kavita.yml
   - linkwarden.yml
-  - vector-agent.yml
+  - vector.yml

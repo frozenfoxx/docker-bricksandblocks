@@ -1,7 +1,7 @@
 services:
   vector:
     image: timberio/vector:latest-alpine
-    container_name: vector-agent
+    container_name: vector
     restart: always
     volumes:
       - /var/log:/var/log
@@ -16,4 +16,4 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,ro"
-      device: ":/volume1/Docker/vector-agent/config"
+      device: ":/volume1/Docker/vector/config"

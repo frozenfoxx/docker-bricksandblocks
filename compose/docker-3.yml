@@ -3,4 +3,4 @@ include:
   - qbittorrent.yml
   - mealie.yml
   - gitea.yml
-  - vector-agent.yml
+  - vector.yml
