@@ -3,9 +3,9 @@
 #    external: true
 
 services:
-  zandronum-stream:
+  zandronum:
     image: rcdailey/zandronum-server:official-latest
-    container_name: zandronum-stream
+    container_name: zandronum
     network_mode: host
     restart: always
     volumes:
