@@ -32,8 +32,10 @@ services:
     image: prom/alertmanager
     container_name: alert-manager
     restart: always
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
     volumes:
-      - alertmanager-config:/alertmanager
+      - alertmanager-config:/etc/alertmanager
     networks:
       - prometheus
     ports:
