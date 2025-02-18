@@ -18,7 +18,7 @@ services:
       -file /wads/mods/brutalv21.pk3
       +exec /configs/global.cfg
       +exec /configs/coop.cfg
-      +exec /configs/maps_doom2.cfg
+      +exec /configs/maps_valiant.cfg
       +sv_hostname "Cult of Foxx"
 
   #lexicon:
