@@ -6,7 +6,7 @@ services:
   zandronum-stream:
     image: rcdailey/zandronum-server:official-latest
     container_name: zandronum-stream
-    network: host
+    network_mode: host
     restart: always
     volumes:
       - zandronum-wads:/wads:ro
@@ -24,7 +24,7 @@ services:
   #lexicon:
   #  image: rcdailey/zandronum-server:official-latest
   #  container_name: doom-lexicon
-  #  network: host
+  #  network_mode: host
   #  restart: always
   #  volumes:
   #    - ${DATA_PREFIX-/data}/zandronum/wads:/data:ro
