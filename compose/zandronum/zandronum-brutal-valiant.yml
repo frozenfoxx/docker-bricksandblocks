@@ -1,0 +1,37 @@
+#networks:
+#  zandronum:
+#    external: true
+
+services:
+  zandronum-stream:
+    image: rcdailey/zandronum-server:official-latest
+    container_name: zandronum-stream
+    network_mode: host
+    restart: always
+    volumes:
+      - zandronum-wads:/wads:ro
+      - zandronum-configs:/configs:ro
+    command: >
+      -port 10667
+      -iwad /wads/DOOM2.WAD
+      -file /wads/maps/Valiant/Valiant.wad
+      -file /wads/mods/brutalv21.pk3
+      +exec /configs/global.cfg
+      +exec /configs/coop.cfg
+      +exec /configs/maps_valiant.cfg
+      +sv_hostname "Cult of Foxx"
+
+volumes:
+  zandronum-configs:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,ro"
+      device: ":/volume1/Docker/zandronum/configs"
+
+  zandronum-wads:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,ro"
+      device: ":/volume1/Docker/zandronum/wads"
