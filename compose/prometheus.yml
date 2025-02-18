@@ -34,6 +34,7 @@ services:
     restart: always
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--web.external-url=http://prometheus.${NETWORK_DOMAIN-bricksandblocks.net}:9093'
     volumes:
       - alertmanager-config:/etc/alertmanager
     networks:
