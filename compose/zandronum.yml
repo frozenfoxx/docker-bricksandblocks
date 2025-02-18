@@ -3,54 +3,53 @@
 #    external: true
 
 services:
-  doom1:
+  zandronum-stream:
     image: rcdailey/zandronum-server:official-latest
-    container_name: doom1
+    container_name: zandronum-stream
     network: host
     restart: always
     volumes:
-      - ${DATA_PREFIX-/data}/zandronum/wads:/wads:ro
-      - ${DATA_PREFIX-/data}/zandronum/configs:/configs:ro
-    command: >
-      -port 10666
-      -iwad /wads/DOOM.WAD
-      -file /data/pretend_brutal_doom.pk3
-      +exec /configs/global.cfg
-      +exec /configs/coop.cfg
-      +exec /configs/doom1_maps.cfg
-      +sv_hostname "The Doom 1 Coop Server"
-
-  doom2:
-    image: rcdailey/zandronum-server:official-latest
-    container_name: doom2
-    network: host
-    restart: always
-    volumes:
-      - ${DATA_PREFIX-/data}/zandronum/wads:/data:ro
-      - ${DATA_PREFIX-/data}/zandronum/configs:/configs:ro
+      - zandronum-wads:/wads:ro
+      - zandronum-configs:/configs:ro
     command: >
       -port 10667
       -iwad /wads/DOOM2.WAD
-      -file /data/pretend_brutal_doom.pk3
+      -file /wads/maps/Valiant/Valiant.wad
+      -file /wads/mods/brutalv21.pk3
       +exec /configs/global.cfg
       +exec /configs/coop.cfg
-      +exec /configs/doom2_maps.cfg
-      +sv_hostname "The Doom 2 Coop Server"
+      +exec /configs/maps_doom2.cfg
+      +sv_hostname "Cult of Foxx"
 
-  lexicon:
-    image: rcdailey/zandronum-server:official-latest
-    container_name: doom-lexicon
-    network: host
-    restart: always
-    volumes:
-      - ${DATA_PREFIX-/data}/zandronum/wads:/data:ro
-      - ${DATA_PREFIX-/data}/zandronum/configs:/configs:ro
-    command: >
-      -port 10668
-      -iwad /data/pretend_doom2.wad
-      -file /data/pretend_sentinels_lexicon.pk3
-      +exec /configs/global.cfg
-      +exec /configs/coop.cfg
-      +sv_hostname "The Sentinel Lexicon Server"
-      +map VR
-      +lexicon_timer_start 60
+  #lexicon:
+  #  image: rcdailey/zandronum-server:official-latest
+  #  container_name: doom-lexicon
+  #  network: host
+  #  restart: always
+  #  volumes:
+  #    - ${DATA_PREFIX-/data}/zandronum/wads:/data:ro
+  #    - ${DATA_PREFIX-/data}/zandronum/configs:/configs:ro
+  #  command: >
+  #    -port 10668
+  #    -iwad /wads/DOOM2.WAD
+  #    -file /data/pretend_sentinels_lexicon.pk3
+  #    +exec /configs/global.cfg
+  #    +exec /configs/coop.cfg
+  #    +sv_hostname "The Sentinel Lexicon Server"
+  #    +map VR
+  #    +lexicon_timer_start 60
+
+volumes:
+  zandronum-configs:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,ro"
+      device: ":/volume1/Docker/zandronum/configs"
+
+  zandronum-wads:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,ro"
+      device: ":/volume1/Docker/zandronum/wads"
