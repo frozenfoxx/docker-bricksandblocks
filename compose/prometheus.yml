@@ -7,8 +7,13 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus
     restart: always
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.local.path=/prometheus'
+      - '--storage.tsdb.retention.time=7d'
     volumes:
       - prometheus-config:/etc/prometheus
+      - prometheus-data:/prometheus
     ports:
       - "9090:9090"
     networks:
@@ -35,12 +40,19 @@ volumes:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
+      o: "addr=${DATA_HOST},nolock,soft,ro"
       device: ":/volume1/Docker/alertmanager/config"
 
   prometheus-config:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
+      o: "addr=${DATA_HOST},nolock,soft,ro"
       device: ":/volume1/Docker/prometheus/config"
+
+  prometheus-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/prometheus/data"
