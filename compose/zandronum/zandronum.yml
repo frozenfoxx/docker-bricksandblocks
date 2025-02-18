@@ -21,24 +21,6 @@ services:
       +exec /configs/maps_valiant.cfg
       +sv_hostname "Cult of Foxx"
 
-  #lexicon:
-  #  image: rcdailey/zandronum-server:official-latest
-  #  container_name: doom-lexicon
-  #  network_mode: host
-  #  restart: always
-  #  volumes:
-  #    - ${DATA_PREFIX-/data}/zandronum/wads:/data:ro
-  #    - ${DATA_PREFIX-/data}/zandronum/configs:/configs:ro
-  #  command: >
-  #    -port 10668
-  #    -iwad /wads/DOOM2.WAD
-  #    -file /data/pretend_sentinels_lexicon.pk3
-  #    +exec /configs/global.cfg
-  #    +exec /configs/coop.cfg
-  #    +sv_hostname "The Sentinel Lexicon Server"
-  #    +map VR
-  #    +lexicon_timer_start 60
-
 volumes:
   zandronum-configs:
     driver: local
