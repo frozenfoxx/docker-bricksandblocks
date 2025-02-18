@@ -1,0 +1,47 @@
+networks:
+  prometheus:
+    driver: bridge
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: always
+    command: -config.file=/etc/prometheus/prometheus-config.yaml
+    volumes:
+      - prometheus-config:/etc/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - prometheus
+
+  node-exporter:
+    image: prom/node-exporter
+    networks:
+      - prometheus
+    ports:
+      - "9100:9100"
+
+  alert-manager:
+    image: prom/alertmanager
+    volumes:
+      - alertmanager-config:/alertmanager
+    networks:
+      - prometheus
+    ports:
+      - "9093:9093"
+
+volumes:
+  alertmanager-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/alertmanager/config"
+
+  prometheus-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/prometheus/config"
