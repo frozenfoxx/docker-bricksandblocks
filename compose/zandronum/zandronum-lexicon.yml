@@ -12,7 +12,7 @@ services:
       - zandronum-wads:/wads:ro
       - zandronum-configs:/configs:ro
     command: >
-      -port 10667
+      -port 10666
       -iwad /wads/DOOM2.WAD
       -file /wads/maps/Lexicon/lexicon-beta-build-133.pk3
       -file /wads/maps/Lexicon/lexicon-miscdata-beta-build-133.pk3
