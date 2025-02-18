@@ -7,6 +7,8 @@ services:
     image: rcdailey/zandronum-server:official-latest
     container_name: zandronum
     network_mode: host
+    hostname: zandronum
+    domainname: "${NETWORK_DOMAIN-bricksandblocks.net}"
     restart: always
     volumes:
       - zandronum-wads:/wads:ro

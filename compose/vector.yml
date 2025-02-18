@@ -3,6 +3,8 @@ services:
     image: timberio/vector:latest-alpine
     container_name: vector
     restart: always
+    hostname: "${HOSTNAME}"
+    domainname: "${NETWORK_DOMAIN-bricksandblocks.net}"
     volumes:
       - /var/log:/var/log
       - /var/run/docker.sock:/var/run/docker.sock
