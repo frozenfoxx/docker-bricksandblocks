@@ -21,6 +21,8 @@ services:
 
   node-exporter:
     image: prom/node-exporter
+    container_name: node-exporter
+    restart: always
     networks:
       - prometheus
     ports:
@@ -28,6 +30,8 @@ services:
 
   alert-manager:
     image: prom/alertmanager
+    container_name: alert-manager
+    restart: always
     volumes:
       - alertmanager-config:/alertmanager
     networks:
