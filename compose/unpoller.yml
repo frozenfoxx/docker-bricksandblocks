@@ -1,0 +1,27 @@
+services:
+  unpoller:
+    image: ghcr.io/unpoller/unpoller:latest
+    container_name: unpoller
+    restart: always
+    environment:
+      UP_INFLUXDB_DISABLE: "true"
+      UP_LOKI_DISABLE: "false"
+      UP_LOKI_URL: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100"
+      UP_POLLER_DEBUG: "false"
+      UP_PROMETHEUS_HTTP_LISTEN: "0.0.0.0:9130"
+      UP_PROMETHEUS_NAMESPACE: unifipoller
+      UP_UNIFI_DEFAULT_SAVE_ALARMS: "true"
+      UP_UNIFI_DEFAULT_SAVE_ANOMALIES: "true"
+      UP_UNIFI_DEFAULT_SAVE_DPI: "true"
+      UP_UNIFI_DEFAULT_SAVE_EVENTS: "true"
+      UP_UNIFI_DEFAULT_SAVE_IDS: "true"
+      UP_UNIFI_DEFAULT_SAVE_SITES: "true"
+      UP_UNIFI_DEFAULT_URL: "https://unifi.${NETWORK_DOMAIN-bricksandblocks.net}:443"
+      UP_UNIFI_DEFAULT_USER: ${UNPOLLER_USER}
+      UP_UNIFI_DEFAULT_PASS: ${UNPOLLER_PASSWORD}
+    logging:
+      driver: loki
+      options:
+        loki-url: http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push
+    ports:
+      - 9130:9130/tcp

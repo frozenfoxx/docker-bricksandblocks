@@ -1,0 +1,70 @@
+# Vector's API (disabled by default)
+# Enable and try it out with the `vector top` command
+# NOTE: this is _enabled_ for helm chart deployments, see: https://github.com/vectordotdev/helm-charts/blob/develop/charts/vector/examples/datadog-values.yaml#L78-L81
+api:
+  enabled: false
+# address = "127.0.0.1:8686"
+
+sources:
+  vector_logs:
+    type: internal_logs
+
+  docker_logs:
+    type: docker_logs
+    exclude_containers:
+      - vector-agent
+
+  syslog_logs:
+    type: syslog
+    address: '0.0.0.0:5123'
+    mode: udp
+
+  host_metrics:
+    type: host_metrics
+
+transforms:
+  docker_service_label:
+    type: remap
+    inputs:
+      - docker_logs
+    source: |
+      . = .message
+      .container_name = .container_name
+
+sinks:
+  loki_vector_logs:
+    type: loki
+    inputs:
+      - vector_logs
+    encoding:
+      codec: json
+    endpoint: 'http://loki.bricksandblocks.net:3100'
+    labels:
+      logsource: vector
+
+  loki_docker_logs:
+    type: loki
+    inputs:
+      - docker_logs
+    encoding:
+      codec: json
+    endpoint: 'http://loki.bricksandblocks.net:3100'
+    labels:
+      logsource: docker
+      service_name: "{{.container_name}}"
+
+  loki_syslog_logs:
+    type: loki
+    inputs:
+      - syslog_logs
+    encoding:
+      codec: json
+    endpoint: 'http://loki.bricksandblocks.net:3100'
+    labels:
+      logsource: syslog
+
+  prometheus_host_metrics:
+    type: prometheus_exporter
+    inputs:
+      - host_metrics
+    address: "0.0.0.0:9598"

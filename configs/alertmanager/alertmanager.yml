@@ -1,0 +1,28 @@
+global:
+  smtp_from: 'admin@bricksandblocks.net'
+
+route:
+  receiver: 'staff-telegram'
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 5m
+  #repeat_interval: 3h
+  routes:
+    - match:
+        severity: critical
+      receiver: 'staff-telegram'
+
+receivers:
+  - name: staff-email
+    email_configs:
+      - smarthost: 'smtp.gmail.com:587'
+        auth_username: 'googleuser@gmail.com'
+        auth_password: 'google user app password'
+        from: 'alertmanager@cultoffoxx.net'
+        to: 'staff@bricksandblocks.net'
+
+  - name: staff-telegram
+    telegram_configs:
+      - chat_id: -11111111111
+        bot_token: 'bigScaryBotToken'
+        send_resolved: true

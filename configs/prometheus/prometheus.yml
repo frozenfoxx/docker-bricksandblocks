@@ -1,0 +1,35 @@
+global:
+  scrape_interval: 10s
+  evaluation_interval: 10s
+
+rule_files:
+  - rules.yml
+
+alerting:
+  alertmanagers:
+    - static_configs:
+      - targets:
+        - alert-manager:9093
+
+scrape_configs:
+ - job_name: prometheus
+   static_configs:
+    - targets:
+       - prometheus:9090
+
+ - job_name: node
+   static_configs:
+    - targets:
+       - node-exporter:9100
+
+ - job_name: vector
+   file_sd_configs:
+     - files:
+       - 'targets.yml'
+
+  #- job_name: vector-dns
+    #  dns_sd_configs:
+      #    - names:
+        #        - 'docker-*.local'
+      #      type: 'A'
+      #      port: 9598

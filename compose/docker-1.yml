@@ -8,3 +8,4 @@ include:
   - loki.yml
   - grafana.yml
   - vector.yml
+  - unpoller.yml
