@@ -14,8 +14,8 @@ services:
       - influxdb2-admin-password
       - influxdb2-admin-token
     volumes:
-      - influxdb-config:/etc/influxdb2
-      - influxdb-data:/var/lib/influxdb2
+      - influxdb2-config:/etc/influxdb2
+      - influxdb2-data:/var/lib/influxdb2
     ports:
       - 8086:8086
 
