@@ -24,8 +24,8 @@ secrets:
     file: ~/.env.influxdb2-admin-username
   influxdb2-admin-password:
     file: ~/.env.influxdb2-admin-password
-  influxdb2-admin-token:
-    file: ~/.env.influxdb2-admin-token
+  #influxdb2-admin-token:
+    #file: ~/.env.influxdb2-admin-token
 
 volumes:
   influxdb2-config:
