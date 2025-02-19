@@ -4,6 +4,7 @@ include:
   - heimdall.yml
   - mqtt.yml
   #- netbootxyz.yml
+  - influxdb2.yml
   - prometheus.yml
   - loki.yml
   - grafana.yml
