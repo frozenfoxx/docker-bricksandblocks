@@ -12,7 +12,7 @@ services:
     secrets:
       - influxdb2-admin-username
       - influxdb2-admin-password
-      - influxdb2-admin-token
+      #- influxdb2-admin-token
     volumes:
       - influxdb2-config:/etc/influxdb2
       - influxdb2-data:/var/lib/influxdb2
