@@ -9,7 +9,7 @@ services:
       UP_LOKI_URL: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100"
       UP_POLLER_DEBUG: "false"
       UP_PROMETHEUS_HTTP_LISTEN: "0.0.0.0:9130"
-      UP_PROMETHEUS_NAMESPACE: "unifipoller"
+      UP_PROMETHEUS_NAMESPACE: "unpoller"
       UP_UNIFI_DEFAULT_SAVE_ALARMS: "true"
       UP_UNIFI_DEFAULT_SAVE_ANOMALIES: "true"
       UP_UNIFI_DEFAULT_SAVE_DPI: "true"
