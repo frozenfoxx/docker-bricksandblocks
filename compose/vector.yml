@@ -9,9 +9,9 @@ services:
       - /var/log:/var/log
       - /var/run/docker.sock:/var/run/docker.sock
       - vector-config:/etc/vector:ro
-    ports:
+    #ports:
       #- "8686:8686" # API, default disabled
-      - "9598:9598" # Prometheus
+      #- "9598:9598" # Prometheus
 
 volumes:
   vector-config:

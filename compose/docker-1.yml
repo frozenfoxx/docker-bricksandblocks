@@ -5,8 +5,6 @@ include:
   - mqtt.yml
   #- netbootxyz.yml
   - influxdb2.yml
-  - prometheus.yml
-  - loki.yml
   - grafana.yml
   - vector.yml
   - unpoller.yml
