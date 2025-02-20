@@ -16,6 +16,7 @@ services:
       - /:/hostfs:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - telegraf-config:/etc/telegraf/:ro
+    user: "telegraf:$(id -Gn)"
     privileged: true
 
 volumes:
