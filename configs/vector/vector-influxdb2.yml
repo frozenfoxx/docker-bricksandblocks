@@ -1,0 +1,66 @@
+# Vector's API (disabled by default)
+# Enable and try it out with the `vector top` command
+# NOTE: this is _enabled_ for helm chart deployments, see: https://github.com/vectordotdev/helm-charts/blob/develop/charts/vector/examples/datadog-values.yaml#L78-L81
+api:
+  enabled: false
+# address = "127.0.0.1:8686"
+
+sources:
+  vector_logs:
+    type: internal_logs
+
+  vector_metrics:
+    type: internal_metrics
+
+  docker_logs:
+    type: docker_logs
+    exclude_containers:
+      - vector
+
+  syslog_logs:
+    type: syslog
+    address: '0.0.0.0:5123'
+    mode: udp
+
+  host_metrics:
+    type: host_metrics
+    namespace: "node"
+
+transforms:
+  docker_service_label:
+    type: remap
+    inputs:
+      - docker_logs
+    source: |
+      . = .message
+      .container_name = .container_name
+
+sinks:
+  influxdb_docker_logs:
+    type: influxdb_logs
+    inputs:
+      - docker_logs
+    bucket: docker_logs
+    measurement: docker
+    endpoint: "https://influxdb/"
+    org: "[org name]"
+    token: "[user token]"
+
+  influxdb_vector_metrics:
+    type: influxdb_metrics
+    inputs:
+      - vector_metrics
+    bucket: vector_metrics
+    endpoint: "https://influxdb"
+    org: "[org name]"
+    token: "[user token]"
+
+  influxdb_vector_logs:
+    type: influxdb_logs
+    inputs:
+      - vector_logs
+    bucket: vector_logs
+    measurement: vector
+    endpoint: "https://influxdb"
+    org: "[org name]"
+    token: "[user token]"
