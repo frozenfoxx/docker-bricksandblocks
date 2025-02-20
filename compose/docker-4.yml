@@ -4,3 +4,4 @@ include:
   - vrising.yml
   - zandronum.yml
   - vector.yml
+  - telegraf.yml

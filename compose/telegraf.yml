@@ -1,0 +1,26 @@
+services:
+  telegraf:
+    image: docker.io/telegraf:alpine
+    container_name: telegraf
+    restart: always
+    hostname: "${HOSTNAME}"
+    domainname: "${NETWORK_DOMAIN-bricksandblocks.net}"
+    environment:
+      HOST_ETC: /hostfs/etc
+      HOST_PROC: /hostfs/proc
+      HOST_SYS: /hostfs/sys
+      HOST_VAR: /hostfs/var
+      HOST_RUN: /hostfs/run
+      HOST_MOUNT_PREFIX: /hostfs
+    volumes:
+      - /:/hostfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - telegraf-config:/etc/telegraf/:ro
+
+volumes:
+  telegraf-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,ro"
+      device: ":/volume1/Docker/telegraf/config"
