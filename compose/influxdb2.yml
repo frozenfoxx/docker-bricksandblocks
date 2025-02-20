@@ -9,7 +9,27 @@ services:
     ports:
       - 8086:8086
 
+  chronograf:
+    image: chronograf:latest
+    container_name: chronograf
+    restart: always
+    ports:
+      - '8899:8888'
+    volumes:
+      - chronograf-data:/var/lib/chronograf
+    depends_on:
+      - influxdb2
+    environment:
+      - INFLUXDB_URL=https://influxdb.${NETWORK_DOMAIN-bricksandblocks.net}"
+
 volumes:
+  chronograf-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/chronograf/data"
+
   influxdb2-config:
     driver: local
     driver_opts:
