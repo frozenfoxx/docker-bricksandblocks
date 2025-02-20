@@ -4,12 +4,9 @@ services:
     container_name: unpoller
     restart: always
     environment:
-      UP_INFLUXDB_DISABLE: "true"
-      UP_LOKI_DISABLE: "false"
-      UP_LOKI_URL: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100"
       UP_POLLER_DEBUG: "false"
-      UP_PROMETHEUS_HTTP_LISTEN: "0.0.0.0:9130"
-      UP_PROMETHEUS_NAMESPACE: "unpoller"
+
+      # UniFi Variables
       UP_UNIFI_DEFAULT_SAVE_ALARMS: "true"
       UP_UNIFI_DEFAULT_SAVE_ANOMALIES: "true"
       UP_UNIFI_DEFAULT_SAVE_DPI: "true"
@@ -19,9 +16,28 @@ services:
       UP_UNIFI_DEFAULT_URL: "${UNPOLLER_URL}"
       UP_UNIFI_DEFAULT_USER: "${UNPOLLER_USER}"
       UP_UNIFI_DEFAULT_PASS: "${UNPOLLER_PASSWORD}"
+
+      # Loki Variables
+      UP_LOKI_DISABLE: "true"
+      #UP_LOKI_URL: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100"
+
+      # Prometheus Variables
+      #UP_PROMETHEUS_NAMESPACE: "unpoller"
+      #UP_PROMETHEUS_HTTP_LISTEN: "0.0.0.0:9130"
+
+      # InfluxDB Variables
+      #INFLUXDB_DB: "${UNPOLLER_INFLUXDB_DB}"
+      UP_INFLUXDB_DISABLE: "false"
+      UP_INFLUXDB_USER: "${UNPOLLER_INFLUXDB_USER}"
+      UP_INFLUXDB_PASS: "${UNPOLLER_INFLUXDB_PASSWORD}"
+      UP_INFLUXDB_ORG: "${UNPOLLER_INFLUXDB_ORG}"
+      UP_INFLUXDB_BUCKET: "${UNPOLLER_INFLUXDB_BUCKET}"
+      UP_INFLUXDB_AUTH_TOKEN: "${UNPOLLER_INFLUXDB_TOKEN}"
+      UP_INFLUXDB_URL: "https://influxdb.${NETWORK_DOMAIN-bricksandblocks.net}"
     #logging:
       #driver: loki
       #options:
         #loki-url: http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push
     ports:
       - 9130:9130/tcp
+
