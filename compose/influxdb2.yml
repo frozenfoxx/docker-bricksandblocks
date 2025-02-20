@@ -10,7 +10,7 @@ services:
       - 8086:8086
 
   chronograf:
-    image: chronograf:latest
+    image: chronograf:alpine
     container_name: chronograf
     restart: always
     ports:
@@ -19,8 +19,6 @@ services:
       - chronograf-data:/var/lib/chronograf
     depends_on:
       - influxdb2
-    environment:
-      - INFLUXDB_URL=https://influxdb.${NETWORK_DOMAIN-bricksandblocks.net}"
 
 volumes:
   chronograf-data:
