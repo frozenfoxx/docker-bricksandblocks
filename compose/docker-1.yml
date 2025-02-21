@@ -3,6 +3,5 @@ include:
   - heimdall.yml
   - mqtt.yml
   - influxdb2.yml
-  - vector.yml
   - unpoller.yml
   - telegraf.yml

@@ -3,5 +3,4 @@ include:
   - plex.yml
   - vrising.yml
   - zandronum.yml
-  - vector.yml
   - telegraf.yml
