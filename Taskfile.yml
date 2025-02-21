@@ -4,6 +4,8 @@ version: "3"
 dotenv: [".env"]
 
 env:
+  DOCKER_GID:
+    sh: stat -c '%g' /var/run/docker.sock
   HOSTNAME:
     sh: hostname
   ROOT_DIR: "{{.ROOT_DIR}}"

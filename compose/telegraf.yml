@@ -4,7 +4,7 @@ services:
     container_name: telegraf
     restart: always
     privileged: true
-    user: "telegraf:$(stat -c '%g' /var/run/docker.sock)"
+    user: "telegraf:${DOCKER_GID-0}"
     hostname: "${HOSTNAME}"
     domainname: "${NETWORK_DOMAIN-bricksandblocks.net}"
     environment:
