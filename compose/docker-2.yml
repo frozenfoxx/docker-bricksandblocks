@@ -2,4 +2,3 @@ include:
   - jellyfin.yml
   - kavita.yml
   - linkwarden.yml
-  - telegraf.yml
