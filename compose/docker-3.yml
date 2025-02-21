@@ -4,3 +4,4 @@ include:
   - mealie.yml
   - gitea.yml
   - vector.yml
+  - telegraf.yml

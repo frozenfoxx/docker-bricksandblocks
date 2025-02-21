@@ -5,3 +5,4 @@ include:
   - influxdb2.yml
   - vector.yml
   - unpoller.yml
+  - telegraf.yml

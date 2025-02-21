@@ -3,3 +3,4 @@ include:
   - kavita.yml
   - linkwarden.yml
   - vector.yml
+  - telegraf.yml
