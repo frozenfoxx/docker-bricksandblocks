@@ -6,7 +6,8 @@ services:
     environment:
       - DOZZLE_HOSTNAME="${HOSTNAME}"
       - DOZZLE_AUTH_PROVIDER=simple
-      - DOZZLE_REMOTE_AGENT="${DOZZLE_REMOTE_AGENTS}"
+      - DOZZLE_REMOTE_AGENT=${DOZZLE_REMOTE_AGENTS}
+      - DOZZLE_LEVEL=${DOZZLE_LEVEL-info} # Levels: info, debug
     ports:
       - 7070:8080
     volumes:
