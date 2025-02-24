@@ -6,7 +6,7 @@ services:
     command: -config.file=/etc/loki/loki-config.yaml
     volumes:
       - loki-config:/etc/loki
-      - loki-data:/loki
+      - loki-data:/data
     ports:
       - "3100:3100"
 
