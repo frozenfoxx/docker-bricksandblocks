@@ -19,14 +19,14 @@ services:
     networks:
       - prometheus
 
-  node-exporter:
-    image: prom/node-exporter
-    container_name: node-exporter
-    restart: always
-    networks:
-      - prometheus
-    ports:
-      - "9100:9100"
+  #node-exporter:
+    #image: prom/node-exporter
+    #container_name: node-exporter
+    #restart: always
+    #networks:
+      #- prometheus
+    #ports:
+      #- "9100:9100"
 
   alert-manager:
     image: prom/alertmanager
