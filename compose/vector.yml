@@ -11,7 +11,7 @@ services:
       - vector-config:/etc/vector:ro
     #ports:
       #- "8686:8686" # API, default disabled
-      #- "9598:9598" # Prometheus
+      - "9598:9598" # Prometheus
 
 volumes:
   vector-config:
