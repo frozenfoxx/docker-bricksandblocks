@@ -3,3 +3,5 @@ include:
   - qbittorrent.yml
   - mealie.yml
   - gitea.yml
+  - dozzle_agent.yml
+  - vector.yml

@@ -1,0 +1,22 @@
+services:
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: dozzle
+    restart: always
+    environment:
+      - DOZZLE_HOSTNAME="${HOSTNAME}"
+      - DOZZLE_AUTH_PROVIDER=simple
+      - DOZZLE_REMOTE_AGENT="${DOZZLE_REMOTE_AGENTS}"
+    ports:
+      - 7070:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - dozzle-data:/data
+
+volumes:
+  dozzle-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/dozzle/data"

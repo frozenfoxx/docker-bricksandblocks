@@ -2,4 +2,9 @@ include:
   - traefik.yml
   - heimdall.yml
   - mqtt.yml
+  - dozzle.yml
   - unpoller.yml
+  - loki.yml
+  - prometheus.yml
+  - grafana.yml
+  - vector.yml

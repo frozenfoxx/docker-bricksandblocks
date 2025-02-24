@@ -2,3 +2,5 @@ include:
   - jellyfin.yml
   - kavita.yml
   - linkwarden.yml
+  - dozzle_agent.yml
+  - vector.yml
