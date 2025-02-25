@@ -18,14 +18,14 @@ scrape_configs:
        - prometheus:9090
 
  - job_name: node
-   static_configs:
-    - targets:
-       - node-exporter:9100
-
- - job_name: vector
    file_sd_configs:
-     - files:
-       - 'targets.yml'
+     - targets:
+       - 'targets-node-exporter.yml'
+
+ #- job_name: vector
+   #file_sd_configs:
+     #- files:
+       #- 'targets-vector.yml'
 
   #- job_name: vector-dns
     #  dns_sd_configs:
