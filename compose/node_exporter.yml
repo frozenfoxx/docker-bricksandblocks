@@ -1,0 +1,15 @@
+services:
+  node-exporter:
+    image: prom/node-exporter
+    container_name: node_exporter
+    restart: always
+    command:
+      - '--path.rootfs=/host'
+    cap_add:
+      - SYS_TIME
+    network_mode: host
+    pid: host
+    volumes:
+      - '/:/host:ro,rslave'
+    ports:
+      - "9100:9100"

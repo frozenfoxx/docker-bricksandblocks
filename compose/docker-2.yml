@@ -3,5 +3,5 @@ include:
   - kavita.yml
   - linkwarden.yml
   - dozzle_agent.yml
-  - node-exporter.yml
+  - node_exporter.yml
   - vector.yml

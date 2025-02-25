@@ -4,5 +4,5 @@ include:
   - mealie.yml
   - gitea.yml
   - dozzle_agent.yml
-  - node-exporter.yml
+  - node_exporter.yml
   - vector.yml
