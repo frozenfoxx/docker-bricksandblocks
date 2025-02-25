@@ -22,10 +22,10 @@ scrape_configs:
      - targets:
        - 'targets-node-exporter.yml'
 
- #- job_name: vector
-   #file_sd_configs:
-     #- files:
-       #- 'targets-vector.yml'
+ - job_name: vector
+   file_sd_configs:
+     - files:
+       - 'targets-vector.yml'
 
   #- job_name: vector-dns
     #  dns_sd_configs:
