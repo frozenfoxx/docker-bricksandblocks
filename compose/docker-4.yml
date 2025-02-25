@@ -4,4 +4,5 @@ include:
   - vrising.yml
   - zandronum.yml
   - dozzle_agent.yml
+  - node-exporter.yml
   - vector.yml

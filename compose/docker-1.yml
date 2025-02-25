@@ -6,5 +6,6 @@ include:
   - unpoller.yml
   - loki.yml
   - prometheus.yml
+  - node-exporter.yml
   - grafana.yml
   - vector.yml
