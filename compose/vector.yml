@@ -7,8 +7,6 @@ services:
     domainname: "${NETWORK_DOMAIN-bricksandblocks.net}"
     volumes:
       - vector-config:/etc/vector:ro
-      - /proc:/proc:ro
-      - /sys:/sys:ro
       - /var/log:/var/log
       - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
