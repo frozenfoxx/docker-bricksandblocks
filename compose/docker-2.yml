@@ -5,5 +5,5 @@ include:
   - path: jellyfin.yml
   - path: kavita.yml
   - path: linkwarden.yml
-  - path: node_exporter.yml
+  - path: prometheus/node_exporter.yml
   - path: vector.yml

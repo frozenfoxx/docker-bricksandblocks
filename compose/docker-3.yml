@@ -4,5 +4,5 @@ include:
   - path: mealie.yml
   - path: gitea.yml
   - path: metube.yml
-  - path: node_exporter.yml
+  - path: prometheus/node_exporter.yml
   - path: vector.yml

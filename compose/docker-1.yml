@@ -4,7 +4,7 @@ include:
   - path: mqtt.yml
   - path: unpoller.yml
   - path: loki.yml
-  - path: prometheus.yml
-  - path: node_exporter.yml
+  - path: prometheus/prometheus.yml
+  - path: prometheus/node_exporter.yml
   - path: grafana.yml
   - path: vector.yml

@@ -5,5 +5,5 @@ include:
   - path: zandronum/zandronum.yml
     env_file:
       - zandronum/.env.brutal-valiant
-  - path: node_exporter.yml
+  - path: prometheus/node_exporter.yml
   - path: vector.yml
