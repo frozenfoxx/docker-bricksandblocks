@@ -1,0 +1,14 @@
+x-logging-journald: &logging-journald
+  driver: journald
+
+x-logging-json: &logging-json-file
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: 3
+
+x-logging-loki: &logging-loki
+  driver: loki
+  options:
+    #loki-url: "https://<user_id>:<password>@loki.${NETWORK_DOMAIN-bricksandblocks.net}/loki/api/v1/push"
+    loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
