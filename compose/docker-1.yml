@@ -1,5 +1,4 @@
 include:
-  - path: extension-fields.yml
   - path: traefik/traefik.yml
   - path: heimdall.yml
   - path: mqtt.yml

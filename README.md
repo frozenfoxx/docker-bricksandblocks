@@ -7,6 +7,7 @@ Docker deployment files for bricksandblocks.net
 * [Docker](https://docker.io)
 * [git](https://git-scm.com)
 * [Task](https://taskfile.dev)
+* [yq](https://github.com/mikefarah/yq)
 
 # Configuration
 
