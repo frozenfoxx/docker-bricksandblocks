@@ -20,7 +20,7 @@ services:
       - "--certificatesresolvers.letsencrypt.acme.dnsChallenge.delayBeforeCheck=60"
       - "--certificatesResolvers.letsencrypt.acme.dnsChallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
       - "--certificatesresolvers.letsencrypt.acme.email=${TRAEFIK_EMAIL}"
-      - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/certs/acme.json"
 
       # Logging
       - "--log.level=${TRAEFIK_LOGLEVEL:-ERROR}" # Levels, DEBUG and ERROR
@@ -28,7 +28,7 @@ services:
       # Providers
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--providers.file.directory=/data/conf"
+      - "--providers.file.directory=/conf"
       - "--providers.file.watch=true"
       #- "--serverstransport.insecureskipverify=true"
     environment:
@@ -45,8 +45,9 @@ services:
       - "8883:8883" # MQTT
       #- "9001:9001"
     volumes:
+      - traefik-certs:/certs
+      - traefik-conf:/conf
       - /var/run/docker.sock:/var/run/docker.sock
-      - traefik-data:/data
     labels:
       - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
       - "traefik.http.routers.http-catchall.entrypoints=web"
@@ -54,9 +55,16 @@ services:
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
 
 volumes:
-  traefik-data:
+  traefik-certs:
     driver: local
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/traefik"
+      device: ":/volume1/Docker/traefik/certs"
+
+  traefik-conf:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,ro"
+      device: ":/volume1/Docker/traefik/conf"
