@@ -10,11 +10,6 @@ services:
       - grafana-data:/var/lib/grafana
     ports:
       - "3083:3000"
-    logging:
-      driver: syslog
-      options:
-        syslog-address: "udp://127.0.0.1:5123"
-        tag: "grafana"
 
 volumes:
   grafana-data:
