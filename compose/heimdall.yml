@@ -20,7 +20,8 @@ services:
       #- "traefik.http.routers.heimdall.middlewares=internal-allowlist@file"
       - "traefik.http.services.heimdall.loadbalancer.server.port=80"
       - "traefik.http.services.heimdall.loadbalancer.server.scheme=http"
-    logging: *logging-loki
+    logging:
+      << : [*logging-loki]
 
 volumes:
   heimdall-data:
