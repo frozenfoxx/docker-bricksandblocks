@@ -1,9 +1,12 @@
 include:
   - path: tautulli.yml
   - path: plex.yml
-  - path: vrising.yml
-  - path: zandronum/zandronum.yml
+  - path: games/vrising.yml
+  - path: games/zandronum/zandronum.yml
     env_file:
-      - zandronum/.env.brutal-valiant
+      - games/zandronum/.env.brutal-valiant
+  - path: games/openttd/openttd.yml
+    env_file:
+      - games/openttd/.env.autosave
   - path: prometheus/node_exporter.yml
   - path: vector.yml

@@ -1,0 +1,20 @@
+services:
+  openttd:
+    image: ghcr.io/ropenttd/openttd:latest
+    container_name: openttd
+    restart: unless-stopped
+    ports:
+      - 3979:3979/tcp
+      - 3979:3979/udp
+    volumes:
+      - openttd-config:/config
+    environment:
+      - loadgame=${OPENTTD_LOADGAME-exit}
+
+volumes:
+  openttd-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/openttd/config"
