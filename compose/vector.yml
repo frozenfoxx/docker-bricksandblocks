@@ -7,7 +7,6 @@ services:
     domainname: "${NETWORK_DOMAIN-bricksandblocks.net}"
     volumes:
       - vector-config:/etc/vector:ro
-      - /var/log:/var/log
       - /var/run/docker.sock:/var/run/docker.sock:ro
     #ports:
       #- "127.0.0.1:5123:5123/udp" # Syslog, localhost only
