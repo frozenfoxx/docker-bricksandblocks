@@ -2,6 +2,5 @@ include:
   - jellyfin.yml
   - kavita.yml
   - linkwarden.yml
-  - dozzle_agent.yml
   - node_exporter.yml
   - vector.yml

@@ -3,6 +3,5 @@ include:
   - plex.yml
   - vrising.yml
   - zandronum.yml
-  - dozzle_agent.yml
   - node_exporter.yml
   - vector.yml

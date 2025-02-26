@@ -3,6 +3,6 @@ include:
   - qbittorrent.yml
   - mealie.yml
   - gitea.yml
-  - dozzle_agent.yml
+  - metube.yml
   - node_exporter.yml
   - vector.yml
