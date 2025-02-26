@@ -67,4 +67,4 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,ro"
-      device: ":/volume1/Docker/traefik/${TRAEFIK-CONF-MOUNTPOINT-conf}"
+      device: ":/volume1/Docker/traefik/${TRAEFIK_CONF_MOUNTPOINT-conf}"
