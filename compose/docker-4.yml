@@ -2,6 +2,8 @@ include:
   - path: tautulli.yml
   - path: plex.yml
   - path: vrising.yml
-  - path: zandronum.yml
+  - path: zandronum/zandronum.yml
+    env_file:
+      - zandronum/.env.brutal-valiant
   - path: node_exporter.yml
   - path: vector.yml

@@ -7,21 +7,16 @@ services:
     image: rcdailey/zandronum-server:official-latest
     container_name: zandronum
     network_mode: host
-    hostname: zandronum
+    hostname: "zandronum"
     domainname: "${NETWORK_DOMAIN-bricksandblocks.net}"
-    restart: always
+    restart: unless-stopped
     volumes:
       - zandronum-wads:/wads:ro
       - zandronum-configs:/configs:ro
     command: >
-      -port 10666
-      -iwad /wads/DOOM2.WAD
-      -file /wads/maps/Valiant/Valiant.wad
-      -file /wads/mods/brutalv21.pk3
-      +exec /configs/global.cfg
-      +exec /configs/coop.cfg
-      +exec /configs/maps_valiant.cfg
-      +sv_hostname "Cult of Foxx"
+      +sv_hostname "${ZANDRONUM_HOSTNAME-Cult of Foxx}"
+      -port ${ZANDRONUM_PORT-10666}
+      ${ZANDRONUM_COMMAND}
 
 volumes:
   zandronum-configs:
