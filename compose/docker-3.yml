@@ -1,9 +1,11 @@
 include:
-  - traefik-internal.yml
-  - gluetun.yml
-  - qbittorrent.yml
-  - mealie.yml
-  - gitea.yml
-  - metube.yml
-  - node_exporter.yml
-  - vector.yml
+  - path: traefik.yml
+    env_file:
+      traefik/.env.internal
+  - path: gluetun.yml
+  - path: qbittorrent.yml
+  - path: mealie.yml
+  - path: gitea.yml
+  - path: metube.yml
+  - path: node_exporter.yml
+  - path: vector.yml

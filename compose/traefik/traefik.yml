@@ -1,7 +1,7 @@
 services:
   traefik:
     image: traefik:latest
-    container_name: traefik-internal
+    container_name: traefik
     command:
       #- "--api.insecure=true"
 
@@ -14,6 +14,11 @@ services:
       - "--entrypoints.websecure.address=:443"
 
       # Certificate Resolvers
+      - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.letsencrypt.acme.dnschallenge.disablePropagationCheck=true"
+      - "--certificatesresolvers.letsencrypt.acme.dnsChallenge.delayBeforeCheck=60"
+      - "--certificatesResolvers.letsencrypt.acme.dnsChallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
       - "--certificatesresolvers.letsencrypt.acme.email=${TRAEFIK_EMAIL}"
       - "--certificatesresolvers.letsencrypt.acme.storage=/certs/acme.json"
 
@@ -23,21 +28,25 @@ services:
       # Providers
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--providers.file.directory=/conf-internal"
+      - "--providers.file.directory=/conf"
       - "--providers.file.watch=true"
       #- "--serverstransport.insecureskipverify=true"
+    environment:
+      - CF_API_EMAIL=${TRAEFIK_EMAIL}
+      - CLOUDFLARE_DNS_API_TOKEN=${TRAEFIK_CLOUDFLARE_API_KEY}
+      - CLOUDFLARE_ZONE_API_TOKEN=${TRAEFIK_CLOUDFLARE_API_KEY}
     restart: always
     ports:
       - "80:80"     # HTTP
       - "443:443"   # HTTPS
       - "1883:1883" # MQTT
-      #- "2022:2022" # SSH
+      - "2022:2022" # SSH
       #- "8080:8080"
       - "8883:8883" # MQTT
       #- "9001:9001"
     volumes:
       - traefik-certs:/certs
-      - traefik-conf-internal:/conf-internal
+      - traefik-conf:/conf
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
       - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
@@ -53,9 +62,9 @@ volumes:
       o: "addr=${DATA_HOST},nolock,soft,rw"
       device: ":/volume1/Docker/traefik/certs"
 
-  traefik-conf-internal:
+  traefik-conf:
     driver: local
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,ro"
-      device: ":/volume1/Docker/traefik/conf-internal"
+      device: ":/volume1/Docker/traefik/${TRAEFIK-CONF-MOUNTPOINT-conf}"

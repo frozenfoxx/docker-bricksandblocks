@@ -1,7 +1,7 @@
 include:
-  - tautulli.yml
-  - plex.yml
-  - vrising.yml
-  - zandronum.yml
-  - node_exporter.yml
-  - vector.yml
+  - path: tautulli.yml
+  - path: plex.yml
+  - path: vrising.yml
+  - path: zandronum.yml
+  - path: node_exporter.yml
+  - path: vector.yml

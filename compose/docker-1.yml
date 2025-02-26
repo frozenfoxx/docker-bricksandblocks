@@ -1,10 +1,10 @@
 include:
-  - traefik.yml
-  - heimdall.yml
-  - mqtt.yml
-  - unpoller.yml
-  - loki.yml
-  - prometheus.yml
-  - node_exporter.yml
-  - grafana.yml
-  - vector.yml
+  - path: traefik/traefik.yml
+  - path: heimdall.yml
+  - path: mqtt.yml
+  - path: unpoller.yml
+  - path: loki.yml
+  - path: prometheus.yml
+  - path: node_exporter.yml
+  - path: grafana.yml
+  - path: vector.yml

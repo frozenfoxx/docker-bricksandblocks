@@ -1,6 +1,6 @@
 include:
-  - jellyfin.yml
-  - kavita.yml
-  - linkwarden.yml
-  - node_exporter.yml
-  - vector.yml
+  - path: jellyfin.yml
+  - path: kavita.yml
+  - path: linkwarden.yml
+  - path: node_exporter.yml
+  - path: vector.yml
