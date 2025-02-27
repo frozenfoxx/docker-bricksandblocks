@@ -16,3 +16,4 @@ services:
       options:
         #loki-url: "https://<user_id>:<password>@loki.${NETWORK_DOMAIN-bricksandblocks.net}/loki/api/v1/push"
         loki-url: "https://loki.${NETWORK_DOMAIN-bricksandblocks.net}/loki/api/v1/push"
+        mode: "non-blocking"
