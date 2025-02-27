@@ -6,10 +6,13 @@ services:
     environment:
       - GF_PLUGINS_PREINSTALL="${GRAFANA_PLUGINS}"
       - GF_SERVER_DOMAIN="grafana.${NETWORK_DOMAIN-bricksandblocks.net}"
-    volumes:
-      - grafana-data:/var/lib/grafana
     ports:
       - "3083:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
 
 volumes:
   grafana-data:

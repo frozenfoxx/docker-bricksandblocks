@@ -5,4 +5,3 @@ include:
   - path: gitea.yml
   - path: metube.yml
   - path: prometheus/node_exporter.yml
-  - path: vector.yml

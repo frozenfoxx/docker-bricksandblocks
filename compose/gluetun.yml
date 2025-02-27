@@ -2,35 +2,35 @@ services:
 #  gluetun_protonvpn-ovpn:
 #    image: qmcgaw/gluetun:latest
 #    container_name: gluetun_protonvpn
+#    restart: unless-stopped
 #    cap_add:
 #      - NET_ADMIN
 #    devices:
 #      - /dev/net/tun:/dev/net/tun
-#    ports:
-#      - 49893:49893 # qbitorrent WebUI
-      #- 6881:6881 # qbittorrent listening port for TCP
-      #- 6881:6881/udp # qbittorrent listening port UDP
 #    environment:
 #      - OPENVPN_USER=${GLUETUN_OVPN_USERNAME} # Add +pmp to the username
 #      - OPENVPN_PASSWORD=${GLUETUN_OVPN_PASSWORD}
 #      - VPN_PORT_FORWARDING=on
 #      - VPN_SERVICE_PROVIDER=protonvpn
 #      - SERVER_COUNTRIES=${GLUETUN_SERVER_COUNTRIES}
+#    ports:
+#      - 49893:49893 # qbitorrent WebUI
+#      - 6881:6881 # qbittorrent listening port for TCP
+#      - 6881:6881/udp # qbittorrent listening port UDP
 #    volumes:
 #      - gluetun-data:/gluetun
-#    restart: unless-stopped
+#    extends:
+#      file: ${ROOT_DIR-..}/lib/logging.yml
+#      service: logging-loki
 
   gluetun_protonvpn-wg:
     image: qmcgaw/gluetun:latest
     container_name: gluetun_protonvpn
+    restart: unless-stopped
     cap_add:
       - NET_ADMIN
     devices:
       - /dev/net/tun:/dev/net/tun
-    ports:
-      - 49893:49893 # qbitorrent WebUI
-      #- 6881:6881 # qbittorrent listening port for TCP
-      #- 6881:6881/udp # qbittorrent listening port UDP
     environment:
       - VPN_PORT_FORWARDING=on
       - VPN_SERVICE_PROVIDER=protonvpn
@@ -38,9 +38,15 @@ services:
       - WIREGUARD_PRIVATE_KEY=${GLUETUN_WIREGUARD_PRIVATE_KEY}
       - WIREGUARD_ADDRESSES=${GLUETUN_WIREGUARD_ADDRESSES}
       - SERVER_COUNTRIES=${GLUETUN_SERVER_COUNTRIES}
+    ports:
+      - 49893:49893 # qbitorrent WebUI
+      #- 6881:6881 # qbittorrent listening port for TCP
+      #- 6881:6881/udp # qbittorrent listening port UDP
     volumes:
       - gluetun-data:/gluetun
-    restart: unless-stopped
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
 
 volumes:
   gluetun-data:

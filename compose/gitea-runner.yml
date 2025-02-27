@@ -1,6 +1,8 @@
 services:
   runner:
     image: gitea/act_runner:latest
+    container_name: gitea-runner
+    restart: unless-stopped
     environment:
       CONFIG_FILE: /data/config.yaml
       GITEA_INSTANCE_URL: "https://gitea.${NETWORK_DOMAIN-bricksandblocks.net}"
@@ -10,6 +12,9 @@ services:
     volumes:
       - gitea-runner-data:/data
       - /var/run/docker.sock:/var/run/docker.sock
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
 
 volumes:
   gitea-runner-data:

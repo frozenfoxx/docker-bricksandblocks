@@ -2,15 +2,11 @@ services:
   mosquitto:
     image: eclipse-mosquitto
     container_name: mosquitto
-    volumes:
-      - mosquitto-config:/mosquitto/config
-      - mosquitto-data:/mosquitto/data
-      - mosquitto-log:/mosquitto/log
+    restart: unless-stopped
     #ports:
     #  - 1883:1883
     #  - 8883:8883
     #  - 9001:9001
-    restart: unless-stopped
     labels:
       - "traefik.enable=true"
 
@@ -36,6 +32,13 @@ services:
       # Load Balancer
       - "traefik.tcp.services.mqtt.loadbalancer.server.port=1883"
       #- "traefik.tcp.services.mqttsecure.loadbalancer.server.port=8883"
+    volumes:
+      - mosquitto-config:/mosquitto/config
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-log:/mosquitto/log
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
 
 volumes:
   mosquitto-config:

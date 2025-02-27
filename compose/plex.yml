@@ -2,19 +2,22 @@ services:
   plex:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
+    restart: unless-stopped
     network_mode: host
     environment:
       - PUID=1000
       - PGID=1000
+      - PLEX_CLAIM=${PLEX_CLAIM} #optional
       - TZ=Etc/UTC
       - VERSION=docker
-      - PLEX_CLAIM=${PLEX_CLAIM} #optional
     volumes:
       #- plex-data:/config
       - plex-music:/data/Music:ro
       - plex-videos:/data/Videos:ro
       - ${LOCAL_PREFIX-/local}/plex/config:/config
-    restart: unless-stopped
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
 
 volumes:
   #plex-data:

@@ -2,15 +2,13 @@ services:
   heimdall:
     image: lscr.io/linuxserver/heimdall:latest
     container_name: heimdall
+    restart: always
     environment:
       PUID: 1000
       PGID: 1000
       TZ: America/Los_Angeles
-    volumes:
-      - heimdall-data:/config
     #ports:
     #  - 443:443
-    restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.heimdall.rule=Host(`heimdall.${NETWORK_DOMAIN-bricksandblocks.net}`)"
@@ -20,8 +18,11 @@ services:
       #- "traefik.http.routers.heimdall.middlewares=internal-allowlist@file"
       - "traefik.http.services.heimdall.loadbalancer.server.port=80"
       - "traefik.http.services.heimdall.loadbalancer.server.scheme=http"
-    logging:
-      << : [*logging-loki]
+    volumes:
+      - heimdall-data:/config
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
 
 volumes:
   heimdall-data:

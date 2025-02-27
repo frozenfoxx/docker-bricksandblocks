@@ -2,11 +2,15 @@ services:
   enigmabbs:
     image: enigmabbs/enigma-bbs:latest
     container_name: enigmabbs
+    restart: always
     ports:
       - "8888:8888"
     volumes:
       - enigmabbs:/enigma-bbs
       #- enigmabbs-mail:/mail
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
 
 volumes:
   enigmabbs:

@@ -2,6 +2,8 @@ services:
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
+    restart: unless-stopped
+    network_mode: "container:gluetun_protonvpn"
     environment:
       - PUID=1000
       - PGID=1000
@@ -14,8 +16,9 @@ services:
     volumes:
       - qbittorrent-data:/config
       - qbittorrent-downloads:/downloads
-    network_mode: "container:gluetun_protonvpn"
-    restart: unless-stopped
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
 
 volumes:
   qbittorrent-data:

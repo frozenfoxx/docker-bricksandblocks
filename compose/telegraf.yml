@@ -20,6 +20,9 @@ services:
       - /:/hostfs:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - telegraf-config:/etc/telegraf/:ro
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
 
 volumes:
   telegraf-config:

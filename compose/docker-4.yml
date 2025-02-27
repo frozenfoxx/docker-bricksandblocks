@@ -9,4 +9,3 @@ include:
     env_file:
       - games/openttd/.env.autosave
   - path: prometheus/node_exporter.yml
-  - path: vector.yml

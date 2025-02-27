@@ -6,4 +6,3 @@ include:
   - path: kavita.yml
   - path: linkwarden.yml
   - path: prometheus/node_exporter.yml
-  - path: vector.yml

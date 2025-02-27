@@ -7,6 +7,9 @@ services:
       - "8231:8081"
     volumes:
       - metube-data:/downloads
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
 
 volumes:
   metube-data:

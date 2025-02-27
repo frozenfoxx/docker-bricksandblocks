@@ -4,11 +4,14 @@ services:
     container_name: loki
     restart: always
     command: -config.file=/etc/loki/loki-config.yaml
+    ports:
+      - "3100:3100"
     volumes:
       - loki-config:/etc/loki
       - loki-data:/data
-    ports:
-      - "3100:3100"
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
 
 volumes:
   loki-config:

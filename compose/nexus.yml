@@ -8,9 +8,6 @@ services:
     ports:
       #- "9081:8081"
       - "${NEXUS_DOCKER_PORT-9081}:${NEXUS_DOCKER_PORT-9081}"
-    volumes:
-      - nexus-data:/nexus-data
-      - nexus-license:/nexus-license
     labels:
       - "traefik.enable=true"
 
@@ -28,6 +25,12 @@ services:
       - "traefik.http.routers.nexus-docker.tls.certresolver=letsencrypt"
       - "traefik.http.routers.nexus-docker.service=docker-registry-service"
       - "traefik.http.services.docker-registry-service.loadbalancer.server.port=${NEXUS_DOCKER_PORT-9081}"
+    volumes:
+      - nexus-data:/nexus-data
+      - nexus-license:/nexus-license
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
 
 volumes:
   nexus-data:

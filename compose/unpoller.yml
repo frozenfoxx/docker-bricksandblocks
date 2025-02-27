@@ -40,4 +40,6 @@ services:
         #loki-url: http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push
     ports:
       - 9130:9130/tcp
-
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki

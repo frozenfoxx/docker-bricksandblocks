@@ -2,6 +2,7 @@ services:
   traefik:
     image: traefik:latest
     container_name: traefik
+    restart: always
     command:
       #- "--api.insecure=true"
 
@@ -35,7 +36,6 @@ services:
       - CF_API_EMAIL=${TRAEFIK_EMAIL}
       - CLOUDFLARE_DNS_API_TOKEN=${TRAEFIK_CLOUDFLARE_API_KEY}
       - CLOUDFLARE_ZONE_API_TOKEN=${TRAEFIK_CLOUDFLARE_API_KEY}
-    restart: always
     ports:
       - "80:80"     # HTTP
       - "443:443"   # HTTPS
@@ -44,15 +44,18 @@ services:
       #- "8080:8080"
       - "8883:8883" # MQTT
       #- "9001:9001"
-    volumes:
-      - traefik-certs:/certs
-      - traefik-conf:/conf
-      - /var/run/docker.sock:/var/run/docker.sock
     labels:
       - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
       - "traefik.http.routers.http-catchall.entrypoints=web"
       - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+    volumes:
+      - traefik-certs:/certs
+      - traefik-conf:/conf
+      - /var/run/docker.sock:/var/run/docker.sock
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
 
 volumes:
   traefik-certs:

@@ -71,7 +71,6 @@ tasks:
     desc: "Configure repository for use"
     cmds:
       - "{{.ROOT_DIR}}/scripts/configure_templates.sh"
-      - "{{.ROOT_DIR}}/scripts/merge_yaml.sh"
 
   update:
     desc: "Update repo"

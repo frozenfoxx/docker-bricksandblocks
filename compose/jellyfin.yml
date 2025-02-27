@@ -2,21 +2,17 @@ services:
   jellyfin:
     image: jellyfin/jellyfin:latest
     container_name: jellyfin
+    restart: always
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/Los_Angeles
       - JELLYFIN_PublishedServerUrl=jellyfin.${NETWORK_DOMAIN-bricksandblocks.net}
-    volumes:
-      - jellyfin-data:/config
-      - jellyfin-music:/data/Music:ro
-      - jellyfin-videos:/data/Videos:ro
     ports:
       - 8096:8096
       - 8920:8920 #optional
       - 7359:7359/udp #optional
       - 1900:1900/udp #optional
-    restart: unless-stopped
     #labels:
       #- "traefik.enable=true"
       #- "traefik.http.routers.jellyfin.rule=Host(`jellyfin.${NETWORK_DOMAIN-bricksandblocks.net}`)"
@@ -25,6 +21,13 @@ services:
       #- "traefik.http.routers.jellyfin.service=jellyfin"
       #- "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
       #- "traefik.http.services.jellyfin.loadbalancer.server.scheme=http"
+    volumes:
+      - jellyfin-data:/config
+      - jellyfin-music:/data/Music:ro
+      - jellyfin-videos:/data/Videos:ro
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
 
 volumes:
   jellyfin-data:

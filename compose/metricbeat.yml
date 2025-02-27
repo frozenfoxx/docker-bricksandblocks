@@ -2,6 +2,7 @@ services:
   metricbeat:
     image: docker.elastic.co/beats/metricbeat:${ELASTIC_VERSION-8.17.0}
     container_name: metricbeat
+    restart: unless-stopped
     command: -e
     environment:
       - ELASTICSEARCH_HOSTS="${ELASTICSEARCH_HOSTS-https://es01:9200}"
@@ -17,7 +18,6 @@ services:
       - "/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro"
       - "/proc:/hostfs/proc:ro"
       - "/:/hostfs:ro"
-    restart: unless-stopped
 
 volumes:
   elasticsearch-certs:
