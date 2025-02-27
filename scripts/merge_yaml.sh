@@ -36,7 +36,14 @@ merge_yaml() {
     shift
     local files=("$@")
 
-    # Start with the first file and merge the rest in sequence
+    # Concatenate YAML files with document separator
+    {
+        for file in "${files[@]}"; do
+            cat "${file}"
+            echo -e "\n---\n"
+        done
+    } | yq eval '.' - > "${output_file}"
+
     cat "${files[@]}" | yq eval '.' - > "${output_file}"
 }
 
