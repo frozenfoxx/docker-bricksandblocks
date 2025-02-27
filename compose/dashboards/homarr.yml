@@ -1,0 +1,30 @@
+services:
+  homarr:
+    image: ghcr.io/homarr-labs/homarr:latest
+    container_name: homarr
+    restart: always
+    environment:
+      SECRET_ENCRYPTION_KEY: "${HOMARR_SECRET_KEY}"
+    #ports:
+    #  - 7575:7575
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homarr.rule=Host(`homarr.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      - "traefik.http.routers.homarr.entrypoints=websecure"
+      - "traefik.http.routers.homarr.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.homarr.service=homarr"
+      - "traefik.http.services.homarr.loadbalancer.server.port=7575"
+      - "traefik.http.services.homarr.loadbalancer.server.scheme=http"
+    volumes:
+      - homarr-data:/appdata
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  homarr-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/homarr/data"

@@ -27,5 +27,5 @@ services:
       - ${DATA_PREFIX}/titanfall2/plugins:/mnt/plugins:ro
       - ${DATA_PREFIX}/titanfall2/save_data:/mnt/save_data:rw
     extends:
-      file: ${ROOT_DIR-../..}/lib/logging.yml
+      file: ${ROOT_DIR-../../..}/lib/logging.yml
       service: logging-loki

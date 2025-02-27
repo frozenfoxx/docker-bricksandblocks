@@ -8,7 +8,7 @@ services:
       - PUID=1000
       - PGID=1000
       - PLEX_CLAIM=${PLEX_CLAIM} #optional
-      - TZ=Etc/UTC
+      - TZ=America/Los_Angeles
       - VERSION=docker
     volumes:
       #- plex-data:/config
@@ -16,7 +16,7 @@ services:
       - plex-videos:/data/Videos:ro
       - ${LOCAL_PREFIX-/local}/plex/config:/config
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
 
 volumes:
@@ -32,11 +32,11 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${MEDIA_HOST},nolock,soft,ro"
-      device: ":/volume1/Music"
+      device: ":/volume1/Media/Music"
 
   plex-videos:
     driver: local
     driver_opts:
       type: nfs
       o: "addr=${MEDIA_HOST},nolock,soft,ro"
-      device: ":/volume1/Videos"
+      device: ":/volume1/Media/Videos"

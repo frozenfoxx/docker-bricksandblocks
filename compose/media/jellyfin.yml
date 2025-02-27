@@ -1,3 +1,4 @@
+---
 services:
   jellyfin:
     image: jellyfin/jellyfin:latest
@@ -26,7 +27,7 @@ services:
       - jellyfin-music:/data/Music:ro
       - jellyfin-videos:/data/Videos:ro
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
 
 volumes:
@@ -42,11 +43,11 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${MEDIA_HOST},nolock,soft,ro"
-      device: ":/volume1/Music"
+      device: ":/volume1/Media/Music"
 
   jellyfin-videos:
     driver: local
     driver_opts:
       type: nfs
       o: "addr=${MEDIA_HOST},nolock,soft,ro"
-      device: ":/volume1/Videos"
+      device: ":/volume1/Media/Videos"

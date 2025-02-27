@@ -1,0 +1,32 @@
+services:
+  organizr:
+    image: organizr/organizr:latest
+    container_name: organizr
+    restart: always
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: America/Los_Angeles
+    #ports:
+    #  - 80:80
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.organizr.rule=Host(`organizr.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      - "traefik.http.routers.organizr.entrypoints=websecure"
+      - "traefik.http.routers.organizr.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.organizr.service=organizr"
+      - "traefik.http.services.organizr.loadbalancer.server.port=80"
+      - "traefik.http.services.organizr.loadbalancer.server.scheme=http"
+    volumes:
+      - organizr-config:/config
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  organizr-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/config"

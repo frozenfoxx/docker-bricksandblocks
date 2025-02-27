@@ -8,7 +8,7 @@ services:
       PGID: 1000
       TZ: America/Los_Angeles
     #ports:
-    #  - 443:443
+    #  - 80:80
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.heimdall.rule=Host(`heimdall.${NETWORK_DOMAIN-bricksandblocks.net}`)"
@@ -21,7 +21,7 @@ services:
     volumes:
       - heimdall-data:/config
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
 
 volumes:

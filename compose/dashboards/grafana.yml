@@ -11,7 +11,7 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
 
 volumes:
