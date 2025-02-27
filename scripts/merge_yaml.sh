@@ -37,7 +37,7 @@ merge_yaml() {
     local files=("$@")
 
     # Start with the first file and merge the rest in sequence
-    yq eval-all 'select(fileIndex == 0) * select(fileIndex > 0)' "${files[@]}" > "${output_file}"
+    cat "${files[@]}" | yq eval '.' - > "${output_file}"
 }
 
 # Merge library files into each compose file
