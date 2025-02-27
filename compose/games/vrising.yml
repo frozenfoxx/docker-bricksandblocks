@@ -2,16 +2,19 @@ services:
   vrising:
     image: trueosiris/vrising
     container_name: vrising
-    ports:
-      - '9876:9876/udp'
-      - '9877:9877/udp'
+    restart: unless-stopped
     environment:
       - TZ=America/Los_Angeles
       - SERVERNAME=${VRISING_SERVERNAME-Cult of Foxx - PVE}
-    restart: unless-stopped
+    ports:
+      - '9876:9876/udp'
+      - '9877:9877/udp'
     volumes:
       - vrising-persistent-data:/mnt/vrising/persistentdata
       - vrising-server-data:/mnt/vrising/server
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
     network_mode: bridge
 
 volumes:

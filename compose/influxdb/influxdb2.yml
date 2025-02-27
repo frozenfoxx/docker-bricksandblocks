@@ -3,11 +3,14 @@ services:
     image: influxdb:2-alpine
     container_name: influxdb2
     restart: always
+    ports:
+      - 8086:8086
     volumes:
       - influxdb2-config:/etc/influxdb2
       - influxdb2-data:/var/lib/influxdb2
-    ports:
-      - 8086:8086
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
 
   chronograf:
     image: chronograf:alpine
@@ -17,6 +20,9 @@ services:
       - '8888:8888'
     volumes:
       - chronograf-data:/var/lib/chronograf
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
     depends_on:
       - influxdb2
 

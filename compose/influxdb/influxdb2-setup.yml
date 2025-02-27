@@ -13,11 +13,14 @@ services:
       - influxdb2-admin-username
       - influxdb2-admin-password
       #- influxdb2-admin-token
+    ports:
+      - 8086:8086
     volumes:
       - influxdb2-config:/etc/influxdb2
       - influxdb2-data:/var/lib/influxdb2
-    ports:
-      - 8086:8086
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
 
 secrets:
   influxdb2-admin-username:

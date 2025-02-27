@@ -7,9 +7,12 @@ services:
       - '--path.rootfs=/host'
     cap_add:
       - SYS_TIME
-    network_mode: host
     pid: host
-    volumes:
-      - '/:/host:ro,rslave'
+    network_mode: host
     ports:
       - "9100:9100"
+    volumes:
+      - '/:/host:ro,rslave'
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki

@@ -11,11 +11,14 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
       #- '--storage.tsdb.path=/data' #FIXME: disabled due to NFS being unsupported
       - '--storage.tsdb.retention.time=7d'
+    ports:
+      - "9090:9090"
     volumes:
       - prometheus-config:/etc/prometheus
       #- prometheus-data:/data       #FIXME: disabled due to NFS being unsupported
-    ports:
-      - "9090:9090"
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
     networks:
       - prometheus
 
@@ -26,12 +29,15 @@ services:
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
       - '--web.external-url=http://prometheus.${NETWORK_DOMAIN-bricksandblocks.net}:9093'
-    volumes:
-      - alertmanager-config:/etc/alertmanager
-    networks:
-      - prometheus
     ports:
       - "9093:9093"
+    volumes:
+      - alertmanager-config:/etc/alertmanager
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
+    networks:
+      - prometheus
 
 volumes:
   alertmanager-config:

@@ -3,6 +3,7 @@ services:
     image: ghcr.io/pg9182/northstar-dedicated:1-tf2.0.11.0
     container_name: northstar-attrition
     pull_policy: always
+    restart: always
     environment:
       NS_PORT: 37015
       NS_SERVER_NAME: "Cult of Foxx - Attrition"
@@ -17,12 +18,14 @@ services:
         +net_compresspackets 1
         +spewlog_enable 0
         +sv_maxrate 127000
+    ports:
+      - "${NORTHSTAR_PORT}:37015/udp"
     volumes:
       - ${DATA_PREFIX}/titanfall2/game_data:/mnt/titanfall:ro
       - ${DATA_PREFIX}/titanfall2/mods:/mnt/mods:ro
       - ${DATA_PREFIX}/titanfall2/navs:/mnt/navs:ro
       - ${DATA_PREFIX}/titanfall2/plugins:/mnt/plugins:ro
       - ${DATA_PREFIX}/titanfall2/save_data:/mnt/save_data:rw
-    ports:
-      - "${NORTHSTAR_PORT}:37015/udp"
-    restart: always
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
