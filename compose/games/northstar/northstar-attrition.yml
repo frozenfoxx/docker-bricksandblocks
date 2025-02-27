@@ -21,11 +21,47 @@ services:
     ports:
       - "${NORTHSTAR_PORT}:37015/udp"
     volumes:
-      - ${DATA_PREFIX}/titanfall2/game_data:/mnt/titanfall:ro
-      - ${DATA_PREFIX}/titanfall2/mods:/mnt/mods:ro
-      - ${DATA_PREFIX}/titanfall2/navs:/mnt/navs:ro
-      - ${DATA_PREFIX}/titanfall2/plugins:/mnt/plugins:ro
-      - ${DATA_PREFIX}/titanfall2/save_data:/mnt/save_data:rw
+      - northstar-game_data:/mnt/titanfall:ro
+      - northstar-mods:/mnt/mods:ro
+      - northstar-navs:/mnt/navs:ro
+      - northstar-plugins:/mnt/plugins:ro
+      - northstar-save_data:/mnt/save_data:rw
     extends:
       file: ${ROOT_DIR-../../..}/lib/logging.yml
       service: logging-loki
+
+volumes:
+  northstar-game_data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,ro"
+      device: ":/volume1/Docker/titanfall2/game_data"
+
+  northstar-mods:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,ro"
+      device: ":/volume1/Docker/titanfall2/mods"
+
+  northstar-navs:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,ro"
+      device: ":/volume1/Docker/titanfall2/navs"
+
+  northstar-plugins:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,ro"
+      device: ":/volume1/Docker/titanfall2/plugins"
+
+  northstar-save_data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/titanfall2/save_data"
