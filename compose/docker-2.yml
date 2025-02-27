@@ -1,6 +1,6 @@
 include:
   - path: traefik/traefik-internal.yml
-  - path: jellyfin.yml
-  - path: kavita.yml
+  - path: media/jellyfin.yml
+  - path: media/kavita.yml
   - path: linkwarden.yml
   - path: prometheus/node_exporter.yml

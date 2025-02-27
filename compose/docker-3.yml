@@ -1,7 +1,7 @@
 include:
   - path: gluetun.yml
-  - path: qbittorrent.yml
+  - path: media/qbittorrent.yml
   - path: mealie.yml
   - path: gitea.yml
-  - path: metube.yml
+  - path: media/metube.yml
   - path: prometheus/node_exporter.yml

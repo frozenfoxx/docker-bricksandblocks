@@ -1,9 +1,9 @@
 include:
   - path: traefik/traefik.yml
-  - path: heimdall.yml
+  - path: dashboards/heimdall.yml
   - path: mqtt.yml
   - path: unpoller.yml
   - path: loki.yml
   - path: prometheus/prometheus.yml
   - path: prometheus/node_exporter.yml
-  - path: grafana.yml
+  - path: dashboards/grafana.yml

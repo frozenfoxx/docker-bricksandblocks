@@ -1,7 +1,9 @@
 include:
-  - path: tautulli.yml
-  - path: plex.yml
-  - path: games/vrising.yml
+  - path: media/tautulli.yml
+  - path: media/plex.yml
+  - path: games/vrising/vrising.yml
+    env_file:
+      - games/vrising/.env.pve
   - path: games/zandronum/zandronum.yml
     env_file:
       - games/zandronum/.env.brutal-valiant
