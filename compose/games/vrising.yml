@@ -13,7 +13,7 @@ services:
       - vrising-persistent-data:/mnt/vrising/persistentdata
       - vrising-server-data:/mnt/vrising/server
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
     network_mode: bridge
 

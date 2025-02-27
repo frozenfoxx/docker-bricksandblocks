@@ -3,13 +3,16 @@ services:
     image: ghcr.io/ropenttd/openttd:latest
     container_name: openttd
     restart: unless-stopped
+    environment:
+      - loadgame=${OPENTTD_LOADGAME-exit}
     ports:
       - 3979:3979/tcp
       - 3979:3979/udp
     volumes:
       - openttd-config:/config
-    environment:
-      - loadgame=${OPENTTD_LOADGAME-exit}
+    extends:
+      file: ${ROOT_DIR-../../..}/lib/logging.yml
+      service: logging-loki
 
 volumes:
   openttd-config:

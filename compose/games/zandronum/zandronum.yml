@@ -10,13 +10,16 @@ services:
     hostname: "zandronum"
     domainname: "${NETWORK_DOMAIN-bricksandblocks.net}"
     restart: unless-stopped
-    volumes:
-      - zandronum-wads:/wads:ro
-      - zandronum-configs:/configs:ro
     command: >
       +sv_hostname "${ZANDRONUM_HOSTNAME-Cult of Foxx}"
       -port ${ZANDRONUM_PORT-10666}
       ${ZANDRONUM_COMMAND}
+    volumes:
+      - zandronum-wads:/wads:ro
+      - zandronum-configs:/configs:ro
+    extends:
+      file: ${ROOT_DIR-../../..}/lib/logging.yml
+      service: logging-loki
 
 volumes:
   zandronum-configs:

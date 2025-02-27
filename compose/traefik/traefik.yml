@@ -54,7 +54,7 @@ services:
       - traefik-conf:/conf
       - /var/run/docker.sock:/var/run/docker.sock
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
 
 volumes:

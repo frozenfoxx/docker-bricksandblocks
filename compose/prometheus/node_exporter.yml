@@ -14,5 +14,5 @@ services:
     volumes:
       - '/:/host:ro,rslave'
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki

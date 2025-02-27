@@ -9,7 +9,7 @@ services:
       - influxdb2-config:/etc/influxdb2
       - influxdb2-data:/var/lib/influxdb2
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
 
   chronograf:
@@ -21,7 +21,7 @@ services:
     volumes:
       - chronograf-data:/var/lib/chronograf
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
     depends_on:
       - influxdb2
