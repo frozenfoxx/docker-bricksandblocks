@@ -3,7 +3,8 @@
 # Variables
 ROOT_DIR=${ROOT_DIR:-'.'}
 COMPOSE_DIR="${ROOT_DIR}/compose"
-LIB_DIR="${ROOT_DIR}/lib"
+LIB_FILES=$(find "${ROOT_DIR}/lib" -type f -name '*.yml')
+TEMP_COMPOSE_FILE=$(mktemp)
 
 # Functions
 
@@ -29,21 +30,37 @@ unset_vars()
     unset ROOT_DIR
 }
 
-## Merge YAML files
-merge_yaml()
-{
+# Merge YAML files
+merge_yaml() {
+    local output_file="$1"
+    shift
+    local files=("$@")
+
+    # Start with the first file and merge the rest in sequence
+    yq eval-all 'select(fileIndex == 0) * select(fileIndex > 0)' "${files[@]}" > "${output_file}"
+}
+
+# Merge library files into each compose file
+merge()
+{    
     # Merge library YAML files into each compose YAML file
-    for YAML_FILE in $(find "${COMPOSE_DIR}" -type f -name '*.yml'); do
-        # Use yq to merge library YAML files with the given YAML file
-        yq -i '.' "${YAML_FILE}" "$(ls ${LIB_DIR}/*.yml)"
+    for COMPOSE_FILE in $(find "${COMPOSE_DIR}" -type f -name '*.yml'); do
+
+        # Collect all files to merge, starting with lib files first
+        MERGE_FILES=("${LIB_FILES}" "${COMPOSE_FILE}")
+        
+        # Merge into the temporary compose file
+        merge_yaml "${TEMP_COMPOSE_FILE}" "${MERGE_FILES[@]}"
+
+        # Overwrite the original compose file
+        mv "${TEMP_COMPOSE_FILE}" "${COMPOSE_FILE}"
     done
 
     echo "Library files merged into compose files"
 }
 
 # Logic
-
 check_requirements
 export_vars
-merge_yaml
+merge
 unset_vars
