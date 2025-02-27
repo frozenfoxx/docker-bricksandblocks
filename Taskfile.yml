@@ -93,3 +93,17 @@ tasks:
       - task: docker:compose:upgrade
         vars:
           CLI_ARGS: "compose/{{.HOSTNAME}}.yml"
+
+  validate:
+    desc: "Validate a Docker Compose configuration"
+    cmds:
+      - task: docker:compose:validate
+        vars:
+          CLI_ARGS: "{{.CLI_ARGS}}"
+
+  validate:host:
+    desc: "Validate a host container configuration"
+    cmds:
+      - task: docker:compose:validate
+        vars:
+          CLI_ARGS: "compose/{{.HOSTNAME}}.yml"
