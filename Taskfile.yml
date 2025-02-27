@@ -70,7 +70,6 @@ tasks:
   setup:
     desc: "Configure repository for use"
     cmds:
-      - find ./compose -type f -name '*.yml.read' | xargs rm
       - "{{.ROOT_DIR}}/scripts/configure_templates.sh"
       - "{{.ROOT_DIR}}/scripts/merge_yaml.sh"
 
@@ -78,7 +77,7 @@ tasks:
     desc: "Update repo"
     cmds:
       - rm -rf .taskfiles
-      - find ./compose -type f -name '*.yml.read' | xargs rm
+      - git restore .
       - git clone https://github.com/frozenfoxx/taskfiles.git .taskfiles
       - git pull --rebase
 
