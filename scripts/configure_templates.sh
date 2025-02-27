@@ -29,7 +29,7 @@ deploy_templates()
         # Define the output file name by removing the .tmpl extension
         YAML_FILE="${TMPL_FILE%.tmpl}"
     
-        # Use envsubst to replace variables in the .tmpl file and create the .yaml file
+        # Use envsubst to replace variables in the .tmpl file and create the YAML file
         envsubst < "${TMPL_FILE}" > "${YAML_FILE}"
     
         echo "Created ${YAML_FILE}"
