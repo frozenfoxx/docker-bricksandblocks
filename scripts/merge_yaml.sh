@@ -33,19 +33,12 @@ unset_vars()
 merge_yaml()
 {
     ## Find all YAML files recursively
-    find "${COMPOSE_DIR}" -type f -name '*.yml' | while read -r YAML_ORIG_FILE; do
-    
-        # Set the name of the merged file to the input file
-        YAML_MERGED_FILE="${YAML_ORIG_FILE}"
-
-        # Rename the input file to show it's been read
-        mv "${YAML_ORIG_FILE}" "${YAML_ORIG_FILE}.read"
-
+    find "${COMPOSE_DIR}" -type f -name '*.yml' | while read -r YAML_FILE; do
         # Use yq to merge library YAML files with the given YAML file
-        yq eval-all '. as $item ireduce ({}; . * $item )' "${YAML_ORIG_FILE}.read" "${LIB_DIR}/*.yml" > "${YAML_OUTPUT_FILE}"
-    
-        echo "Created ${YAML_OUTPUT_FILE}"
+        yq e -i '. += input' "${YAML_FILE}" "${LIB_DIR}/*.yml"
     done
+
+    echo "Library files merged into compose files"
 }
 
 # Logic
