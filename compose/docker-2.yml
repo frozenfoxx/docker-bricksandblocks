@@ -1,7 +1,5 @@
 include:
-  - path: traefik/traefik.yml
-    env_file:
-      traefik/.env.internal
+  - path: traefik/traefik-internal.yml
   - path: jellyfin.yml
   - path: kavita.yml
   - path: linkwarden.yml

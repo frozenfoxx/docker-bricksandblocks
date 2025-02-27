@@ -1,7 +1,7 @@
 services:
-  traefik:
+  traefik-internal:
     image: traefik:latest
-    container_name: traefik
+    container_name: traefik-internal
     restart: always
     command:
       #- "--api.insecure=true"
@@ -70,4 +70,4 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,ro"
-      device: ":/volume1/Docker/traefik/${TRAEFIK_CONF_MOUNTPOINT-conf}"
+      device: ":/volume1/Docker/traefik/conf-internal"
