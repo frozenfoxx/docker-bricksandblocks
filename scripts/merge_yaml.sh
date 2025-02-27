@@ -2,21 +2,11 @@
 
 # Variables
 ROOT_DIR=${ROOT_DIR:-'.'}
-COMPOSE_DIR="${ROOT_DIR}/compose"
+COMPOSE_FILES=$(find "${ROOT_DIR}/compose" -type f -name '*.yml')
 LIB_FILES=$(find "${ROOT_DIR}/lib" -type f -name '*.yml')
 TEMP_COMPOSE_FILE=$(mktemp)
 
 # Functions
-
-## Check for required tools
-check_requirements()
-{
-    # Check if requirements were supplied
-    if ! command -v yq ; then
-        echo "yq not found!"
-        exit 1
-    fi
-}
 
 ## Export variables to replace in the templates
 export_vars()
@@ -36,22 +26,22 @@ merge_yaml() {
     shift
     local files=("$@")
 
-    # Concatenate YAML files with document separator
-    {
-        for file in "${files[@]}"; do
-            cat "${file}"
-            echo -e "\n---\n"
-        done
-    } | yq eval '.' - > "${output_file}"
+    # Clear the output file
+    > "${output_file}"
 
-    cat "${files[@]}" | yq eval '.' - > "${output_file}"
+    # Concatenate files into output_file with document separators
+    for file in "${files[@]}"; do
+        echo -e "---\n" >> "${output_file}"
+        cat "${file}" >> "${output_file}"
+        echo -e "\n" >> "${output_file}"
+    done
 }
 
 # Merge library files into each compose file
 merge()
 {    
     # Merge library YAML files into each compose YAML file
-    for COMPOSE_FILE in $(find "${COMPOSE_DIR}" -type f -name '*.yml'); do
+    for COMPOSE_FILE in ${COMPOSE_FILES}; do
 
         # Collect all files to merge, starting with lib files first
         MERGE_FILES=("${LIB_FILES}" "${COMPOSE_FILE}")
