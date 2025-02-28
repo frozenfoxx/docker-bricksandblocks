@@ -15,7 +15,7 @@ services:
       - WEBUI_PORT=${QBITTORRENT_WEBUI-49893}
     volumes:
       - qbittorrent-config:/config
-      - qbittorrent-data:/data
+      - qbittorrent-data:/data/downloads
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
@@ -33,4 +33,4 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${MEDIA_HOST},nolock,soft,rw"
-      device: ":/volume1/Media"
+      device: ":/volume1/Media/downloads"

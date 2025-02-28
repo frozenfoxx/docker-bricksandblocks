@@ -1,6 +1,7 @@
 include:
   - path: gluetun.yml
   - path: media/qbittorrent.yml
+  - path: media/prowlarr.yml
   - path: media/radarr.yml
   - path: mealie.yml
   - path: gitea.yml
