@@ -17,6 +17,23 @@ services:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
 
+  radarr-4k:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr-4k
+    restart: unless-stopped
+    environment:
+      - PUID=1028 # 'staff' user
+      - PGID=50 # 'staff' group
+      - TZ=America/Los_Angeles
+    volumes:
+      - radarr-4k-config:/config
+      - radarr-data:/data
+    ports:
+      - 7879:7878
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
 volumes:
   radarr-config:
     driver: local
@@ -24,6 +41,13 @@ volumes:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
       device: ":/volume1/Docker/radarr/config"
+
+  radarr-4k-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/radarr-4k/config"
 
   radarr-data:
     driver: local
