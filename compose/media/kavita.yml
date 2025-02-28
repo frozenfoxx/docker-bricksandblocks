@@ -5,7 +5,7 @@ services:
     container_name: kavita
     restart: always
     environment:
-      - PUID=1000
+      - PUID=1028 # 'staff' user
       - PGID=50 # 'staff' group
       - TZ=America/Los_Angeles
     ports:

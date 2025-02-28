@@ -1,31 +1,30 @@
 ---
 services:
-  radarr:
-    image: lscr.io/linuxserver/radarr:latest
-    container_name: radarr
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
     restart: unless-stopped
     environment:
       - PUID=1028 # 'staff' user
       - PGID=50 # 'staff' group
       - TZ=America/Los_Angeles
+      - AUTO_UPDATE=true #optional
+      - RUN_OPTS= #optional
     volumes:
-      - radarr-config:/config
-      - radarr-data:/data
+      - jacket-config:/config
+      - /path/to/blackhole:/downloads
     ports:
-      - 7878:7878
-    extends:
-      file: ${ROOT_DIR-../..}/lib/logging.yml
-      service: logging-loki
+      - 9117:9117
 
 volumes:
-  radarr-config:
+  jackett-config:
     driver: local
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/radarr/config"
-
-  radarr-data:
+      device: ":/volume1/Docker/jackett/config"
+  
+  jackett-data:
     driver: local
     driver_opts:
       type: nfs

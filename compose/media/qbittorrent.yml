@@ -5,8 +5,8 @@ services:
     restart: unless-stopped
     network_mode: "container:gluetun_protonvpn"
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=1028 # 'staff' user
+      - PGID=50 # 'staff' group
       - DOCKER_MODS=ghcr.io/t-anc/gsp-qbittorent-gluetun-sync-port-mod:main
       - GSP_GTN_API_KEY=${GSP_GTN_API_KEY}
       - GSP_MINIMAL_LOGS=false
