@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     environment:
       - PUID=1000
-      - PGID=1000
+      - PGID=50 # 'staff' group
       - TZ=America/Los_Angeles
     ports:
       - 8181:8181

@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       - PUID=1000
-      - PGID=1000
+      - PGID=50 # 'staff' group
       - TZ=America/Los_Angeles
       - JELLYFIN_PublishedServerUrl=jellyfin.${NETWORK_DOMAIN-bricksandblocks.net}
     ports:

@@ -6,7 +6,7 @@ services:
     network_mode: host
     environment:
       - PUID=1000
-      - PGID=1000
+      - PGID=50 # 'staff' group
       - PLEX_CLAIM=${PLEX_CLAIM} #optional
       - TZ=America/Los_Angeles
       - VERSION=docker
