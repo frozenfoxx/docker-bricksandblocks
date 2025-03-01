@@ -3,6 +3,7 @@ include:
   - path: media/qbittorrent.yml
   - path: media/prowlarr.yml
   - path: media/radarr.yml
+  - path: media/sonarr.yml
   - path: mealie.yml
   - path: gitea.yml
   - path: media/metube.yml
