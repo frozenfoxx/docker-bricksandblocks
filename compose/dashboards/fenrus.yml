@@ -1,0 +1,31 @@
+services:
+  fenrus:
+    image: revenz/fenrus
+    container_name: fenrus
+    restart: always
+    environment:
+      TZ: America/Los_Angeles
+    #ports:
+    #  - 3000:3000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.fenrus.rule=Host(`fenrus.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      - "traefik.http.routers.fenrus.entrypoints=websecure"
+      - "traefik.http.routers.fenrus.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.fenrus.service=fenrus"
+      #- "traefik.http.routers.fenrus.middlewares=internal-allowlist@file"
+      - "traefik.http.services.fenrus.loadbalancer.server.port=3000"
+      - "traefik.http.services.fenrus.loadbalancer.server.scheme=http"
+    volumes:
+      - fenrus-data:/config
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  fenrus-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/fenrus/data"

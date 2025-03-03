@@ -1,6 +1,7 @@
 include:
   - path: traefik/traefik.yml
   - path: dashboards/heimdall.yml
+  - path: dashboards/fenrus.yml
   - path: mqtt.yml
   - path: unpoller.yml
   - path: loki.yml
