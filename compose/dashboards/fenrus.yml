@@ -16,15 +16,15 @@ services:
       #- "traefik.http.services.fenrus.loadbalancer.server.port=3000"
       #- "traefik.http.services.fenrus.loadbalancer.server.scheme=http"
     volumes:
-      - fenrus-data:/config
+      - fenrus-config:/config
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
 
 volumes:
-  fenrus-data:
+  fenrus-config:
     driver: local
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/fenrus/data"
+      device: ":/volume1/Docker/fenrus/config"

@@ -18,15 +18,15 @@ services:
       #- "traefik.http.services.heimdall.loadbalancer.server.port=80"
       #- "traefik.http.services.heimdall.loadbalancer.server.scheme=http"
     volumes:
-      - heimdall-data:/config
+      - heimdall-config:/config
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
 
 volumes:
-  heimdall-data:
+  heimdall-config:
     driver: local
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/heimdall"
+      device: ":/volume1/Docker/heimdall/config"
