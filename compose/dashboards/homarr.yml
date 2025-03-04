@@ -5,16 +5,16 @@ services:
     restart: always
     environment:
       SECRET_ENCRYPTION_KEY: "${HOMARR_SECRET_KEY}"
-    #ports:
-    #  - 7575:7575
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.homarr.rule=Host(`homarr.${NETWORK_DOMAIN-bricksandblocks.net}`)"
-      - "traefik.http.routers.homarr.entrypoints=websecure"
-      - "traefik.http.routers.homarr.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.homarr.service=homarr"
-      - "traefik.http.services.homarr.loadbalancer.server.port=7575"
-      - "traefik.http.services.homarr.loadbalancer.server.scheme=http"
+    ports:
+      - 3042:7575
+    #labels:
+      #- "traefik.enable=true"
+      #- "traefik.http.routers.homarr.rule=Host(`homarr.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      #- "traefik.http.routers.homarr.entrypoints=websecure"
+      #- "traefik.http.routers.homarr.tls.certresolver=letsencrypt"
+      #- "traefik.http.routers.homarr.service=homarr"
+      #- "traefik.http.services.homarr.loadbalancer.server.port=7575"
+      #- "traefik.http.services.homarr.loadbalancer.server.scheme=http"
     volumes:
       - homarr-data:/appdata
     extends:
