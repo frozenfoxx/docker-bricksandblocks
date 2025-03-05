@@ -23,7 +23,7 @@ services:
       service: logging-loki
 
 volumes:
-  fenrus-config:
+  fenrus-data:
     driver: local
     driver_opts:
       type: nfs
