@@ -1,0 +1,25 @@
+---
+services:
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    restart: unless-stopped
+    environment:
+      #- PORT=5055
+      - LOG_LEVEL=${JELLYSEERR_LOG_LEVEL-info} # Options: info, debug
+      - TZ=America/Los_Angeles
+    volumes:
+      - jellyseerr-config:/app/config
+    ports:
+      - 5056:5055
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  jellyseerr-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/jellyseerr/config"
