@@ -6,5 +6,4 @@ include:
   - path: dashboards/fenrus.yml
   - path: dashboards/homarr.yml
   - path: dashboards/homepage.yml
-  - path: dashboards/organizr.yml
   - path: prometheus/node_exporter.yml
