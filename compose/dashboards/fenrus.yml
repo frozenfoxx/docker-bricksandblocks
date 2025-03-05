@@ -4,6 +4,7 @@ services:
     container_name: fenrus
     restart: always
     environment:
+      #PORT: 3041
       TZ: America/Los_Angeles
     ports:
       - 3041:3000
@@ -16,7 +17,7 @@ services:
       #- "traefik.http.services.fenrus.loadbalancer.server.port=3000"
       #- "traefik.http.services.fenrus.loadbalancer.server.scheme=http"
     volumes:
-      - fenrus-config:/config
+      - fenrus-data:/app/data
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
@@ -27,4 +28,4 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/fenrus/config"
+      device: ":/volume1/Docker/fenrus/data"
