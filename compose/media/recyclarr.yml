@@ -1,0 +1,28 @@
+---
+networks:
+  recyclarr:
+    name: recyclarr
+    external: true
+
+services:
+  recyclarr:
+    image: ghcr.io/recyclarr/recyclarr
+    container_name: recyclarr
+    restart: unless-stopped
+    user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
+    networks: [recyclarr]
+    environment:
+      - TZ=America/Los_Angeles
+    volumes:
+      - recyclarr-config:/config
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  recyclarr-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/recyclarr/config"
