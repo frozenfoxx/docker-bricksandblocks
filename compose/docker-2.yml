@@ -5,5 +5,4 @@ include:
   - path: dashboards/heimdall.yml
   - path: dashboards/fenrus.yml
   - path: dashboards/homarr.yml
-  - path: dashboards/homepage.yml
   - path: prometheus/node_exporter.yml
