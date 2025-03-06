@@ -1,8 +1,8 @@
 ---
-networks:
-  recyclarr:
-    name: recyclarr
-    external: true
+#networks:
+#  recyclarr:
+#    name: recyclarr
+#    external: true
 
 services:
   recyclarr:
@@ -10,7 +10,7 @@ services:
     container_name: recyclarr
     restart: unless-stopped
     user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
-    networks: [recyclarr]
+#    networks: [recyclarr]
     security_opt: ['no-new-privileges:true']
     environment:
       - RECYCLARR_CREATE_CONFIG=${RECYCLARR_CREATE_CONFIG-false}
