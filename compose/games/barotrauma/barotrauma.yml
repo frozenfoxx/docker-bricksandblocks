@@ -1,0 +1,31 @@
+---
+services:
+  barotrauma:
+    image: "yanwk/barotrauma-server:slim"
+    container_name: barotrauma
+    environment:
+      - BAROTRAUMA_SERVER_ROOT="/home/runner/Steam/steamapps/common/Barotrauma Dedicated Server"
+    ports:
+      - "27015:27015/udp"
+      - "27016:27016/udp"
+    volumes:
+      - "barotrauma-persistent-data:${BAROTRAUMA_SERVER_ROOT}"
+      - "barotrauma-multiplayer-data:${BAROTRAUMA_SERVER_ROOT}/Daedalic Entertainment GmbH/Barotrauma/Multiplayer"
+    extends:
+      file: ${ROOT_DIR-../../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  barotrauma-persistent-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/barotrauma/persistentdata"
+
+  barotrauma-multiplayer-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/barotrauma/multiplayerdata"

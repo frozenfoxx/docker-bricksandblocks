@@ -4,6 +4,7 @@ include:
   #- path: games/vrising/vrising.yml
     #env_file:
       #- games/vrising/.env.pve
+  #- path: games/barotrauma/barotrauma.yml
   - path: games/zandronum/zandronum.yml
     env_file:
       - games/zandronum/.env.brutal-valiant
