@@ -4,8 +4,9 @@ include:
   - path: mqtt.yml
   - path: unpoller.yml
   - path: loki.yml
+  - path: dashboards/grafana.yml
   - path: prometheus/prometheus.yml
   - path: prometheus/node_exporter.yml
-  - path: dashboards/grafana.yml
+  - path: media/notifiarr.yml
   - path: mealie.yml
   - path: gitea.yml
