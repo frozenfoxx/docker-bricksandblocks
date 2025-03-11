@@ -6,6 +6,6 @@ include:
   - path: media/sonarr.yml
   - path: media/overseerr.yml
   - path: media/jellyseerr.yml
-  - path: media/recyclarr.yml
+  - path: media/notifiarr.yml
   - path: media/metube.yml
   - path: prometheus/node_exporter.yml
