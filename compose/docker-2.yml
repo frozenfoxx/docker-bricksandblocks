@@ -2,6 +2,5 @@ include:
   - path: traefik/traefik-internal.yml
   - path: media/jellyfin.yml
   - path: media/kavita.yml
-  - path: dashboards/heimdall.yml
   - path: dashboards/fenrus.yml
   - path: prometheus/node_exporter.yml
