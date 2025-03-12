@@ -4,5 +4,4 @@ include:
   - path: media/kavita.yml
   - path: dashboards/heimdall.yml
   - path: dashboards/fenrus.yml
-  - path: dashboards/homarr.yml
   - path: prometheus/node_exporter.yml
