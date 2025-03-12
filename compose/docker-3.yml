@@ -5,6 +5,5 @@ include:
   - path: media/radarr.yml
   - path: media/sonarr.yml
   - path: media/overseerr.yml
-  - path: media/jellyseerr.yml
   - path: media/metube.yml
   - path: prometheus/node_exporter.yml
