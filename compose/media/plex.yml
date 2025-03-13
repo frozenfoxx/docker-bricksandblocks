@@ -10,6 +10,8 @@ services:
       - PLEX_CLAIM=${PLEX_CLAIM} #optional
       - TZ=America/Los_Angeles
       - VERSION=docker
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     volumes:
       #- plex-data:/config
       - plex-music:/data/Music:ro
