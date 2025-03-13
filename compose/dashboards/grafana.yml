@@ -6,6 +6,8 @@ services:
     environment:
       - GF_PLUGINS_PREINSTALL="${GRAFANA_PLUGINS}"
       - GF_SERVER_DOMAIN="grafana.${NETWORK_DOMAIN-bricksandblocks.net}"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     ports:
       - "3083:3000"
     volumes:

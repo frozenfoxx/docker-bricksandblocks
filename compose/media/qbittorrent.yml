@@ -3,7 +3,7 @@ services:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
     restart: unless-stopped
-    network_mode: "container:gluetun_protonvpn"
+    network_mode: "container:gluetun_protonvpn" # Use the gluetun_protonvpn container's network
     environment:
       - PUID=1028 # 'staff' user
       - PGID=50 # 'staff' group
@@ -13,6 +13,8 @@ services:
       #- TORRENTING_PORT="${QBITTORRENT_TOR_PORT}"
       - TZ=America/Los_Angeles
       - WEBUI_PORT=${QBITTORRENT_WEBUI-49893}
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     volumes:
       - qbittorrent-config:/config
       - qbittorrent-data:/data/downloads

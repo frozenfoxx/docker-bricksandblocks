@@ -9,7 +9,8 @@ services:
       TZ: America/Los_Angeles
     ports:
       - 3040:80
-    #labels:
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
       #- "traefik.enable=true"
       #- "traefik.http.routers.heimdall.rule=Host(`heimdall.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       #- "traefik.http.routers.heimdall.entrypoints=websecure"

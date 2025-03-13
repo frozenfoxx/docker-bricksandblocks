@@ -14,7 +14,8 @@ services:
       - 8920:8920 #optional
       - 7359:7359/udp #optional
       - 1900:1900/udp #optional
-    #labels:
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
       #- "traefik.enable=true"
       #- "traefik.http.routers.jellyfin.rule=Host(`jellyfin.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       #- "traefik.http.routers.jellyfin.entrypoints=websecure"

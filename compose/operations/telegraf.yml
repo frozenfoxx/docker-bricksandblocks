@@ -16,6 +16,8 @@ services:
       HOST_MOUNT_PREFIX: /hostfs
       INFLUXDB_ORG: "${INFLUXDB_ORG}"
       INFLUXDB_URL: "${INFLUXDB_URL}"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     volumes:
       - /:/hostfs:ro
       - /var/run/docker.sock:/var/run/docker.sock

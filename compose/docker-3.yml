@@ -1,5 +1,6 @@
 include:
-  - path: gluetun.yml
+  - path: operations/watchtower.yml
+  - path: operations/gluetun.yml
   - path: media/qbittorrent.yml
   - path: media/prowlarr.yml
   - path: media/radarr.yml

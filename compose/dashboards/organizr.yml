@@ -9,7 +9,8 @@ services:
       TZ: America/Los_Angeles
     ports:
       - 3044:80
-    #labels:
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
       #- "traefik.enable=true"
       #- "traefik.http.routers.organizr.rule=Host(`organizr.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       #- "traefik.http.routers.organizr.entrypoints=websecure"

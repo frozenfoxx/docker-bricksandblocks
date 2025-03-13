@@ -8,7 +8,8 @@ services:
       TZ: America/Los_Angeles
     ports:
       - 3041:3000
-    #labels:
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
       #- "traefik.enable=true"
       #- "traefik.http.routers.fenrus.rule=Host(`fenrus.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       #- "traefik.http.routers.fenrus.entrypoints=websecure"

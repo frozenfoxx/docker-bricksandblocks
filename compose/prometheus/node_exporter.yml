@@ -9,6 +9,8 @@ services:
       - SYS_TIME
     pid: host
     network_mode: host
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     ports:
       - "9100:9100"
     volumes:

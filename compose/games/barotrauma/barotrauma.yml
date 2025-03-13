@@ -5,6 +5,8 @@ services:
     container_name: barotrauma
     environment:
       - GAMEDIR="/home/runner/Steam/steamapps/common/Barotrauma Dedicated Server"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     ports:
       - "27015:27015/udp"
       - "27016:27016/udp"

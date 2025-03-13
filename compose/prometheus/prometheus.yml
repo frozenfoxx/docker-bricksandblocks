@@ -11,6 +11,8 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
       #- '--storage.tsdb.path=/data' #FIXME: disabled due to NFS being unsupported
       - '--storage.tsdb.retention.time=7d'
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     ports:
       - "9090:9090"
     volumes:
@@ -29,6 +31,8 @@ services:
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
       - '--web.external-url=http://prometheus.${NETWORK_DOMAIN-bricksandblocks.net}:9093'
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     ports:
       - "9093:9093"
     volumes:

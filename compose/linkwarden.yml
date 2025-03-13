@@ -13,6 +13,8 @@ services:
       - PAGINATION_TAKE_COUNT=${LINKWARDEN_PAGINATION_COUNT-50}
       - RE_ARCHIVE_LIMIT=${LINKWARDEN_ARCHIVE_LIMIT-5}
       - STORAGE_FOLDER=${LINKWARDEN_STORAGE-/data}
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     ports:
       - "3080:3000"
     volumes:
@@ -32,6 +34,8 @@ services:
       - POSTGRES_USER=${LINKWARDEN_DATABASE_USER}
       - POSTGRES_PASSWORD=${LINKWARDEN_DATABASE_PASSWD}
       - POSTGRES_DB=${LINKWARDEN_DATABASE_NAME-linkwarden}
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     volumes:
       - linkwarden-postgres-data:/var/lib/postgresql/data
     extends:

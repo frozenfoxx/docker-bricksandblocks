@@ -15,6 +15,8 @@ services:
       #- "3000:3000" # web interface
       #- "8007:80" # asset hosting
     labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
       - "traefik.enable=true"
       # FIXME: these URLs are handled by local DNS to restrict traffic
 

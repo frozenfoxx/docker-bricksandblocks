@@ -3,6 +3,8 @@ services:
     image: enigmabbs/enigma-bbs:latest
     container_name: enigmabbs
     restart: always
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     ports:
       - "8888:8888"
     volumes:
