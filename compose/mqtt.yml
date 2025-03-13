@@ -2,6 +2,7 @@ services:
   mosquitto:
     image: eclipse-mosquitto
     container_name: mosquitto
+    user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
     restart: unless-stopped
     #ports:
     #  - 1883:1883
