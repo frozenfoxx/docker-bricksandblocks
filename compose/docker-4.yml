@@ -1,4 +1,5 @@
 include:
+  - path: operations/watchtower.yml
   - path: media/tautulli.yml
   - path: media/plex.yml
   #- path: games/vrising/vrising.yml
