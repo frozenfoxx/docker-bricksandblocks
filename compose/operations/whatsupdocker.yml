@@ -1,0 +1,13 @@
+services:
+  whatsupdocker:
+    image: ghcr.io/getwud/wud
+    container_name: wud
+    environment:
+      - TZ=America/Los_Angeles
+    ports:
+      - 3060:3000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
