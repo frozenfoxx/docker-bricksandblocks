@@ -10,8 +10,8 @@ services:
       - TZ=America/Los_Angeles
     ports:
       - 5000:5000
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+    #labels:
+      #- "com.centurylinklabs.watchtower.enable=true"
       #- "traefik.enable=true"
       #- "traefik.http.routers.kavita.rule=Host(`kavita.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       #- "traefik.http.routers.kavita.entrypoints=websecure"

@@ -24,8 +24,8 @@ services:
       POSTGRES_SERVER: mealie-postgres
       POSTGRES_PORT: 5432
       POSTGRES_DB: mealie
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+    #labels:
+      #- "com.centurylinklabs.watchtower.enable=true"
       #- "traefik.enable=true"
       #- "traefik.http.routers.mealie.rule=Host(`mealie.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       #- "traefik.http.routers.mealie.entrypoints=websecure"

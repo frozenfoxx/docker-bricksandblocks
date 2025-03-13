@@ -9,7 +9,7 @@ services:
     #  - 8883:8883
     #  - 9001:9001
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+      #- "com.centurylinklabs.watchtower.enable=true"
 
       - "traefik.enable=true"
 
