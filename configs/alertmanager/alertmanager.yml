@@ -1,3 +1,4 @@
+# For configuration options, refer to https://prometheus.io/docs/alerting/latest/configuration/
 global:
   smtp_from: 'admin@bricksandblocks.net'
 
@@ -14,8 +15,8 @@ route:
 
 receivers:
   - name: staff-discord
-    webhook_configs:
-      - url: 'https://discord.com/api/webhooks/[allll the rest of the giant webhook]'
+    discord_configs:
+      - webhook_url: 'https://discord.com/api/webhooks/[allll the rest of the giant webhook]'
 
   - name: staff-email
     email_configs:
