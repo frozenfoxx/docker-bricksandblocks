@@ -5,6 +5,8 @@ services:
     restart: always
     hostname: ${HOSTNAME}
     #privileged: true
+    command:
+    - '-port=8091'
     ports:
       - "8091:8091"
     volumes:
