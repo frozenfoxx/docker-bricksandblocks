@@ -15,7 +15,7 @@ scrape_configs:
   - job_name: container
     file_sd_configs:
       - targets:
-        - 'targets-node-exporter.yml'
+        - 'targets-cadvisor.yml'
 
   - job_name: node
     file_sd_configs:
