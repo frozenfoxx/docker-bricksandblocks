@@ -2,6 +2,7 @@ services:
   diun:
     image: crazymax/diun:latest
     container_name: diun
+    hostname: "${HOSTNAME}"
     restart: always
     command: serve
     environment:
