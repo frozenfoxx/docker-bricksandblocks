@@ -3,5 +3,6 @@ include:
   - path: media/jellyfin.yml
   - path: media/kavita.yml
   - path: dashboards/fenrus.yml
+  - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun.yml

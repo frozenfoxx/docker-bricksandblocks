@@ -9,5 +9,6 @@ include:
   - path: media/notifiarr.yml
   - path: mealie.yml
   - path: gitea.yml
+  - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun.yml
