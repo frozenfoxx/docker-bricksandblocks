@@ -30,5 +30,5 @@ volumes:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,ro"
-      device: ":/volume1/Docker/diun/data"
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/${HOSTNAME}/diun/data"
