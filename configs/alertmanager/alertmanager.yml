@@ -14,8 +14,8 @@ route:
 
 receivers:
   - name: staff-discord
-    discord_configs:
-      - webook: 'https://discord.com/api/webhooks/[allll the rest of the giant webhook]'
+    webhook_configs:
+      - url: 'https://discord.com/api/webhooks/[allll the rest of the giant webhook]'
 
   - name: staff-email
     email_configs:
