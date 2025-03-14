@@ -8,8 +8,6 @@ services:
       - PUID=1028 # 'staff' user
       - PGID=50 # 'staff' group
       - TZ=America/Los_Angeles
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     volumes:
       - radarr-config:/config
       - radarr-data:/data
@@ -27,8 +25,6 @@ services:
       - PUID=1028 # 'staff' user
       - PGID=50 # 'staff' group
       - TZ=America/Los_Angeles
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     volumes:
       - radarr-4k-config:/config
       - radarr-data:/data

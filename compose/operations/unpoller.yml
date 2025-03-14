@@ -34,10 +34,8 @@ services:
       #UP_INFLUXDB_BUCKET: "${UNPOLLER_INFLUXDB_BUCKET}"
       #UP_INFLUXDB_AUTH_TOKEN: "${UNPOLLER_INFLUXDB_TOKEN}"
       #UP_INFLUXDB_URL: "https://influxdb.${NETWORK_DOMAIN-bricksandblocks.net}"
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     ports:
       - 9130:9130/tcp
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki

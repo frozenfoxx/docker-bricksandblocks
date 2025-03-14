@@ -9,8 +9,6 @@ services:
     #  - 8883:8883
     #  - 9001:9001
     labels:
-      #- "com.centurylinklabs.watchtower.enable=true"
-
       - "traefik.enable=true"
 
       # TCP Insecure
@@ -40,7 +38,7 @@ services:
       - mosquitto-data:/mosquitto/data
       - mosquitto-log:/mosquitto/log
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
 
 volumes:

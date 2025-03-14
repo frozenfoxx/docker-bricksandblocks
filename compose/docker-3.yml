@@ -1,5 +1,4 @@
 include:
-  - path: operations/watchtower.yml
   - path: operations/gluetun.yml
   - path: media/qbittorrent.yml
   - path: media/prowlarr.yml
@@ -8,3 +7,4 @@ include:
   - path: media/overseerr.yml
   - path: media/metube.yml
   - path: prometheus/node_exporter.yml
+  - path: containers/diun.yml

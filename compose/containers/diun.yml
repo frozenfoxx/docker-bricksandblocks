@@ -1,0 +1,34 @@
+services:
+  diun:
+    image: crazymax/diun:latest
+    container_name: diun
+    restart: always
+    command: serve
+    environment:
+      - "LOG_LEVEL=${DIUN_LOGLEVEL-info}"
+      - "LOG_JSON=false"
+      - "PUID=1028" # 'staff' user
+      - "PGID=50" # 'staff' group
+      - "TZ=America/Los_Angeles"
+    volumes:
+      - diun-config:/etc/diun
+      - diun-data:/data
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  diun-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,ro"
+      device: ":/volume1/Docker/diun/config"
+
+  diun-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,ro"
+      device: ":/volume1/Docker/diun/data"

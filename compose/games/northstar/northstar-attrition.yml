@@ -18,8 +18,6 @@ services:
         +net_compresspackets 1
         +spewlog_enable 0
         +sv_maxrate 127000
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     ports:
       - "${NORTHSTAR_PORT}:37015/udp"
     volumes:

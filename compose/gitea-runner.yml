@@ -9,8 +9,6 @@ services:
       GITEA_RUNNER_REGISTRATION_TOKEN: "${GITEA_RUNNER_REGISTRATION_TOKEN}"
       GITEA_RUNNER_NAME: "gitea-runner-${HOSTNAME}"
       GITEA_RUNNER_LABELS: "${GITEA_RUNNER_LABELS}"
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     volumes:
       - gitea-runner-data:/data
       - /var/run/docker.sock:/var/run/docker.sock

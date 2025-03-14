@@ -15,8 +15,6 @@ services:
     security_opt: ['no-new-privileges:true']
     #environment:
       #- DN_API_KEY=${NOTIFIARR_API_KEY}
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     ports:
       - "5454:5454"
     volumes:

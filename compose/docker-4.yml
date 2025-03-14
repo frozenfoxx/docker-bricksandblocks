@@ -1,5 +1,4 @@
 include:
-  - path: operations/watchtower.yml
   - path: media/tautulli.yml
   - path: media/plex.yml
   #- path: games/vrising/vrising.yml
@@ -13,3 +12,4 @@ include:
     env_file:
       - games/openttd/.env.autosave
   - path: prometheus/node_exporter.yml
+  - path: containers/diun.yml

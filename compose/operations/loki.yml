@@ -10,7 +10,7 @@ services:
       - loki-config:/etc/loki
       - loki-data:/data
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
 
 volumes:

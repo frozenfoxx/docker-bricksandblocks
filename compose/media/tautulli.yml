@@ -9,9 +9,7 @@ services:
       - TZ=America/Los_Angeles
     ports:
       - 8181:8181
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
+    #labels:
       #- "traefik.enable=true"
       #- "traefik.http.routers.tautulli.rule=Host(`tautulli.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       #- "traefik.http.routers.tautulli.entrypoints=websecure"

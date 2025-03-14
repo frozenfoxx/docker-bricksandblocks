@@ -13,8 +13,6 @@ services:
       #- TORRENTING_PORT="${QBITTORRENT_TOR_PORT}"
       - TZ=America/Los_Angeles
       - WEBUI_PORT=${QBITTORRENT_WEBUI-49893}
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     volumes:
       - qbittorrent-config:/config
       - qbittorrent-data:/data/downloads

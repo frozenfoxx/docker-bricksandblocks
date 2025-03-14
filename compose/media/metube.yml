@@ -6,8 +6,6 @@ services:
     restart: unless-stopped
     ports:
       - "8231:8081"
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     volumes:
       - metube-data:/downloads
     extends:

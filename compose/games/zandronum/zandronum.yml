@@ -14,8 +14,6 @@ services:
       +sv_hostname "${ZANDRONUM_HOSTNAME-Cult of Foxx}"
       -port ${ZANDRONUM_PORT-10666}
       ${ZANDRONUM_COMMAND}
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     volumes:
       - zandronum-wads:/wads:ro
       - zandronum-configs:/configs:ro

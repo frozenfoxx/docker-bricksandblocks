@@ -13,8 +13,6 @@ services:
 #      - VPN_PORT_FORWARDING=on
 #      - VPN_SERVICE_PROVIDER=protonvpn
 #      - SERVER_COUNTRIES=${GLUETUN_SERVER_COUNTRIES}
-#    labels:
-#      - "com.centurylinklabs.watchtower.enable=true"
 #    ports:
 #      - 49893:49893 # qbitorrent WebUI
 #      - 6881:6881 # qbittorrent listening port for TCP
@@ -40,8 +38,6 @@ services:
       - WIREGUARD_PRIVATE_KEY=${GLUETUN_WIREGUARD_PRIVATE_KEY}
       - WIREGUARD_ADDRESSES=${GLUETUN_WIREGUARD_ADDRESSES}
       - SERVER_COUNTRIES=${GLUETUN_SERVER_COUNTRIES}
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     ports:
       - 49893:49893 # qbitorrent WebUI
       #- 6881:6881 # qbittorrent listening port for TCP

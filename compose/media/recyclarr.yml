@@ -15,8 +15,6 @@ services:
     environment:
       - RECYCLARR_CREATE_CONFIG=${RECYCLARR_CREATE_CONFIG-false}
       - TZ=America/Los_Angeles
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     volumes:
       - recyclarr-config:/config
     extends:

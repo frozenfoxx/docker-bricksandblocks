@@ -7,8 +7,7 @@ services:
       SECRET_ENCRYPTION_KEY: "${HOMARR_SECRET_KEY}"
     ports:
       - 3042:7575
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+    #labels:
       #- "traefik.enable=true"
       #- "traefik.http.routers.homarr.rule=Host(`homarr.${NETWORK_DOMAIN-bricksandblocks.net}`)"
       #- "traefik.http.routers.homarr.entrypoints=websecure"

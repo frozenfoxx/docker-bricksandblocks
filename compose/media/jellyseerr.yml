@@ -8,8 +8,6 @@ services:
       #- PORT=5055
       - LOG_LEVEL=${JELLYSEERR_LOG_LEVEL-info} # Options: info, debug
       - TZ=America/Los_Angeles
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     volumes:
       - jellyseerr-config:/app/config
     ports:

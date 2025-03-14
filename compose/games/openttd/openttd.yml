@@ -5,8 +5,6 @@ services:
     restart: unless-stopped
     environment:
       - loadgame=${OPENTTD_LOADGAME-exit}
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     ports:
       - 3979:3979/tcp
       - 3979:3979/udp
