@@ -4,7 +4,7 @@ services:
     container_name: cadvisor
     restart: always
     hostname: ${HOSTNAME}
-    #privileged: true
+    privileged: true
     command:
     - '-port=8091'
     ports:
