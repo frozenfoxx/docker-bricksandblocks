@@ -19,7 +19,7 @@ services:
 
       # Loki Variables
       UP_LOKI_DISABLE: "false"
-      UP_LOKI_URL: "https://loki.${NETWORK_DOMAIN-bricksandblocks.net}"
+      UP_LOKI_URL: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100"
 
       # Prometheus Variables
       UP_PROMETHEUS_NAMESPACE: "unpoller"
