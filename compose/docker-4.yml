@@ -10,7 +10,8 @@ include:
       - games/zandronum/.env.brutal-valiant
   - path: games/openttd/openttd.yml
     env_file:
-      - games/openttd/.env.autosave
+      #- games/openttd/.env.autosave
+      - games/openttd/.env.new
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun.yml
