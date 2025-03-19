@@ -14,12 +14,12 @@ alerting:
 scrape_configs:
   - job_name: container
     file_sd_configs:
-      - targets:
+      - files:
         - 'targets-cadvisor.yml'
 
   - job_name: node
     file_sd_configs:
-      - targets:
+      - files:
         - 'targets-node-exporter.yml'
 
   - job_name: prometheus
