@@ -6,7 +6,9 @@ services:
     hostname: ${HOSTNAME}
     privileged: true
     command:
-    - '-port=8091'
+    - '--port=8091'
+    - '--docker_only=true'
+    - '--housekeeping_interval=5s'
     ports:
       - "8091:8091"
     volumes:
