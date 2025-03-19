@@ -8,7 +8,8 @@ services:
     command:
     - '--port=8091'
     - '--docker_only=true'
-    - '--housekeeping_interval=5s'
+    - '--housekeeping_interval=10s'
+    - '--enable_metrics=app,cpu,diskIO,memory,network,process'
     ports:
       - "8091:8091"
     volumes:
