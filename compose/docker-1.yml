@@ -6,7 +6,8 @@ include:
   - path: operations/loki.yml
   - path: dashboards/grafana.yml
   - path: prometheus/prometheus.yml
-  - path: media/notifiarr.yml
+  - path: operations/notifiarr.yml
+  - path: operations/wizarr.yml
   - path: mealie.yml
   - path: gitea.yml
   - path: prometheus/cadvisor.yml
