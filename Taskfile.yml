@@ -27,11 +27,6 @@ tasks:
       - task -l
     silent: true
 
-  clean:
-    desc: Clean unused containers
-    cmds:
-      - task: docker:clean
-
   deploy:
     desc: Deploy containers
     cmds:
@@ -71,6 +66,11 @@ tasks:
       - task: docker:compose:logs
         vars:
           CLI_ARGS: "{{.CLI_ARGS}}"
+
+  prune:
+    desc: Prune unused containers, images, and volumes
+    cmds:
+      - task: docker:prune
 
   setup:
     desc: "Configure repository for use"
