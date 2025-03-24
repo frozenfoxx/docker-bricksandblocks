@@ -4,6 +4,7 @@ include:
   - path: media/prowlarr.yml
   - path: media/radarr.yml
   - path: media/sonarr.yml
+  - path: media/jellyseerr.yml
   - path: media/overseerr.yml
   - path: media/metube.yml
   - path: prometheus/cadvisor.yml
