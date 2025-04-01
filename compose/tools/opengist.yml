@@ -1,0 +1,21 @@
+services:
+  opengist:
+    image: ghcr.io/thomiceli/opengist:1.9
+    container_name: opengist
+    restart: unless-stopped
+    ports:
+      - "6157:6157" # HTTP port
+      #- "2222:2222" # SSH port, can be removed if you don't use SSH
+    volumes:
+      - opengist-data:/opengist
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  opengist-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/opengist/data"
