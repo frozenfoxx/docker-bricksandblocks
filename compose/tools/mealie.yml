@@ -37,7 +37,7 @@ services:
     volumes:
       - mealie-data:/app/data/
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
     depends_on:
       mealie-postgres:
@@ -53,7 +53,7 @@ services:
     volumes:
       - mealie-postgres-data:/var/lib/postgresql/data
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
     healthcheck:
       test: ["CMD", "pg_isready"]

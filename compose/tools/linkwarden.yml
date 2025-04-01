@@ -18,7 +18,7 @@ services:
     volumes:
       - linkwarden-data:/data/data
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
     depends_on:
       linkwarden-postgres:
@@ -35,7 +35,7 @@ services:
     volumes:
       - linkwarden-postgres-data:/var/lib/postgresql/data
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
     healthcheck:
       test: ["CMD", "pg_isready"]

@@ -33,7 +33,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
     depends_on:
       gitea-postgres:
@@ -52,7 +52,7 @@ services:
     volumes:
       - gitea-postgres-data:/var/lib/postgresql/data
     extends:
-      file: ${ROOT_DIR-..}/lib/logging.yml
+      file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
     healthcheck:
       test: ["CMD", "pg_isready"]

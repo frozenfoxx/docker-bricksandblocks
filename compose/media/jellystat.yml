@@ -1,0 +1,63 @@
+#networks:
+#  default: null
+
+services:
+  jellystat:
+    image: 'cyfershepard/jellystat:latest'
+    container_name: jellystat
+    restart: unless-stopped
+    environment:
+      PUID: 1000
+      PGID: 50 # 'staff' group
+      POSTGRES_USER: ${JELLYSTAT_DATABASE_USER}
+      POSTGRES_PASSWORD: ${JELLYSTAT_DATABASE_PASSWD}
+      POSTGRES_IP: jellystat-postgres
+      POSTGRES_PORT: 5432
+      JWT_SECRET: my-secret-jwt-key
+      TZL: America/Los_Angeles
+    volumes:
+      - 'jellystat-backup-data:/app/backend/backup-data'
+    ports:
+      - '3300:3000'
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
+    depends_on:
+      jellystat-postgres:
+        condition: service_healthy
+
+  jellystat-postgres:
+    #image: 'postgres:15.2'
+    image: postgres:16-alpine
+    shm_size: 1gb
+    container_name: jellystat-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${JELLYSTAT_DATABASE_USER}
+      - POSTGRES_PASSWORD=${JELLYSTAT_DATABASE_PASSWD}
+    volumes:
+      - 'jellystat-postgres-data:/var/lib/postgresql/data'
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+volumes:
+  jellystat-backup-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/jellystat/backup/data"
+
+  jellystat-postgres-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/jellystat/postgres/data"
+

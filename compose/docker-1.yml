@@ -1,6 +1,5 @@
 include:
   - path: traefik/traefik.yml
-  - path: linkwarden.yml
   - path: operations/mqtt.yml
   - path: operations/unpoller.yml
   - path: operations/loki.yml
@@ -8,8 +7,9 @@ include:
   - path: prometheus/prometheus.yml
   - path: operations/notifiarr.yml
   - path: operations/wizarr.yml
-  - path: mealie.yml
-  - path: gitea.yml
+  - path: tools/linkwarden.yml
+  - path: tools/mealie.yml
+  - path: tools/gitea.yml
   - path: tools/opengist.yml
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
