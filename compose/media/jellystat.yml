@@ -13,7 +13,7 @@ services:
       POSTGRES_PASSWORD: ${JELLYSTAT_DATABASE_PASSWD}
       POSTGRES_IP: jellystat-postgres
       POSTGRES_PORT: 5432
-      JWT_SECRET: my-secret-jwt-key
+      JWT_SECRET: ${JELLYSTAT_JWT}
       TZL: America/Los_Angeles
     volumes:
       - 'jellystat-backup-data:/app/backend/backup-data'
