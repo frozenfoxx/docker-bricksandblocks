@@ -4,12 +4,13 @@ services:
     container_name: huginn
     restart: unless-stopped
     environment:
-      DO_NOT_CREATE_DATABASE: "true"
+      DO_NOT_CREATE_DATABASE: ${HUGINN_CREATE_DATABASE-true}
       DOMAIN: "huginn.${NETWORK_DOMAIN-bricksandblocks.net}"
       HUGINN_DATABASE_ADAPTER: postgresql
       HUGINN_DATABASE_HOST: "huginn-postgres"
+      HUGINN_DATABASE_NAME: "huginn"
       HUGINN_DATABASE_PASSWORD: ${HUGINN_PG_PASSWORD}
-      HUGINN_DATABASE_PORT: "5432"
+      HUGINN_DATABASE_PORT: 5432
       HUGINN_DATABASE_USERNAME: ${HUGINN_PG_USER}
     volumes:
       - huginn-data:/data
