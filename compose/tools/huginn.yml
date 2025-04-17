@@ -12,8 +12,6 @@ services:
       HUGINN_DATABASE_PASSWORD: ${HUGINN_PG_PASSWORD}
       HUGINN_DATABASE_PORT: 5432
       HUGINN_DATABASE_USERNAME: ${HUGINN_PG_USER}
-    volumes:
-      - huginn-data:/data
     ports:
     - "3830:3000"
     extends:
