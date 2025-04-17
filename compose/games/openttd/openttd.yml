@@ -10,6 +10,8 @@ services:
       - 3979:3979/udp
     volumes:
       - openttd-config:/config
+    labels:
+      - "diun.enable=false"
     extends:
       file: ${ROOT_DIR-../../..}/lib/logging.yml
       service: logging-loki

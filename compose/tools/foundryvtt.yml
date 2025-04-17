@@ -1,0 +1,27 @@
+services:
+  foundryvtt:
+    image: felddy/foundryvtt:release
+    container_name: foundryvtt
+    restart: unless-stopped
+    hostname: "${HOSTNAME}"
+    environment:
+      FOUNDRY_ADMIN_KEY: ${FOUNDRYVTT_ADMIN_KEY}
+      FOUNDRY_PASSWORD: ${FOUNDRYVTT_PASSWORD}
+      FOUNDRY_USERNAME: ${FOUNDRYVTT_USERNAME}
+      PUID: "1028" # 'staff' user
+      PGID: "50" # 'staff' group
+    ports:
+      - "30032:30000"
+    volumes:
+      - foundryvtt-data:/data/
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  foundryvtt-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/foundryvtt/data"
