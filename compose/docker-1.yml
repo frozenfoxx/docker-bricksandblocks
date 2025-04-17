@@ -7,6 +7,7 @@ include:
   - path: prometheus/prometheus.yml
   - path: operations/notifiarr.yml
   - path: operations/wizarr.yml
+  - path: tools/huginn.yml
   - path: tools/linkwarden.yml
   - path: tools/mealie.yml
   - path: tools/gitea.yml
