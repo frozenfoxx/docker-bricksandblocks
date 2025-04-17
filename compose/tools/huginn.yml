@@ -1,0 +1,56 @@
+services:
+  huginn:
+    image: ghcr.io/huginn/huginn:latest
+    container_name: huginn
+    restart: unless-stopped
+    environment:
+      DO_NOT_CREATE_DATABASE: "true"
+      DOMAIN: "huginn.${NETWORK_DOMAIN-bricksandblocks.net}"
+      HUGINN_DATABASE_ADAPTER: postgresql
+      HUGINN_DATABASE_HOST: "huginn-postgres"
+      HUGINN_DATABASE_PASSWORD: ${HUGINN_PG_PASSWORD}
+      HUGINN_DATABASE_PORT: "5432"
+      HUGINN_DATABASE_USERNAME: ${HUGINN_PG_USER}
+    volumes:
+      - huginn-data:/data
+    ports:
+    - "3830:3000"
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+    depends_on:
+      huginn-postgres:
+        condition: service_healthy
+
+  huginn-postgres:
+    image: postgres:15
+    container_name: huginn-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${HUGINN_PG_PASSWORD}
+      POSTGRES_USER: ${HUGINN_PG_USER}
+    volumes:
+      - huginn-postgres-data:/var/lib/postgresql/data
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+volumes:
+  huginn-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/huginn"
+
+  huginn-postgres-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/huginn-postgres"
