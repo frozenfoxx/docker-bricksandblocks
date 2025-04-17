@@ -8,9 +8,8 @@ include:
   - path: operations/notifiarr.yml
   - path: operations/wizarr.yml
   - path: tools/huginn.yml
-  #- path: tools/huginn.yml
     #env_file:
-      #- tools/huginn/.env.huginn.new
+      #- tools/.env.huginn.new
   - path: tools/linkwarden.yml
   - path: tools/mealie.yml
   - path: tools/gitea.yml
