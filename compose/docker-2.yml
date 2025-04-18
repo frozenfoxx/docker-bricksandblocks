@@ -4,8 +4,8 @@ include:
   - path: media/kavita.yml
   - path: dashboards/fenrus.yml
   - path: tools/huginn.yml
-    #env_file:
-      #- tools/.env.huginn.new
+    env_file:
+      - tools/.env.huginn
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun.yml
