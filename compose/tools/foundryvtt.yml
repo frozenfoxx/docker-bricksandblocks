@@ -5,8 +5,7 @@ services:
     restart: unless-stopped
     hostname: "${HOSTNAME}"
     environment:
-      CONTAINER_PRESERVE_CONFIG: ${FOUNDRYVTT_CONTAINER_PRESERVE_CONFIG-false}
-      FOUNDRY_ADMIN_KEY: ${FOUNDRYVTT_ADMIN_KEY}
+      CONTAINER_PRESERVE_CONFIG: ${FOUNDRYVTT_CONTAINER_PRESERVE_CONFIG-true}
       FOUNDRY_GID: "50" # 'staff' group
       FOUNDRY_HOSTNAME: "https://foundryvtt.${NETWORK_DOMAIN-bricksandblocks.net}"
       FOUNDRY_LICENSE_KEY: ${FOUNDRYVTT_LICENSE_KEY}
