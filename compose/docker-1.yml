@@ -8,8 +8,9 @@ include:
   - path: operations/notifiarr.yml
   - path: operations/wizarr.yml
   - path: tools/linkwarden.yml
-  - path: tools/mealie.yml
+  - path: tools/foundryvtt.yml
   - path: tools/gitea.yml
+  - path: tools/mealie.yml
   - path: tools/opengist.yml
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
