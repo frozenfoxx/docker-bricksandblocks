@@ -9,6 +9,8 @@ include:
   - path: operations/wizarr.yml
   - path: tools/linkwarden.yml
   - path: tools/foundryvtt.yml
+    #env_file:
+      #- tools/.env.foundry.new
   - path: tools/gitea.yml
   - path: tools/mealie.yml
   - path: tools/opengist.yml
