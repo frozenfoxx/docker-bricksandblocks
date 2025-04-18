@@ -7,8 +7,7 @@ include:
   #- path: games/barotrauma/barotrauma.yml
   - path: games/zandronum/zandronum.yml
     env_file:
-      - games/zandronum/.env.cdi
-      #- games/zandronum/.env.brutal-valiant
+      - games/zandronum/.env.strnghld
   - path: games/openttd/openttd.yml
     env_file:
       #- games/openttd/.env.autosave
