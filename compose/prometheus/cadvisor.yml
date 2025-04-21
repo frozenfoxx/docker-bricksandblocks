@@ -13,7 +13,7 @@ services:
     #- '--store_container_labels=false'
     #- '--whitelisted_container_labels=org.label-schema.group,com.docker.compose.project,com.docker.compose.service'
     environment:
-      CADVISORT_HEALTHCHECK_URL: "http://${HOSTNAME}:8091/healthz"
+      CADVISOR_HEALTHCHECK_URL: "http://${HOSTNAME}:8091/healthz"
     ports:
       - "8091:8091"
     volumes:
@@ -25,5 +25,5 @@ services:
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
-    healthcheck:
-      disable: true
+    #healthcheck:
+      #disable: true
