@@ -4,15 +4,14 @@ services:
     container_name: foundryvtt
     restart: unless-stopped
     hostname: "${HOSTNAME}"
+    user: "1028:50" # 'staff' user/group
     environment:
       CONTAINER_PRESERVE_CONFIG: ${FOUNDRYVTT_CONTAINER_PRESERVE_CONFIG-true}
-      FOUNDRY_GID: "50" # 'staff' group
       FOUNDRY_HOSTNAME: "https://foundryvtt.${NETWORK_DOMAIN-bricksandblocks.net}"
       FOUNDRY_PASSWORD: ${FOUNDRYVTT_PASSWORD}
       FOUNDRY_PROXY_PORT: ${FOUNDRYVTT_PROXY_PORT-443}
       FOUNDRY_PROXY_SSL: ${FOUNDRYVTT_PROXY_SSL-true}
       FOUNDRY_TELEMETRY: ${FOUNDRYVTT_TELEMETRY-true}
-      FOUNDRY_UID: "1028" # 'staff' user
       FOUNDRY_USERNAME: ${FOUNDRYVTT_USERNAME}
       TIMEZONE: "America/Los_Angeles"
     ports:
