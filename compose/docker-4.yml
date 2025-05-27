@@ -1,4 +1,6 @@
 include:
+  - path: media/tautulli.yml
+  - path: media/plex.yml
   #- path: games/vrising/vrising.yml
     #env_file:
       #- games/vrising/.env.pve

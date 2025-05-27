@@ -1,6 +1,7 @@
 include:
   - path: traefik/traefik-internal.yml
   - path: media/kavita.yml
+  - path: media/jellyfin.yml
   - path: dashboards/fenrus.yml
   - path: tools/huginn.yml
     env_file:

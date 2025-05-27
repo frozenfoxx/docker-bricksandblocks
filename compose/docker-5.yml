@@ -1,7 +1,7 @@
 include:
-  - path: media/tautulli.yml
-  - path: media/plex.yml
-  - path: media/jellyfin.yml
+  #- path: media/tautulli.yml
+  #- path: media/plex.yml
+  #- path: media/jellyfin.yml
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun.yml
