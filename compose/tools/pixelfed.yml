@@ -1,0 +1,148 @@
+---
+services:
+  pixelfed-web:
+    image: ghcr.io/pixelfed-glitch/pixelfed:latest
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # Used by Pixelfed Docker init script
+      DOCKER_SERVICE_NAME: "web"
+      ENTRYPOINT_SKIP_SCRIPTS: ${ENTRYPOINT_SKIP_SCRIPTS:-}
+    volumes:
+      - pixelfed-cache:/var/www/bootstrap/cache
+      - pixelfed-data:/var/www/storage
+      - "./.env.pixelfed:/var/www/.env"
+    ports:
+      - "8282:80"
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+    depends_on:
+      - pixelfed-postgres
+      - pixelfed-redis
+    healthcheck:
+      test: 'curl --fail http://localhost/api/service/health-check'
+      interval: 10s
+      timeout: 5s
+      retries: 2
+
+  pixelfed-worker:
+    image: ghcr.io/pixelfed-glitch/pixelfed:fpm-latest
+    command: gosu www-data php artisan horizon
+    restart: unless-stopped
+    env_file:
+      - .env.pixelfed
+    environment:
+      # Used by Pixelfed Docker init script
+      DOCKER_SERVICE_NAME: "worker"
+      ENTRYPOINT_SKIP_SCRIPTS: any
+    volumes:
+      - pixelfed-cache:/var/www/bootstrap/cache
+      - pixelfed-data:/var/www/storage
+      - "./.env.pixelfed:/var/www/.env"
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+    depends_on:
+      - pixelfed-postgres
+      - pixelfed-redis
+    healthcheck:
+      test: gosu www-data php artisan horizon:status | grep running
+      interval: 10s
+      timeout: 5s
+      retries: 2
+
+  pixelfed-cron:
+    image: ghcr.io/pixelfed-glitch/pixelfed:fpm-latest
+    command: gosu www-data php artisan schedule:work -vvv
+    restart: unless-stopped
+    stop_signal: SIGTERM
+    env_file:
+      - .env.pixelfed
+    environment:
+      # Used by Pixelfed Docker init script
+      DOCKER_SERVICE_NAME: "cron"
+      ENTRYPOINT_SKIP_SCRIPTS: any
+    volumes:
+      - pixelfed-cache:/var/www/bootstrap/cache
+      - pixelfed-data:/var/www/storage
+      - "./.env.pixelfed:/var/www/.env"
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+    depends_on:
+      - pixelfed-postgres
+      - pixelfed-redis
+    healthcheck:
+      test: ps aux | egrep 'php artisan [s]chedule:work -vvv'
+      interval: 10s
+      timeout: 5s
+      retries: 2
+
+## DB and Cache
+  pixelfed-postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${PIXELFED_DATABASE_USER}
+      - POSTGRES_PASSWORD=${PIXELFED_DATABASE_PASSWD}
+      - POSTGRES_DB=${PIXELFED_DATABASE_NAME-pixelfed}
+      - TZ=${TZ:?error}
+    volumes:
+      - pixelfed-postgres-data:/var/lib/postgresql/data
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  pixelfed-redis:
+    image: redis:7.4-alpine
+    command: " --requirepass '${PIXELFED_REDIS_PASSWORD:-}'"
+    restart: unless-stopped
+    environment:
+      TZ: "${TZ:?error}"
+      REDISCLI_AUTH: ${PIXELFED_REDIS_PASSWORD:-}
+    volumes:
+      - pixelfed-redis-data:/data
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 2
+
+volumes:
+  pixelfed-cache:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/pixelfed/cache"
+
+  pixelfed-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/pixelfed/data"
+
+  pixelfed-postgres-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/pixelfed/postgres"
+
+  pixelfed-redis-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/pixelfed/redis/data"
