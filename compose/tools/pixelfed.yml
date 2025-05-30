@@ -8,6 +8,8 @@ services:
     #  - .env.pixelfed
     environment:
       # Used by Pixelfed Docker init script
+      DB_PASSWORD: "${PIXELFED_DATABASE_PASSWD}"
+      DB_USERNAME: "${PIXELFED_DATABASE_USER}"
       DOCKER_SERVICE_NAME: "web"
       ENTRYPOINT_SKIP_SCRIPTS: ${ENTRYPOINT_SKIP_SCRIPTS:-}
     volumes:
@@ -37,6 +39,8 @@ services:
     #  - .env.pixelfed
     environment:
       # Used by Pixelfed Docker init script
+      DB_PASSWORD: "${PIXELFED_DATABASE_PASSWD}"
+      DB_USERNAME: "${PIXELFED_DATABASE_USER}"
       DOCKER_SERVICE_NAME: "worker"
       ENTRYPOINT_SKIP_SCRIPTS: any
     volumes:
@@ -65,6 +69,8 @@ services:
     #  - .env.pixelfed
     environment:
       # Used by Pixelfed Docker init script
+      DB_PASSWORD: "${PIXELFED_DATABASE_PASSWD}"
+      DB_USERNAME: "${PIXELFED_DATABASE_USER}"
       DOCKER_SERVICE_NAME: "cron"
       ENTRYPOINT_SKIP_SCRIPTS: any
     volumes:
@@ -89,10 +95,10 @@ services:
     container_name: pixelfed-postgres
     restart: unless-stopped
     environment:
-      - POSTGRES_USER=${PIXELFED_DATABASE_USER}
-      - POSTGRES_PASSWORD=${PIXELFED_DATABASE_PASSWD}
-      - POSTGRES_DB=${PIXELFED_DATABASE_NAME-pixelfed}
-      - TZ="Etc/UTC"
+      POSTGRES_USER: ${PIXELFED_DATABASE_USER}
+      POSTGRES_PASSWORD: ${PIXELFED_DATABASE_PASSWD}
+      POSTGRES_DB: ${PIXELFED_DATABASE_NAME-pixelfed}
+      TZ: "Etc/UTC"
     volumes:
       - pixelfed-postgres-data:/var/lib/postgresql/data
     extends:
@@ -110,8 +116,8 @@ services:
     command: " --requirepass '${PIXELFED_REDIS_PASSWORD:-}'"
     restart: unless-stopped
     environment:
-      TZ: "Etc/UTC"
       REDISCLI_AUTH: ${PIXELFED_REDIS_PASSWORD:-}
+      TZ: "Etc/UTC"
     volumes:
       - pixelfed-redis-data:/data
     extends:
