@@ -11,7 +11,7 @@ services:
     volumes:
       - pixelfed-cache:/var/www/bootstrap/cache
       - pixelfed-data:/var/www/storage
-      - pixelfed-env:/var/www/.env
+      - ${ROOT_DIR-../..}/.env.pixelfed:/var/www/.env
     ports:
       - "8282:80"
     extends:
@@ -37,7 +37,7 @@ services:
     volumes:
       - pixelfed-cache:/var/www/bootstrap/cache
       - pixelfed-data:/var/www/storage
-      - pixelfed-env:/var/www/.env
+      - ${ROOT_DIR-../..}/.env.pixelfed:/var/www/.env
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
@@ -62,7 +62,7 @@ services:
     volumes:
       - pixelfed-cache:/var/www/bootstrap/cache
       - pixelfed-data:/var/www/storage
-      - pixelfed-env:/var/www/.env
+      - ${ROOT_DIR-../..}/.env.pixelfed:/var/www/.env
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
@@ -128,13 +128,6 @@ volumes:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
       device: ":/volume1/Docker/pixelfed-glitch/storage"
-
-  pixelfed-env:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/pixelfed-glitch/.env"
 
   pixelfed-postgres-data:
     driver: local
