@@ -12,6 +12,7 @@ services:
       DB_USERNAME: "${PIXELFED_DATABASE_USER}"
       DOCKER_SERVICE_NAME: "pixelfed-web"
       ENTRYPOINT_SKIP_SCRIPTS: ${ENTRYPOINT_SKIP_SCRIPTS:-}
+      REDIS_PASSWORD: "${PIXELFED_REDIS_PASSWORD:-}"
     volumes:
       - pixelfed-cache:/var/www/bootstrap/cache
       - pixelfed-data:/var/www/storage
