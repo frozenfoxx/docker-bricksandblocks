@@ -97,7 +97,7 @@ services:
     environment:
       POSTGRES_USER: ${PIXELFED_DATABASE_USER}
       POSTGRES_PASSWORD: ${PIXELFED_DATABASE_PASSWD}
-      POSTGRES_DB: ${PIXELFED_DATABASE_NAME-pixelfed}
+      POSTGRES_DB: ${PIXELFED_DATABASE_NAME-pixelfed_prod}
       TZ: "Etc/UTC"
     volumes:
       - pixelfed-postgres-data:/var/lib/postgresql/data
