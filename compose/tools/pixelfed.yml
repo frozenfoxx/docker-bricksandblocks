@@ -92,7 +92,7 @@ services:
       - POSTGRES_USER=${PIXELFED_DATABASE_USER}
       - POSTGRES_PASSWORD=${PIXELFED_DATABASE_PASSWD}
       - POSTGRES_DB=${PIXELFED_DATABASE_NAME-pixelfed}
-      - TZ="America/Los_Angeles"
+      - TZ="Etc/UTC"
     volumes:
       - pixelfed-postgres-data:/var/lib/postgresql/data
     extends:
@@ -110,7 +110,7 @@ services:
     command: " --requirepass '${PIXELFED_REDIS_PASSWORD:-}'"
     restart: unless-stopped
     environment:
-      TZ: "America/Los_Angeles"
+      TZ: "Etc/UTC"
       REDISCLI_AUTH: ${PIXELFED_REDIS_PASSWORD:-}
     volumes:
       - pixelfed-redis-data:/data
