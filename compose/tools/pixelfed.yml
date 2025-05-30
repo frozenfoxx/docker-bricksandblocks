@@ -134,25 +134,25 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/pixelfed/cache"
+      device: ":/volume1/Docker/pixelfed-glitch/bootstrap/cache"
 
   pixelfed-data:
     driver: local
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/pixelfed/data"
+      device: ":/volume1/Docker/pixelfed-glitch/storage"
 
   pixelfed-postgres-data:
     driver: local
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/pixelfed/postgres/data"
+      device: ":/volume1/Docker/pixelfed-glitch/postgres"
 
   pixelfed-redis-data:
     driver: local
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/pixelfed/redis/data"
+      device: ":/volume1/Docker/pixelfed-glitch/redis"
