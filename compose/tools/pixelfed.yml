@@ -6,9 +6,6 @@ services:
     container_name: pixelfed-web
     restart: unless-stopped
     environment:
-      APP_KEY: "${PIXELFED_APP_KEY}"
-      DB_PASSWORD: "${PIXELFED_DATABASE_PASSWD}"
-      DB_USERNAME: "${PIXELFED_DATABASE_USER}"
       DOCKER_SERVICE_NAME: "pixelfed-web"
       ENTRYPOINT_SKIP_SCRIPTS: ${ENTRYPOINT_SKIP_SCRIPTS:-}
     volumes:
@@ -35,9 +32,6 @@ services:
     command: gosu www-data php artisan horizon
     restart: unless-stopped
     environment:
-      APP_KEY: "${PIXELFED_APP_KEY}"
-      DB_PASSWORD: "${PIXELFED_DATABASE_PASSWD}"
-      DB_USERNAME: "${PIXELFED_DATABASE_USER}"
       DOCKER_SERVICE_NAME: "pixelfed-worker"
       ENTRYPOINT_SKIP_SCRIPTS: any
     volumes:
@@ -63,9 +57,6 @@ services:
     restart: unless-stopped
     stop_signal: SIGTERM
     environment:
-      APP_KEY: "${PIXELFED_APP_KEY}"
-      DB_PASSWORD: "${PIXELFED_DATABASE_PASSWD}"
-      DB_USERNAME: "${PIXELFED_DATABASE_USER}"
       DOCKER_SERVICE_NAME: "pixelfed-cron"
       ENTRYPOINT_SKIP_SCRIPTS: any
     volumes:
