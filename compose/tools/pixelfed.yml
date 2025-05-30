@@ -3,8 +3,8 @@ services:
   pixelfed-web:
     image: ghcr.io/pixelfed-glitch/pixelfed:latest
     restart: unless-stopped
-    env_file:
-      - .env
+    #env_file:
+    #  - .env.pixelfed
     environment:
       # Used by Pixelfed Docker init script
       DOCKER_SERVICE_NAME: "web"
@@ -31,8 +31,8 @@ services:
     image: ghcr.io/pixelfed-glitch/pixelfed:fpm-latest
     command: gosu www-data php artisan horizon
     restart: unless-stopped
-    env_file:
-      - .env.pixelfed
+    #env_file:
+    #  - .env.pixelfed
     environment:
       # Used by Pixelfed Docker init script
       DOCKER_SERVICE_NAME: "worker"
@@ -58,8 +58,8 @@ services:
     command: gosu www-data php artisan schedule:work -vvv
     restart: unless-stopped
     stop_signal: SIGTERM
-    env_file:
-      - .env.pixelfed
+    #env_file:
+    #  - .env.pixelfed
     environment:
       # Used by Pixelfed Docker init script
       DOCKER_SERVICE_NAME: "cron"
