@@ -13,8 +13,6 @@ include:
       #- games/openttd/.env.autosave
       - games/openttd/.env.new
   - path: tools/pixelfed.yml
-    env_file:
-      - tools/.env.pixelfed
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun.yml
