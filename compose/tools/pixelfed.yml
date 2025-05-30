@@ -149,7 +149,7 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/pixelfed/postgres"
+      device: ":/volume1/Docker/pixelfed/postgres/data"
 
   pixelfed-redis-data:
     driver: local
