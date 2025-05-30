@@ -43,6 +43,7 @@ services:
       DB_USERNAME: "${PIXELFED_DATABASE_USER}"
       DOCKER_SERVICE_NAME: "pixelfed-worker"
       ENTRYPOINT_SKIP_SCRIPTS: any
+      REDIS_PASSWORD: "${PIXELFED_REDIS_PASSWORD:-}"
     volumes:
       - pixelfed-cache:/var/www/bootstrap/cache
       - pixelfed-data:/var/www/storage
@@ -73,6 +74,7 @@ services:
       DB_USERNAME: "${PIXELFED_DATABASE_USER}"
       DOCKER_SERVICE_NAME: "pixelfed-cron"
       ENTRYPOINT_SKIP_SCRIPTS: any
+      REDIS_PASSWORD: "${PIXELFED_REDIS_PASSWORD:-}"
     volumes:
       - pixelfed-cache:/var/www/bootstrap/cache
       - pixelfed-data:/var/www/storage
