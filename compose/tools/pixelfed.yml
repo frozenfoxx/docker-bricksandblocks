@@ -2,6 +2,7 @@
 services:
   pixelfed-web:
     image: ghcr.io/pixelfed-glitch/pixelfed:latest
+    container_name: pixelfed-web
     restart: unless-stopped
     #env_file:
     #  - .env.pixelfed
@@ -29,6 +30,7 @@ services:
 
   pixelfed-worker:
     image: ghcr.io/pixelfed-glitch/pixelfed:fpm-latest
+    container_name: pixelfed-worker
     command: gosu www-data php artisan horizon
     restart: unless-stopped
     #env_file:
@@ -55,6 +57,7 @@ services:
 
   pixelfed-cron:
     image: ghcr.io/pixelfed-glitch/pixelfed:fpm-latest
+    container_name: pixelfed-cron
     command: gosu www-data php artisan schedule:work -vvv
     restart: unless-stopped
     stop_signal: SIGTERM
@@ -83,6 +86,7 @@ services:
 ## DB and Cache
   pixelfed-postgres:
     image: postgres:16-alpine
+    container_name: pixelfed-postgres
     restart: unless-stopped
     environment:
       - POSTGRES_USER=${PIXELFED_DATABASE_USER}
@@ -102,6 +106,7 @@ services:
 
   pixelfed-redis:
     image: redis:7.4-alpine
+    container_name: pixelfed-redis
     command: " --requirepass '${PIXELFED_REDIS_PASSWORD:-}'"
     restart: unless-stopped
     environment:
