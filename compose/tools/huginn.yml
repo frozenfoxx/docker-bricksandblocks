@@ -4,6 +4,7 @@ services:
     container_name: huginn
     restart: unless-stopped
     environment:
+      APP_SECRET_TOKEN: ${HUGINN_APP_SECRET_TOKEN}
       DO_NOT_CREATE_DATABASE: ${HUGINN_CREATE_DATABASE-true}
       DOMAIN: "huginn.${NETWORK_DOMAIN-bricksandblocks.net}"
       DATABASE_ADAPTER: postgresql
