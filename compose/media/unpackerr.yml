@@ -3,7 +3,7 @@ services:
   unpackerr:
     image: golift/unpackerr
     container_name: unpackerr
-    restart: unless-st
+    restart: unless-stopped
     user: 1028:50
     environment:
       - PUID=1028 # 'staff' user
