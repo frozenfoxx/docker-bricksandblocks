@@ -8,6 +8,7 @@ include:
   - path: operations/notifiarr.yml
   - path: operations/wizarr.yml
   - path: tools/linkwarden.yml
+  - path: tools/palmr.yml
   - path: tools/foundryvtt.yml
     #env_file:
       #- tools/.env.foundry.new
