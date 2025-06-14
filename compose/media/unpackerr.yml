@@ -9,7 +9,7 @@ services:
       - PUID=1028 # 'staff' user
       - PGID=50 # 'staff' group
       - TZ=America/Los_Angeles
-      - UN_LOG_FILE=/data/unpackerr.log
+      - UN_LOG_FILE=/config/unpackerr.log
       - UN_RADARR_0_URL=http://radarr:7878
       - UN_RADARR_0_API_KEY=${RADARR_API_KEY}
       - UN_RADARR_1_URL=http://radarr-4k:7879
