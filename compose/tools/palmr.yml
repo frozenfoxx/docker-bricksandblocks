@@ -19,7 +19,7 @@ services:
       - "5487:5487" # Web port
       #- "3333:3333" # API port (OPTIONAL EXPOSED - ONLY IF YOU WANT TO ACCESS THE API DIRECTLY)
     volumes:
-      - palmr_data:/app/server # Volume for the application data
+      - palmr-data:/app/server # Volume for the application data
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
