@@ -56,7 +56,7 @@ generate_env_file() {
     echo "" >> "$ENV_FILE"
 
     # Get top-level keys (secret names) from the YAML file
-    secret_names=$(yq eval 'keys | .[]' "$SECRETS_YAML")
+    secret_names=$(yq 'keys | .[]' "$SECRETS_YAML")
 
     # Loop through each secret name found in the YAML
     while IFS= read -r secret_name; do
