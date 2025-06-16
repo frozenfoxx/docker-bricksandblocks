@@ -30,11 +30,11 @@ check_requirements() {
 ## Retrieve Secret Values
 get_secret_values() {
     local secret_name="$1"
-    echo "Retrieving secret: $secret_name"
+    echo "# Secret: $secret_name\n"
 
     local secret_string
     secret_string=$(aws secretsmanager get-secret-value \
-        --secret-id "$secret_name" \
+        --secret-id $secret_name \
         --region "$AWS_DEFAULT_REGION" \
         --query SecretString \
         --output text 2>/dev/null)
@@ -56,7 +56,7 @@ generate_env_file() {
     echo "" >> "$ENV_FILE"
 
     # Get top-level keys (secret names) from the YAML file
-    secret_names=$(yq 'keys | .[]' "$SECRETS_YAML")
+    secret_names=$(yq -r 'keys | .[]' "$SECRETS_YAML")
 
     # Loop through each secret name found in the YAML
     while IFS= read -r secret_name; do
