@@ -77,6 +77,11 @@ tasks:
     cmds:
       - "{{.ROOT_DIR}}/scripts/configure_templates.sh"
 
+  setup:secrets:
+    desc: "Retrieve secrets and build environment file"
+    cmds:
+      - "{{.ROOT_DIR}}/scripts/generate_aws_env.sh"
+
   update:
     desc: "Update repo"
     cmds:
