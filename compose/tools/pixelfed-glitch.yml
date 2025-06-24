@@ -1,8 +1,8 @@
 ---
-# Note: Pixelfed relies on a local .env file as part of the pixelfed deployment
+# Note: Pixelfed relies on a local .env file as part of the pixelfed-glitch deployment
 services:
   pixelfed-web:
-    image: ghcr.io/jippi/docker-pixelfed:latest
+    image: ghcr.io/pixelfed-glitch/pixelfed:latest
     container_name: pixelfed-web
     restart: unless-stopped
     environment:
@@ -27,7 +27,7 @@ services:
       retries: 2
 
   pixelfed-worker:
-    image: ghcr.io/jippi/docker-pixelfed:latest
+    image: ghcr.io/pixelfed-glitch/pixelfed:fpm-latest
     container_name: pixelfed-worker
     command: gosu www-data php artisan horizon
     restart: unless-stopped
@@ -51,7 +51,7 @@ services:
       retries: 2
 
   pixelfed-cron:
-    image: ghcr.io/jippi/docker-pixelfed:latest
+    image: ghcr.io/pixelfed-glitch/pixelfed:fpm-latest
     container_name: pixelfed-cron
     command: gosu www-data php artisan schedule:work -vvv
     restart: unless-stopped
@@ -120,25 +120,25 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/pixelfed/bootstrap/cache"
+      device: ":/volume1/Docker/pixelfed-glitch/bootstrap/cache"
 
   pixelfed-data:
     driver: local
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/pixelfed/storage"
+      device: ":/volume1/Docker/pixelfed-glitch/storage"
 
   pixelfed-postgres-data:
     driver: local
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/pixelfed/postgres"
+      device: ":/volume1/Docker/pixelfed-glitch/postgres"
 
   pixelfed-redis-data:
     driver: local
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/pixelfed/redis"
+      device: ":/volume1/Docker/pixelfed-glitch/redis"

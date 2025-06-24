@@ -3,7 +3,6 @@ include:
   - path: media/kavita.yml
   - path: media/jellyfin.yml
   - path: dashboards/fenrus.yml
-  - path: tools/actual.yml
   - path: tools/huginn.yml
     env_file:
       - tools/.env.huginn
