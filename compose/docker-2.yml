@@ -6,6 +6,9 @@ include:
   - path: tools/huginn.yml
     env_file:
       - tools/.env.huginn
+  - path: tools/paperless-ngx.yml
+    env_file:
+      - tools/.env.paperless-ngx
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun.yml

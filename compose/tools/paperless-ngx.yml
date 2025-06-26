@@ -1,0 +1,72 @@
+---
+services:
+  paperless-broker:
+    image: docker.io/library/redis:8
+    restart: unless-stopped
+    volumes:
+      - paperless-redis:/data
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
+
+  paperless-db:
+    image: docker.io/library/postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${PAPERLESS_DATABASE_NAME-paperless}
+      POSTGRES_USER: ${PAPERLESS_DATABASE_USER}
+      POSTGRES_PASSWORD: ${PAPERLESS_DATABASE_PASSWORD}
+    volumes:
+      - paperless-postgres:/var/lib/postgresql/data
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
+
+  paperless-webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    restart: unless-stopped
+    depends_on:
+      - paperless-db
+      - paperless-broker
+    environment:
+      PAPERLESS_REDIS: redis://broker:6379
+      PAPERLESS_DBHOST: db
+    ports:
+      - "8010:8000"
+    volumes:
+      - paperless-data:/usr/src/paperless/data
+      - paperless-media:/usr/src/paperless/media
+      - paperless-export:/usr/src/paperless/export
+      - paperless-consume:/usr/src/paperless/consume
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  paperless-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/paperless-ngx/data"
+
+  paperless-media:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/paperless-ngx/media"
+  
+  paperless-postgres:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/paperless-ngx/postgres"
+
+  paperless-redis:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/paperless-ngx/redis"
