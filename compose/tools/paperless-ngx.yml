@@ -2,6 +2,7 @@
 services:
   paperless-broker:
     image: docker.io/library/redis:8
+    container_name: paperless-broker
     restart: unless-stopped
     volumes:
       - paperless-redis:/data
@@ -11,6 +12,7 @@ services:
 
   paperless-db:
     image: docker.io/library/postgres:17
+    container_name: paperless-db
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${PAPERLESS_DATABASE_NAME-paperless}
@@ -24,13 +26,14 @@ services:
 
   paperless-webserver:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless-webserver
     restart: unless-stopped
     depends_on:
       - paperless-db
       - paperless-broker
     environment:
-      PAPERLESS_REDIS: redis://broker:6379
-      PAPERLESS_DBHOST: db
+      PAPERLESS_REDIS: redis://paperless-broker:6379
+      PAPERLESS_DBHOST: paperless-db
     ports:
       - "8010:8000"
     volumes:
