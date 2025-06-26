@@ -35,6 +35,7 @@ services:
       PAPERLESS_REDIS: redis://paperless-broker:6379
       PAPERLESS_DBENGINE: postgresql
       PAPERLESS_DBHOST: paperless-db
+      PAPERLESS_DBNAME: ${PAPERLESS_DATABASE_NAME-paperless}
       PAPERLESS_DBUSER: ${PAPERLESS_DATABASE_USER}
       PAPERLESS_DBPASSWORD: ${PAPERLESS_DATABASE_PASSWORD}
     ports:
