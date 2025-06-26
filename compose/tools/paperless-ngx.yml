@@ -15,7 +15,7 @@ services:
     container_name: paperless-db
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${PAPERLESS_DATABASE_NAME-paperless}
+      POSTGRES_DB: paperless
       POSTGRES_USER: ${PAPERLESS_DATABASE_USER}
       POSTGRES_PASSWORD: ${PAPERLESS_DATABASE_PASSWORD}
     volumes:
@@ -35,7 +35,7 @@ services:
       PAPERLESS_REDIS: redis://paperless-broker:6379
       PAPERLESS_DBENGINE: postgresql
       PAPERLESS_DBHOST: paperless-db
-      PAPERLESS_DBNAME: ${PAPERLESS_DATABASE_NAME-paperless}
+      PAPERLESS_DBNAME: paperless
       PAPERLESS_DBUSER: ${PAPERLESS_DATABASE_USER}
       PAPERLESS_DBPASSWORD: ${PAPERLESS_DATABASE_PASSWORD}
     ports:
