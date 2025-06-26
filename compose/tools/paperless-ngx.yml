@@ -43,12 +43,26 @@ services:
       service: logging-loki
 
 volumes:
+  paperless-consume:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/paperless-ngx/consume"
+
   paperless-data:
     driver: local
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
       device: ":/volume1/Docker/paperless-ngx/data"
+
+  paperless-export:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/paperless-ngx/export"
 
   paperless-media:
     driver: local
