@@ -38,6 +38,10 @@ services:
       PAPERLESS_DBNAME: paperless
       PAPERLESS_DBUSER: ${PAPERLESS_DATABASE_USER}
       PAPERLESS_DBPASS: ${PAPERLESS_DATABASE_PASSWORD}
+      PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET_KEY-}
+      PAPERLESS_URL: https://paperless.${NETWORK_DOMAIN-bricksandblocks.net}
+      USERMAP_GID: ${USERMAP_GID-50}
+      USERMAP_UID: ${USERMAP_UID-1028}
     ports:
       - "8010:8000"
     volumes:
