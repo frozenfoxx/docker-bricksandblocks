@@ -3,9 +3,12 @@ services:
     image: kyantech/palmr:latest
     container_name: palmr
     restart: unless-stopped # Restart the container unless it is stopped
+    user: "1028:50" # 'staff' user/group
     environment:
       - ENABLE_S3=false
       - ENCRYPTION_KEY=${PALMR_ENCRYPTION_KEY}
+      - PALMR_UID=1028
+      - PALMR_GID=50
       # S3 Configuration (only used when ENABLE_S3=true)
       # - ENABLE_S3=true # Set to true to use S3 storage
       # - S3_ENDPOINT=${S3_ENDPOINT} # S3 endpoint (you have to set this to the s3 endpoint of the s3 server) CHANGE THIS TO YOUR S3 ENDPOINT
