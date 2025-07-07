@@ -15,6 +15,7 @@ services:
       # - S3_REGION=${S3_REGION:-us-east-1} # S3 region (us-east-1 is the default region) but it depends on your s3 server region
       # - S3_BUCKET_NAME=${S3_BUCKET_NAME:-palmr-files} # Bucket name for the S3 storage (here we are using palmr-files as the bucket name to understand that this is the bucket for palmr)
       # - S3_FORCE_PATH_STYLE=false # For S3 compatibility we have to set this to false
+      - SECURE_SITE=true
     ports:
       - "5487:5487" # Web port
       #- "3333:3333" # API port (OPTIONAL EXPOSED - ONLY IF YOU WANT TO ACCESS THE API DIRECTLY)
