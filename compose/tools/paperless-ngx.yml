@@ -59,7 +59,7 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/paperless-ngx/consume"
+      device: ":/volume1/Scanner/consume"
 
   paperless-data:
     driver: local
@@ -73,7 +73,7 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/paperless-ngx/export"
+      device: ":/volume1/Scanner/export"
 
   paperless-media:
     driver: local
