@@ -32,12 +32,13 @@ services:
       - paperless-db
       - paperless-broker
     environment:
-      PAPERLESS_REDIS: redis://paperless-broker:6379
+      PAPERLESS_CONSUMER_POLLING: ${PAPERLESS_CONSUMER_POLLING}
       PAPERLESS_DBENGINE: postgresql
       PAPERLESS_DBHOST: paperless-db
       PAPERLESS_DBNAME: paperless
       PAPERLESS_DBUSER: ${PAPERLESS_DATABASE_USER}
       PAPERLESS_DBPASS: ${PAPERLESS_DATABASE_PASSWORD}
+      PAPERLESS_REDIS: redis://paperless-broker:6379
       PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET_KEY-}
       PAPERLESS_URL: https://paperless.${NETWORK_DOMAIN-bricksandblocks.net}
       USERMAP_GID: ${USERMAP_GID-50}
