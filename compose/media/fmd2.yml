@@ -4,6 +4,7 @@ services:
     image: sillysuki/fmd2:latest
     container_name: fmd2
     restart: unless-stopped
+    user: 1028:50
     environment:
       - PUID=1028 # 'staff' user
       - PGID=50 # 'staff' group
