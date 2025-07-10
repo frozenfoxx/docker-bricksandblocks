@@ -100,7 +100,7 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/authentik/database"
+      device: ":/volume1/Docker/authentik/postgres"
 
   authentik-redis:
     driver: local
