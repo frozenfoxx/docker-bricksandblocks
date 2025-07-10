@@ -1,3 +1,4 @@
+---
 services:
   loki:
     image: grafana/loki:latest
