@@ -9,6 +9,7 @@ include:
   - path: tools/paperless-ngx.yml
     env_file:
       - tools/.env.paperless-ngx
+  - path: media/fmd2.yml
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun.yml

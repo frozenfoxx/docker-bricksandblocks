@@ -1,0 +1,36 @@
+---
+services:
+  fmd2:
+    image: sillysuki/fmd2:latest
+    container_name: fmd2
+    restart: unless-stopped
+    environment:
+      - PUID=1028 # 'staff' user
+      - PGID=50 # 'staff' group
+      - TZ=America/Los_Angeles
+      - UMASK=022
+      - THRESHOLD_MINUTES=3
+      - TRANSFER_FILE_TYPE=.cbz
+    ports:
+      - 3031:3000
+    volumes:
+      - fmd2-userdata:/app/FMD2/userdata
+      - fmd2-downloads:/downloads
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  fmd2-downloads:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Media/downloads/fmd2"
+
+  fmd2-userdata:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/fmd2/userdata"
