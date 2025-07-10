@@ -5,6 +5,8 @@ services:
     container_name: striling-pdf
     environment:
       - DISABLE_ADDITIONAL_FEATURES=false
+      - DOCKER_ENABLE_SECURITY=true
+      - SECURITY_ENABLE_LOGIN=true
       - LANGS=en_US
     ports:
       - '8780:8080'
