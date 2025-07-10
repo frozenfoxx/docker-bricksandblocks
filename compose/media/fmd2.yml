@@ -15,7 +15,7 @@ services:
       - 3031:3000
     volumes:
       - fmd2-userdata:/app/FMD2/userdata
-      - fmd2-downloads:/downloads
+      - fmd2-downloads:/app/FMD2/downloads
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
