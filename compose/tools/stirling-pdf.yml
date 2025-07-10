@@ -1,0 +1,55 @@
+---
+services:
+  stirling-pdf:
+    image: docker.stirlingpdf.com/stirlingtools/stirling-pdf:latest
+    container_name: striling-pdf
+    environment:
+      - DISABLE_ADDITIONAL_FEATURES=false
+      - LANGS=en_US
+    ports:
+      - '8780:8080'
+    volumes:
+      - stirling-pdf-tessdata:/usr/share/tessdata # Required for extra OCR languages
+      - stirling-pdf-configs:/configs
+      - stirling-pdf-customFiles:/customFiles/
+      - stirling-pdf-logs:/logs/
+      - stirling-pdf-pipeline:/pipeline/
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  stirling-pdf-configs:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/stirling-pdf/configs"
+
+  stirling-pdf-customFiles:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/stirling-pdf/customFiles"
+
+  stirling-pdf-logs:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/stirling-pdf/logs"
+
+  stirling-pdf-pipeline:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/stirling-pdf/pipeline"
+
+  stirling-pdf-tessdata:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/stirling-pdf/tessdata"
