@@ -2,7 +2,7 @@
 services:
   stirling-pdf:
     image: docker.stirlingpdf.com/stirlingtools/stirling-pdf:latest
-    container_name: striling-pdf
+    container_name: stirling-pdf
     environment:
       - DISABLE_ADDITIONAL_FEATURES=false
       - DOCKER_ENABLE_SECURITY=true
