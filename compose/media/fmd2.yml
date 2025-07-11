@@ -5,10 +5,10 @@ services:
     container_name: fmd2
     restart: unless-stopped
     environment:
-      - PUID=1000
+      - PUID=1028
       - PGID=50 # 'staff' group
       - TZ=America/Los_Angeles
-      - UMASK=022
+      - UMASK=002
       - THRESHOLD_MINUTES=3
       - TRANSFER_FILE_TYPE=.cbz
     ports:
