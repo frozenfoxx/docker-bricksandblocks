@@ -9,7 +9,8 @@ services:
       - PGID=50 # 'staff' group
       - TZ=America/Los_Angeles
     volumes:
-      - radarr-config:/config
+      #- radarr-config:/config
+      - ${LOCAL_PREFIX-/local}/radarr/config:/config
       - radarr-data:/data
     ports:
       - 7878:7878
@@ -26,7 +27,8 @@ services:
       - PGID=50 # 'staff' group
       - TZ=America/Los_Angeles
     volumes:
-      - radarr-4k-config:/config
+      #- radarr-4k-config:/config
+      - ${LOCAL_PREFIX-/local}/radarr-4k/config:/config
       - radarr-data:/data
     ports:
       - 7879:7878
@@ -35,19 +37,19 @@ services:
       service: logging-loki
 
 volumes:
-  radarr-config:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/radarr/config"
+  #radarr-config:
+  #  driver: local
+  #  driver_opts:
+  #    type: nfs
+  #    o: "addr=${DATA_HOST},nolock,soft,rw"
+  #    device: ":/volume1/Docker/radarr/config"
 
-  radarr-4k-config:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/radarr-4k/config"
+  #radarr-4k-config:
+  #  driver: local
+  #  driver_opts:
+  #    type: nfs
+  #    o: "addr=${DATA_HOST},nolock,soft,rw"
+  #    device: ":/volume1/Docker/radarr-4k/config"
 
   radarr-data:
     driver: local

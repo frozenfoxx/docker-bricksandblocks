@@ -9,7 +9,8 @@ services:
       - PGID=50 # 'staff' group
       - TZ=America/Los_Angeles
     volumes:
-      - sonarr-config:/config
+      #- sonarr-config:/config
+      - ${LOCAL_PREFIX-/local}/sonarr/config:/config
       - sonarr-data:/data
     ports:
       - 8989:8989
@@ -26,7 +27,8 @@ services:
       - PGID=50 # 'staff' group
       - TZ=America/Los_Angeles
     volumes:
-      - sonarr-4k-config:/config
+      #- sonarr-4k-config:/config
+      - ${LOCAL_PREFIX-/local}/sonarr-4k/config:/config
       - sonarr-data:/data
     ports:
       - 8990:8989
@@ -35,19 +37,19 @@ services:
       service: logging-loki
 
 volumes:
-  sonarr-config:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/sonarr/config"
+  #sonarr-config:
+  #  driver: local
+  #  driver_opts:
+  #    type: nfs
+  #    o: "addr=${DATA_HOST},nolock,soft,rw"
+  #    device: ":/volume1/Docker/sonarr/config"
 
-  sonarr-4k-config:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/sonarr-4k/config"
+  #sonarr-4k-config:
+  #  driver: local
+  #  driver_opts:
+  #    type: nfs
+  #    o: "addr=${DATA_HOST},nolock,soft,rw"
+  #    device: ":/volume1/Docker/sonarr-4k/config"
 
   sonarr-data:
     driver: local
