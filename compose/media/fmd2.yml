@@ -5,8 +5,9 @@ services:
     container_name: fmd2
     restart: unless-stopped
     environment:
-      - PUID=1028
-      - PGID=50 # 'staff' group
+      # FIXME: uid/gid are explicitly needed to be 1000
+      - PUID=1000
+      - PGID=1000
       - TZ=America/Los_Angeles
       - UMASK=002
       - THRESHOLD_MINUTES=3
