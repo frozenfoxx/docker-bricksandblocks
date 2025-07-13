@@ -1,0 +1,11 @@
+---
+services:
+  omni-tools:
+    image: iib0011/omni-tools:latest
+    container_name: omni-tools
+    restart: unless-stopped
+    ports:
+      - "4380:80"
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
