@@ -15,6 +15,7 @@ include:
   - path: tools/gitea.yml
   - path: tools/mealie.yml
   - path: tools/opengist.yml
+  - path: tools/it-tools.yml
   - path: tools/stirling-pdf.yml
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml

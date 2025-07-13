@@ -1,0 +1,11 @@
+---
+services:
+  it-tools:
+    image: ghcr.io/corentinth/it-tools:latest
+    container_name: it-tools
+    restart: unless-stopped
+    ports:
+      - "3280:80"
+    extends:
+      file: ${ROOT_DIR-..}/lib/logging.yml
+      service: logging-loki
