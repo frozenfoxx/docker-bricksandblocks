@@ -18,6 +18,7 @@ include:
   - path: tools/it-tools.yml
   - path: tools/omni-tools.yml
   - path: tools/stirling-pdf.yml
+  - path: tools/searxng.yml
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun.yml
