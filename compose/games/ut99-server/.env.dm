@@ -1,0 +1,6 @@
+UT_SERVERURL=""
+UT_SERVERNAME="Cult of Foxx (DM)"
+UT_ADMINNAME="FrozenFOXX"
+UT_MOTD1="Welcome to the Cult of Foxx Deathmatch Server"
+UT_MINPLAYERS_DM="2"
+UT_INITIALBOTS_DM="0"

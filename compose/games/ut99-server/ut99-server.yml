@@ -1,0 +1,46 @@
+services:
+  ut99-server:
+    image: roemer/ut99-server:latest
+    container_name: ut99-server
+    restart: unless-stopped
+    environment:
+      UT_SERVERURL: "${UT_SERVERURL}"
+      UT_SERVERNAME: "${UT_SERVERNAME}"
+      UT_ADMINNAME: "${UT_ADMINNAME-admin}"
+      UT_ADMINEMAIL: "${UT_ADMINEMAIL-admin@${NETWORK_DOMAIN-bricksandblocks.net}"
+      UT_MOTD1: "${UT_MOTD1-Have Fun}"
+      UT_ADMINPWD: "${UT_ADMINPWD-admin}"
+      UT_WEBADMINUSER: "${UT_WEBADMINUSER-admin}"
+      UT_WEBADMINPWD: "${UT_WEBADMINPWD-admin}"
+      UT_MINPLAYERS_DM: "${UT_MINPLAYERS_DM-4}"
+      UT_MINPLAYERS_CTF: "${UT_MINPLAYERS_CTF-8}"
+      UT_MAXPLAYERS: "${UT_MAXPLAYERS-32}"
+      UT_INITIALBOTS_DM: "${UT_INITIALBOTS_DM-4}"
+      UT_INITIALBOTS_CTF: "${UT_INITIALBOTS_CTF-8}"
+    ports:
+      # Webadmin
+      - 5580:5580/tcp
+      # Game Play
+      - 7777:7777/udp
+      # Server Querying
+      - 7778-7781/udp
+      # LAN Discovery
+      - 8777:8777/udp
+      # Server Announcement
+      - 27500:27500/tcp
+      - 27500:27500/udp
+      - 27900:27900/tcp
+      - 27900:27900/udp
+    volumes:
+      - ut99-server-data:/ut-data
+    extends:
+      file: ${ROOT_DIR-../../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  ut99-server-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/ut99-server/data"
