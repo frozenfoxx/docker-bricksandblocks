@@ -18,15 +18,16 @@ services:
       #- "traefik.http.services.tautulli.loadbalancer.server.port=8181"
       #- "traefik.http.services.tautulli.loadbalancer.server.scheme=http"
     volumes:
-      - tautulli-data:/config
+      #- tautulli-data:/config
+      - ${LOCAL_PREFIX-/local}/tautulli:/config
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
 
-volumes:
-  tautulli-data:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/tautulli"
+#volumes:
+#  tautulli-data:
+#    driver: local
+#    driver_opts:
+#      type: nfs
+#      o: "addr=${DATA_HOST},nolock,soft,rw"
+#      device: ":/volume1/Docker/tautulli"
