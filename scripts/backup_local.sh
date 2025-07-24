@@ -14,7 +14,7 @@ backup()
     for dir in $(ls "${LOCAL_PREFIX}"); do
       echo "Processing ${LOCAL_PREFIX}/${dir}..."
       rsync -avP --delete ${LOCAL_PREFIX}/${dir} ${DATA_PREFIX}/
-    end
+    done
 }
 
 ## Check for required tools
