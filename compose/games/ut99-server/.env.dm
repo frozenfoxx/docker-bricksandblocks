@@ -1,4 +1,4 @@
-UT_SERVERURL=""
+UT_SERVERURL="DM-Deck16][?game=Botpack.DeathMatchPlus"
 UT_SERVERNAME="Cult of Foxx (DM)"
 UT_ADMINNAME="FrozenFOXX"
 UT_MOTD1="Welcome to the Cult of Foxx Deathmatch Server"
