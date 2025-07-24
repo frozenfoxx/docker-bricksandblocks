@@ -28,7 +28,7 @@ tasks:
     silent: true
 
   backup:local:
-    desc: Backup ${LOCAL_PREFIX-/local} to ${DATA_HOST}
+    desc: Backup local mounts to a data host
     cmds:
       - ./scripts/backup_local.sh
 
