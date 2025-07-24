@@ -7,7 +7,7 @@ services:
       UT_SERVERURL: "${UT_SERVERURL}"
       UT_SERVERNAME: "${UT_SERVERNAME}"
       UT_ADMINNAME: "${UT_ADMINNAME-admin}"
-      UT_ADMINEMAIL: "${UT_ADMINEMAIL-admin@${NETWORK_DOMAIN-bricksandblocks.net}"
+      UT_ADMINEMAIL: "${UT_ADMINEMAIL-admin@${NETWORK_DOMAIN-bricksandblocks.net}}"
       UT_MOTD1: "${UT_MOTD1-Have Fun}"
       UT_ADMINPWD: "${UT_ADMINPWD-admin}"
       UT_WEBADMINUSER: "${UT_WEBADMINUSER-admin}"
