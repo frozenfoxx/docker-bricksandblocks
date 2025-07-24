@@ -22,6 +22,7 @@ task setup
 
 # Usage
 
+* **Backup local mounts to a data host**: `task backup:local`
 * **Deploy a service**: `task deploy -- compose/[role].yml`
 * **Deploy all services for a host**: `task deploy -- compose/[hostname].yml`
 * **Destroy a service**: `task destroy -- compose/[role].yml`
