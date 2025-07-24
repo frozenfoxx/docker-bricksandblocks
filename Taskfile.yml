@@ -27,6 +27,11 @@ tasks:
       - task -l
     silent: true
 
+  backup:local:
+    desc: Backup ${LOCAL_PREFIX-/local} to ${DATA_HOST}
+    cmds:
+      - ./scripts/backup_local.sh
+
   clean:
     desc: Clean unused containers, images, and volumes
     cmds:
