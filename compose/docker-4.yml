@@ -12,7 +12,7 @@ include:
     env_file:
       #- games/openttd/.env.autosave
       - games/openttd/.env.new
-  - path: games/ut99-server/ut99-server.yml
+  - path: games/ut99/ut99.yml
     env_file:
       - games/ut99/.env.dm
   #- path: tools/pixelfed-jippi.yml
