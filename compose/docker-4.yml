@@ -14,7 +14,7 @@ include:
       - games/openttd/.env.new
   - path: games/ut99-server/ut99-server.yml
     env_file:
-      - games/ut99-server/.env.dm
+      - games/ut99/.env.dm
   #- path: tools/pixelfed-jippi.yml
     #env_file:
       #- ${ROOT_DIR-..}/.env.pixelfed
