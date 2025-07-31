@@ -30,7 +30,7 @@ check_requirements() {
 ## Retrieve Secret Values
 get_secret_values() {
     local secret_name="$1"
-    echo "# Secret: $secret_name\n"
+    echo "# Secret: $secret_name"
 
     local secret_string
     secret_string=$(aws secretsmanager get-secret-value \
