@@ -6,6 +6,9 @@ include:
   - path: dashboards/grafana.yml
   - path: prometheus/prometheus.yml
   - path: operations/notifiarr.yml
+  - path: operations/authentik.yml
+    env_file:
+      - operations/.env.authentik
   - path: operations/wizarr.yml
   - path: tools/linkwarden.yml
   - path: tools/palmr.yml
