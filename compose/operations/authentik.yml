@@ -2,7 +2,9 @@
 services:
   authentik-postgres:
     image: docker.io/library/postgres:16-alpine
+    container_name: authentik-postgres
     restart: unless-stopped
+    user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
     environment:
       POSTGRES_PASSWORD: ${AUTHENTIK_PG_PASSWORD:?database password required}
       POSTGRES_USER: ${AUTHENTIK_PG_USER:-authentik}
@@ -21,8 +23,10 @@ services:
 
   authentik-redis:
     image: docker.io/library/redis:alpine
-    command: --save 60 1 --loglevel warning
+    container_name: authentik-redis
     restart: unless-stopped
+    command: --save 60 1 --loglevel warning
+    user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
     volumes:
       - authentik-redis:/data
     healthcheck:
@@ -37,8 +41,10 @@ services:
 
   authentik:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2025.6.3}
+    container_name: authentik
     restart: unless-stopped
     command: server
+    user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
     environment:
       AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:?secret key required}
       AUTHENTIK_REDIS__HOST: authentik-redis
