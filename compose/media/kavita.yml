@@ -38,4 +38,4 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${MEDIA_HOST},nolock,soft,ro"
-      device: ":/volume1/Documents/KavitaLibrary"
+      device: ":/volume1/Media/KavitaLibrary"
