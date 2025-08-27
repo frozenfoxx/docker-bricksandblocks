@@ -14,7 +14,7 @@ include:
   - path: tools/palmr.yml
   - path: tools/foundryvtt.yml
     #env_file:
-      #- tools/.env.foundry.new
+      #- tools/.env.foundryvtt.new
   - path: tools/gitea.yml
   - path: tools/mealie.yml
   - path: tools/opengist.yml
