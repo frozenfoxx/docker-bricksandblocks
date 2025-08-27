@@ -1,7 +1,7 @@
 services:
   foundryvtt:
     #image: felddy/foundryvtt:release # Latest
-    image: felddy/foundryvtt:13
+    image: felddy/foundryvtt:12
     container_name: foundryvtt
     restart: unless-stopped
     hostname: "${HOSTNAME}"
