@@ -5,7 +5,8 @@ services:
     container_name: foundryvtt
     restart: unless-stopped
     hostname: "${HOSTNAME}"
-    user: "1028:50" # 'staff' user/group
+    #FIXME: https://github.com/felddy/foundryvtt-docker/issues/56
+    #user: "1028:50" # 'staff' user/group
     environment:
       CONTAINER_PRESERVE_CONFIG: ${FOUNDRYVTT_CONTAINER_PRESERVE_CONFIG-true}
       FOUNDRY_HOSTNAME: "https://foundryvtt.${NETWORK_DOMAIN-bricksandblocks.net}"
