@@ -59,8 +59,8 @@ services:
       container_name: archivebox_scheduler
       command: schedule --foreground --update --every=day
       environment:
-          # - PUID=911                        # set to your host user's UID & GID if you encounter permissions issues
-          # - PGID=911
+          - PUID=1028                         # 'staff' user
+          - PGID=50                           # 'staff' group
           - TIMEOUT=120                       # use a higher timeout than the main container to give slow tasks more time when retrying
           - SEARCH_BACKEND_ENGINE=sonic       # tells ArchiveBox to use sonic container below for fast full-text search
           - SEARCH_BACKEND_HOST_NAME=sonic
