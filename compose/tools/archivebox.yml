@@ -16,8 +16,6 @@ services:
       container_name: archivebox
       user: "1028:50" # 'staff' user/group
       environment:
-          # - ADMIN_USERNAME=admin            # creates an admin user on first run with the given user/pass combo
-          # - ADMIN_PASSWORD=SomeSecretPassword
           - ALLOWED_HOSTS=*                   # set this to the hostname(s) you're going to serve the site from!
           - CSRF_TRUSTED_ORIGINS=https://archivebox.${NETWORK_DOMAIN-bricksandblocks.net} # you MUST set this to the server's URL for admin login and the REST API to work
           - PUBLIC_INDEX=False                # set to False to prevent anonymous users from viewing snapshot list
@@ -40,7 +38,7 @@ services:
       ports:
           - 18001:8000
       volumes:
-          - archivebox-data:/data
+          - ${LOCAL_PREFIX-/local}/archivebox/data:/data
           # ./data/personas/Default/chrome_profile/Default:/data/personas/Default/chrome_profile/Default
       extends:
         file: ${ROOT_DIR-../..}/lib/logging.yml
@@ -69,7 +67,7 @@ services:
           # ...
           # For more info, see: https://github.com/ArchiveBox/ArchiveBox/wiki/Docker#configuration
       volumes:
-          - archivebox-data:/data
+          - ${LOCAL_PREFIX-/local}/archivebox/data:/data
       extends:
         file: ${ROOT_DIR-../..}/lib/logging.yml
         service: logging-loki
@@ -92,7 +90,7 @@ services:
           - SEARCH_BACKEND_PASSWORD=${ARCHIVEBOX_BACKEND_PASSWORD-SomeSecretPassword}
       volumes:
           #- ./sonic.cfg:/etc/sonic.cfg:ro    # mount to customize: https://raw.githubusercontent.com/ArchiveBox/ArchiveBox/stable/etc/sonic.cfg
-          - sonic-data:/var/lib/sonic/store
+          - ${LOCAL_PREFIX-/local}/archivebox/data/sonic:/data
       extends:
         file: ${ROOT_DIR-../..}/lib/logging.yml
         service: logging-loki
@@ -141,20 +139,20 @@ services:
 #     root_folder_id = 0Abcd...
 #     token = {"access_token":...}
 
-volumes:
-  archivebox-data:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/archivebox/data"
+#volumes:
+  # archivebox-data:
+  #   driver: local
+  #   driver_opts:
+  #     type: nfs
+  #     o: "addr=${DATA_HOST},nolock,soft,rw"
+  #     device: ":/volume1/Docker/archivebox/data"
 
-  sonic-data:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/archivebox/data/sonic"
+  # sonic-data:
+  #   driver: local
+  #   driver_opts:
+  #     type: nfs
+  #     o: "addr=${DATA_HOST},nolock,soft,rw"
+  #     device: ":/volume1/Docker/archivebox/data/sonic"
 
     # archive:
     #     driver: rclone
