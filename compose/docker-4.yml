@@ -18,7 +18,7 @@ include:
   #- path: tools/pixelfed-jippi.yml
     #env_file:
       #- ${ROOT_DIR-..}/.env.pixelfed
-  - path: tools/fasten.yml
+  #- path: tools/fasten.yml
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun.yml
