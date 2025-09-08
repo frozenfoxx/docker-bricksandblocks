@@ -2,6 +2,7 @@ include:
   - path: operations/gluetun.yml
   - path: media/qbittorrent.yml
   - path: media/prowlarr.yml
+  - path: media/lidarr.yml
   - path: media/radarr.yml
   - path: media/sonarr.yml
   #- path: media/unpackerr.yml
