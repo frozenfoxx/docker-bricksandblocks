@@ -1,0 +1,30 @@
+---
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
+    restart: always
+    ports:
+      - "4533:4533"
+    volumes:
+      - navidrome-data:/data
+      - navidrome-music:/music:ro
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  navidrome-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/navidrome/data"
+
+  navidrome-music:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${MEDIA_HOST},nolock,soft,ro"
+      device: ":/volume1/Media/Music"
