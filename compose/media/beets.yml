@@ -1,0 +1,41 @@
+---
+services:
+  beets:
+    image: lscr.io/linuxserver/beets:latest
+    container_name: beets
+    restart: unless-stopped
+    environment:
+      - PUID=1028 # 'staff' user
+      - PGID=50 # 'staff' group
+      - TZ=America/Los_Angeles
+    volumes:
+      - beets-config:/config
+      - beets-ingest:/downloads
+      - beets-music:/music
+    ports:
+      - 8337:8337
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  beets-config:
+   driver: local
+   driver_opts:
+     type: nfs
+     o: "addr=${DATA_HOST},nolock,soft,rw"
+     device: ":/volume1/Docker/beets/config"
+
+  beets-ingest:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${MEDIA_HOST},nolock,soft,rw"
+      device: ":/volume1/Media/downloads/beets"
+
+  beets-music:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${MEDIA_HOST},nolock,soft,rw"
+      device: ":/volume1/Media/Music"
