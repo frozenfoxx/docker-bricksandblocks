@@ -5,6 +5,8 @@ services:
     container_name: navidrome
     user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
     restart: always
+    environment:
+      ND_CONFIGFILE=/data/navidrome.toml
     ports:
       - "4533:4533"
     volumes:
