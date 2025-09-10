@@ -32,6 +32,7 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     environment:
+      - BLOCK_MALICIOUS=off
       - VPN_PORT_FORWARDING=on
       - VPN_SERVICE_PROVIDER=protonvpn
       - VPN_TYPE=wireguard
