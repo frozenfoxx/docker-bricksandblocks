@@ -32,13 +32,13 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     environment:
-      - BLOCK_MALICIOUS=off
       - VPN_PORT_FORWARDING=on
       - VPN_SERVICE_PROVIDER=protonvpn
       - VPN_TYPE=wireguard
       - WIREGUARD_PRIVATE_KEY=${GLUETUN_WIREGUARD_PRIVATE_KEY}
       - WIREGUARD_ADDRESSES=${GLUETUN_WIREGUARD_ADDRESSES}
       - SERVER_COUNTRIES=${GLUETUN_SERVER_COUNTRIES}
+      - BLOCK_MALICIOUS=off
     ports:
       - 49893:49893 # qbitorrent WebUI
       #- 6881:6881 # qbittorrent listening port for TCP
