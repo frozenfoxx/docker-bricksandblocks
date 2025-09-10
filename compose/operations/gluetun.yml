@@ -39,6 +39,8 @@ services:
       - WIREGUARD_ADDRESSES=${GLUETUN_WIREGUARD_ADDRESSES}
       - SERVER_COUNTRIES=${GLUETUN_SERVER_COUNTRIES}
       - BLOCK_MALICIOUS=off
+      - BLOCK_SURVEILLANCE=off
+      - BLOCK_ADS=off
     ports:
       - 49893:49893 # qbitorrent WebUI
       #- 6881:6881 # qbittorrent listening port for TCP
