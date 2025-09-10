@@ -10,19 +10,20 @@ services:
     ports:
       - "4533:4533"
     volumes:
-      - navidrome-data:/data
+      # - navidrome-data:/data
+      - ${LOCAL_PREFIX-/local}/navidrome/data:/data
       - navidrome-music:/music:ro
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
 
 volumes:
-  navidrome-data:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/navidrome/data"
+  # navidrome-data:
+  #   driver: local
+  #   driver_opts:
+  #     type: nfs
+  #     o: "addr=${DATA_HOST},nolock,soft,rw"
+  #     device: ":/volume1/Docker/navidrome/data"
 
   navidrome-music:
     driver: local
