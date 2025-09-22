@@ -12,9 +12,9 @@ include:
   - path: operations/wizarr.yml
   - path: tools/linkwarden.yml
   - path: tools/palmr.yml
-  - path: tools/foundryvtt.yml
+  - path: games/foundryvtt.yml
     #env_file:
-      #- tools/.env.foundryvtt.new
+      #- games/.env.foundryvtt.new
   - path: tools/gitea.yml
   - path: tools/mealie.yml
   - path: tools/opengist.yml
