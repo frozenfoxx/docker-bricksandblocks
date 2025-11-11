@@ -1,0 +1,34 @@
+---
+services:
+  whisparr:
+    image: ghcr.io/hotio/whisparr
+    container_name: whisparr
+    restart: unless-stopped
+    environment:
+      - PUID=1028 # 'staff' user
+      - PGID=50 # 'staff' group
+      - TZ=America/Los_Angeles
+    volumes:
+      #- whisparr-config:/config
+      - ${LOCAL_PREFIX-/local}/whisparr/config:/config
+      - whisparr-data:/data
+    ports:
+      - 6969:6969
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  #whisparr-config:
+  #  driver: local
+  #  driver_opts:
+  #    type: nfs
+  #    o: "addr=${DATA_HOST},nolock,soft,rw"
+  #    device: ":/volume1/Docker/whisparr/config"
+
+  whisparr-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${MEDIA_HOST},nolock,soft,rw"
+      device: ":/volume1/Media"
