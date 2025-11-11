@@ -2,24 +2,17 @@ include:
   - path: media/tautulli.yml
   - path: media/plex.yml
   - path: media/navidrome.yml
-  #- path: games/vrising/vrising.yml
-    #env_file:
-      #- games/vrising/.env.pve
   #- path: games/barotrauma/barotrauma.yml
   - path: games/zandronum/zandronum.yml
     env_file:
       - games/zandronum/.env.lexicon
-  - path: games/openttd/openttd.yml
-    env_file:
-      #- games/openttd/.env.autosave
-      - games/openttd/.env.new
-  - path: games/ut99/ut99.yml
-    env_file:
-      - games/ut99/.env.dm
-  #- path: tools/pixelfed-jippi.yml
-    #env_file:
-      #- ${ROOT_DIR-..}/.env.pixelfed
-  #- path: tools/fasten.yml
+  # - path: games/openttd/openttd.yml
+  #   env_file:
+  #     #- games/openttd/.env.autosave
+  #     - games/openttd/.env.new
+  # - path: games/ut99/ut99.yml
+  #   env_file:
+  #     - games/ut99/.env.dm
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun.yml
