@@ -3,13 +3,16 @@ include:
   - path: media/qbittorrent.yml
   - path: media/beets.yml
   - path: media/prowlarr.yml
-  #- path: media/lidarr.yml
+  # - path: media/lidarr.yml
   - path: media/radarr.yml
   - path: media/sonarr.yml
-  #- path: media/unpackerr.yml
+  # - path: media/unpackerr.yml
   - path: media/jellyseerr.yml
   - path: media/overseerr.yml
   - path: media/metube.yml
+  # - path: media/stacks.yml
+    # env_file:
+    #   - media/.env.stacks.new
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun.yml
