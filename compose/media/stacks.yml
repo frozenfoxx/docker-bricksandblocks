@@ -1,0 +1,53 @@
+services:
+  stacks:
+    image: zelest/stacks:latest
+    container_name: stacks
+    stop_signal: SIGTERM
+    stop_grace_period: 30s
+    ports:
+      - "7788:7788"
+    volumes:
+      # REQUIRED - change these paths to match your system
+      - stacks-config:/opt/stacks/config # Configuration files
+      - stacks-downloads:/opt/stacks/download # Downloaded files
+      - ${LOCAL_PREFIX-/local}/stacks/logs:/opt/stacks/logs # Log files
+    restart: unless-stopped
+    environment:
+      # These only apply on first run, afterward edit config.yaml directly
+      - USERNAME=${STACKS_USER:-foxxadmin}
+      - PASSWORD=${STACKS_PASSWORD}
+
+      # Set to true to reset the admin password to the above values on startup
+      - RESET_ADMIN=${STACKS_RESET_ADMIN-false}
+
+      # If you're using flaresolverr, this will automatically connect it
+      #- SOLVERR_URL=flaresolverr:8191
+
+      - PUID=1028
+      - PGID=50 # 'staff' group
+      - TZ=America/Los_Angeles
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  stacks-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/stacks/config"
+
+  stacks-downloads:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Media/downloads/stacks"
+
+  # stacks-logs:
+  #   driver: local
+  #   driver_opts:
+  #     type: nfs
+  #     o: "addr=${DATA_HOST},nolock,soft,rw"
+  #     device: ":/volume1/Docker/stacks/logs"
