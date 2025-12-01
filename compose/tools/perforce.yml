@@ -1,0 +1,31 @@
+services:
+  p4:
+    image: frozenfoxx/p4:latest
+    container_name: p4
+    restart: always
+    environment:
+      - UID=1028 # 'staff' user
+      - GID=50   # 'staff' group
+    ports:
+      - "1666:1666"
+    volumes:
+      - p4-depots:/opt/perforce/depots
+      - p4-server:/opt/perforce/server
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  p4-server:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/p4/server"
+
+  p4-depots:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/p4/depots"
