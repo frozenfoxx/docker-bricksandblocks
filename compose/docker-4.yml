@@ -13,7 +13,7 @@ include:
   # - path: games/ut99/ut99.yml
   #   env_file:
   #     - games/ut99/.env.dm
-  #- path: tools/perforce.yml
+  - path: tools/perforce.yml
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun.yml
