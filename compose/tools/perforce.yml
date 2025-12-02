@@ -1,5 +1,5 @@
 services:
-  p4:
+  p4d:
     image: frozenfoxx/p4d:latest
     container_name: p4d
     restart: always
