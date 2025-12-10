@@ -7,7 +7,7 @@ services:
       #- "--api.insecure=true"
 
       # Entrypoints
-      - "--entrypoints.p4secure.address=:1666"
+      - "--entrypoints.p4secure.address=:1667"
       - "--entrypoints.mqtt.address=:1883"
       - "--entrypoints.mqttsecure.address=:8883"
       #- "--entrypoints.mqttwebsocket.address=:9001"
