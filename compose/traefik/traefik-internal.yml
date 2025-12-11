@@ -7,6 +7,7 @@ services:
       #- "--api.insecure=true"
 
       # Entrypoints
+      - "--entrypoints.p4secure.address=:1666"
       - "--entrypoints.p4secure.address=:1667"
       - "--entrypoints.mqtt.address=:1883"
       - "--entrypoints.mqttsecure.address=:8883"
@@ -40,6 +41,7 @@ services:
     ports:
       - "80:80"     # HTTP
       - "443:443"   # HTTPS
+      - "1666:1666" # P4 TCP
       - "1667:1667" # P4 SSL
       - "1883:1883" # MQTT
       #- "8080:8080"
