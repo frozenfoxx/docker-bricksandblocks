@@ -1,5 +1,7 @@
 include:
   - path: traefik/traefik.yml
+    # env_file:
+    #   - traefik/.env.traefik.debug
   - path: operations/mqtt.yml
   - path: operations/unpoller.yml
   - path: operations/loki.yml
