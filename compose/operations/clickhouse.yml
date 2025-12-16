@@ -1,0 +1,41 @@
+---
+services:
+  clickhouse-server:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse-server
+    restart: always
+    ulimits:
+      nofile: 262144:262144
+    ports:
+      - "18123:8123"
+      - "19000:9000"
+    volumes:
+      - clickhouse-server-config:/etc/clickhouse-server/config.d
+      - clickhouse-server-data:/var/lib/clickhouse/
+      # - clickhosue-logs:/var/log/clickhouse-server/
+      - clickhouse-server-users:/etc/clickhouse-server/users.d
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  clickhouse-server-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/clickhouse-server/config"
+
+  clickhouse-server-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/clickhouse-server/data"
+  
+  clickhouse-server-users:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/clickhouse-server/users"
