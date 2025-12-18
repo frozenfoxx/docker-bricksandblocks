@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       - UID=1028 # 'staff' user
-      - GID=50   # 'staff' group
+      - GID=65536
     ports:
       - "1666:1666"
     volumes:
