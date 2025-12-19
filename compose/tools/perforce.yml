@@ -5,23 +5,23 @@ services:
     restart: always
     environment:
       - UID=1028 # 'staff' user
-      - GID=65536
+      - GID=50
     ports:
       - "1666:1666"
     volumes:
       - p4d-depots:/opt/perforce/depots
-      - p4d-server:/opt/perforce/server
+      - ${LOCAL_PREFIX-/local}/p4d/server:/opt/perforce/server
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
 
 volumes:
-  p4d-server:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/p4d/server"
+  # p4d-server:
+  #   driver: local
+  #   driver_opts:
+  #     type: nfs
+  #     o: "addr=${DATA_HOST},nolock,soft,rw"
+  #     device: ":/volume1/Docker/p4d/server"
 
   p4d-depots:
     driver: local
