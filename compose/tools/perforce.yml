@@ -14,6 +14,12 @@ services:
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
+    healthcheck:
+      test: ["CMD", "/usr/sbin/p4", "-p", "1666", "info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
 volumes:
   # p4d-server:
@@ -27,5 +33,5 @@ volumes:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
+      o: "addr=${DATA_HOST},nolock,soft,rw,nfsvers=4"
       device: ":/volume1/Docker/p4d/depots"
