@@ -1,0 +1,150 @@
+services:
+  openshock-postgres:
+    image: postgres:17
+    restart: unless-stopped
+    container_name: openshock-postgres
+    environment:
+      POSTGRES_USER: ${OPENSHOCK_PG_USER:-openshock}
+      POSTGRES_PASSWORD: ${OPENSHOCK_PG_PASS:?database password required}
+      POSTGRES_DB: ${OPENSHOCK_PG_DB:-openshock}
+    volumes:
+      - openshock-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+  openshock-redis:
+    restart: unless-stopped
+    image: redis/redis-stack-server:latest
+    container_name: openshock-redis
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 3s
+    volumes:
+      - openshock-redis:/data
+    environment:
+      - "REDIS_ARGS=--notify-keyspace-events KEA"
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+  openshock-api:
+    image: ghcr.io/openshock/api:latest
+    container_name: openshock-api
+    restart: unless-stopped
+    depends_on:
+      - openshock-postgres
+      - openshock-redis
+    env_file: .env
+    environment:
+      OPENSHOCK__FRONTEND__BASEURL: https://${OPENSHOCK_DOMAIN:-openshock.local}
+      OPENSHOCK__FRONTEND__SHORTURL: https://${OPENSHOCK_DOMAIN:-openshock.local}
+      OPENSHOCK__FRONTEND__COOKIEDOMAIN: ${OPENSHOCK_DOMAIN:-openshock.local}
+      OPENSHOCK__DB__CONN: Host=openshock-postgres;Port=5432;Database=${PG_USER:-openshock};Username=${PG_USER:-openshock};Password=${PG_PASS}
+      OPENSHOCK__REDIS__HOST: openshock-redis
+      OPENSHOCK__TURNSTILE__ENABLE: false
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.openshock-api.rule=Host(`${OPENSHOCK_API_SUBDOMAIN:-api}.${OPENSHOCK_DOMAIN:-openshock.local}`)"
+      - "traefik.http.routers.openshock-api.entrypoints=https"
+      - "traefik.http.routers.openshock-api.tls=true"
+      - "traefik.http.routers.openshock-api.service=openshock-api"
+      - "traefik.http.services.openshock-api.loadbalancer.server.port=80"
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+  openshock-webui:
+    image: ghcr.io/openshock/webui:latest
+    container_name: openshock-webui
+    restart: unless-stopped
+    environment:
+      OPENSHOCK_NAME: OpenShock
+      OPENSHOCK_URL: ${OPENSHOCK_DOMAIN:-openshock.local}
+      OPENSHOCK_SHARE_URL: https://${OPENSHOCK_DOMAIN:-openshock.local}
+      OPENSHOCK_API_URL: https://${OPENSHOCK_API_SUBDOMAIN:-api}.${OPENSHOCK_DOMAIN:-openshock.local}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.openshock-webui.rule=Host(`${OPENSHOCK_DOMAIN:-openshock.local}`)"
+      - "traefik.http.routers.openshock-webui.entrypoints=https"
+      - "traefik.http.routers.openshock-webui.tls=true"
+      - "traefik.http.routers.openshock-webui.service=openshock-webui"
+      - "traefik.http.routers.openshock-webui.middlewares=osr-s,osr-c,osr-t"
+      - "traefik.http.services.openshock-webui.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.osr-s.redirectregex.regex=^https://${OPENSHOCK_DOMAIN:-openshock.local}/s/(.*)"
+      - "traefik.http.middlewares.osr-s.redirectregex.replacement=https://${OPENSHOCK_DOMAIN:-openshock.local}/#/public/proxy/shares/links/$$1"
+      - "traefik.http.middlewares.osr-c.redirectregex.regex=^https://${OPENSHOCK_DOMAIN:-openshock.local}/c/(.*)"
+      - "traefik.http.middlewares.osr-c.redirectregex.replacement=https://${OPENSHOCK_DOMAIN:-openshock.local}/#/public/proxy/shares/code/$$1"
+      - "traefik.http.middlewares.osr-t.redirectregex.regex=^https://${OPENSHOCK_DOMAIN:-openshock.local}/t/(.*)"
+      - "traefik.http.middlewares.osr-t.redirectregex.replacement=https://${OPENSHOCK_DOMAIN:-openshock.local}/#/public/proxy/token/$$1"
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+  openshock-lcg:
+    image: ghcr.io/openshock/live-control-gateway:latest
+    container_name: openshock-lcg
+    restart: unless-stopped
+    depends_on:
+     - openshock-postgres
+     - openshock-redis
+    environment:
+      OPENSHOCK__REDIS__HOST: openshock-redis
+      OPENSHOCK__DB__CONN: Host=openshock-postgres;Port=5432;Database=${PG_USER:-openshock};Username=${PG_USER:-openshock};Password=${PG_PASS}
+      OPENSHOCK__LCG__COUNTRYCODE: DE
+      OPENSHOCK__LCG__FQDN: ${OPENSHOCK_GATEWAY_SUBDOMAIN:-gateway}.${OPENSHOCK_DOMAIN:-openshock.local}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.openshock-gateway.rule=Host(`${OPENSHOCK_GATEWAY_SUBDOMAIN:-gateway}.${OPENSHOCK_DOMAIN:-openshock.local}`)"
+      - "traefik.http.routers.openshock-gateway.entrypoints=https"
+      - "traefik.http.routers.openshock-gateway.tls=true"
+      - "traefik.http.routers.openshock-gateway.service=openshock-gateway"
+      - "traefik.http.services.openshock-gateway.loadbalancer.server.port=80"
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+  openshock-cron:
+    image: ghcr.io/openshock/cron:latest
+    container_name: openshock-cron
+    restart: unless-stopped
+    depends_on:
+      - openshock-postgres
+      - openshock-redis
+    environment:
+      OPENSHOCK__REDIS__HOST: openshock-redis
+      OPENSHOCK__DB__CONN: Host=openshock-postgres;Port=5432;Database=${PG_USER:-openshock};Username=${PG_USER:-openshock};Password=${PG_PASS}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.openshock-cron.rule=Host(`${OPENSHOCK_DOMAIN:-localhost}`) && PathPrefix(`/hangfire`)"
+      - "traefik.http.routers.openshock-cron.entrypoints=https"
+      - "traefik.http.routers.openshock-cron.tls=true"
+      - "traefik.http.routers.openshock-cron.service=openshock-cron"
+      - "traefik.http.services.openshock-cron.loadbalancer.server.port=780"
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  openshock-postgres-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/openshock/postgres"
+
+  openshock-redis:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/openshock/redis"
