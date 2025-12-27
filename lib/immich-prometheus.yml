@@ -1,0 +1,13 @@
+# Source: https://github.com/immich-app/immich/blob/main/docker/prometheus.yml
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: immich_api
+    static_configs:
+      - targets: ['immich-server:8081']
+
+  - job_name: immich_microservices
+    static_configs:
+      - targets: ['immich-server:8082']

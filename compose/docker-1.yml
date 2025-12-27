@@ -14,7 +14,7 @@ include:
   - path: operations/wizarr.yml
   - path: tools/linkwarden.yml
   - path: tools/palmr.yml
-  - path: games/foundryvtt.yml
+  #- path: games/foundryvtt.yml
     #env_file:
       #- games/.env.foundryvtt.new
   - path: tools/gitea.yml
@@ -23,7 +23,7 @@ include:
   - path: tools/it-tools.yml
   - path: tools/omni-tools.yml
   - path: tools/stirling-pdf.yml
-  - path: tools/searxng.yml
+  #- path: tools/searxng.yml
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun.yml
