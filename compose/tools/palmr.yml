@@ -23,6 +23,7 @@ services:
       #- "3333:3333" # API port (OPTIONAL EXPOSED - ONLY IF YOU WANT TO ACCESS THE API DIRECTLY)
     volumes:
       - palmr-data:/app/server # Volume for the application data
+      - palmr-mc:/.mc
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
@@ -33,4 +34,12 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/palmr"
+      device: ":/volume1/Docker/palmr/data"
+
+  palmr-mc:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/palmr/mc"
+    
