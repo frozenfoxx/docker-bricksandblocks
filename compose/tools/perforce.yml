@@ -6,11 +6,13 @@ services:
     environment:
       - UID=1028 # 'staff' user
       - GID=50
+      #- SSL_ENABLED=true
     ports:
       - "1666:1666"
     volumes:
       - p4d-depots:/opt/perforce/depots
       - ${LOCAL_PREFIX-/local}/p4d-server:/opt/perforce/server
+      - p4d-ssl:/opt/perforce/ssl
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
@@ -22,6 +24,13 @@ services:
       start_period: 30s
 
 volumes:
+  p4d-depots:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw,nfsvers=4"
+      device: ":/volume1/Docker/p4d/depots"
+
   # p4d-server:
   #   driver: local
   #   driver_opts:
@@ -29,9 +38,9 @@ volumes:
   #     o: "addr=${DATA_HOST},nolock,soft,rw"
   #     device: ":/volume1/Docker/p4d/server"
 
-  p4d-depots:
+  p4d-ssl:
     driver: local
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw,nfsvers=4"
-      device: ":/volume1/Docker/p4d/depots"
+      device: ":/volume1/Docker/p4d/ssl"
