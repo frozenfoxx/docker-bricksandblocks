@@ -6,7 +6,8 @@ services:
     environment:
       - UID=1028 # 'staff' user
       - GID=50
-      #- SSL_ENABLED=true
+      - P4PORT="ssl:p4.${NETWORK_DOMAIN-bricksandblocks.net}:1666"
+      - SSL_ENABLED=true
     ports:
       - "1666:1666"
     volumes:
@@ -17,7 +18,8 @@ services:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
     healthcheck:
-      test: ["CMD", "/usr/sbin/p4", "-p", "1666", "info"]
+      #test: ["CMD", "/usr/sbin/p4", "-p", "1666", "info"]
+      test: ["CMD", "/usr/sbin/p4", "-p", "ssl:p4.${NETWORK_DOMAIN-bricksandblocks.net}:1666", "info"]
       interval: 30s
       timeout: 10s
       retries: 3
