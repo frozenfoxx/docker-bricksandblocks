@@ -23,7 +23,8 @@ services:
       #- "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
       #- "traefik.http.services.jellyfin.loadbalancer.server.scheme=http"
     volumes:
-      - jellyfin-data:/config
+      # - jellyfin-data:/config
+      - ${LOCAL_PREFIX-/local}/jellyfin/config:/config
       - jellyfin-music:/data/Music:ro
       - jellyfin-videos:/data/Videos:ro
     extends:
@@ -31,12 +32,12 @@ services:
       service: logging-loki
 
 volumes:
-  jellyfin-data:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/jellyfin/library"
+  # jellyfin-data:
+  #   driver: local
+  #   driver_opts:
+  #     type: nfs
+  #     o: "addr=${DATA_HOST},nolock,soft,rw"
+  #     device: ":/volume1/Docker/jellyfin/library"
 
   jellyfin-music:
     driver: local
