@@ -18,6 +18,7 @@ services:
       # - S3_BUCKET_NAME=${S3_BUCKET_NAME:-palmr-files} # Bucket name for the S3 storage (here we are using palmr-files as the bucket name to understand that this is the bucket for palmr)
       # - S3_FORCE_PATH_STYLE=false # For S3 compatibility we have to set this to false
       - SECURE_SITE=true
+      - STORAGE_URL="https://palmr.${NETWORK_DOMAIN-bricksandblocks.net}"
     ports:
       - "5487:5487" # Web port
       #- "3333:3333" # API port (OPTIONAL EXPOSED - ONLY IF YOU WANT TO ACCESS THE API DIRECTLY)
