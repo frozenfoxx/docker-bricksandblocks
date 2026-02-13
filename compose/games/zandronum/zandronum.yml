@@ -4,7 +4,7 @@
 
 services:
   zandronum:
-    image: frozenfoxx/zandronum-server:latest
+    image: rcdailey/zandronum-server:official-latest
     container_name: zandronum
     network_mode: host
     hostname: "zandronum"
