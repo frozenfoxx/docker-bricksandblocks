@@ -1,0 +1,67 @@
+---
+services:
+  vaultwarden:
+    image: vaultwarden/server:${VAULTWARDEN_TAG:-latest}
+    container_name: vaultwarden
+    restart: unless-stopped
+    user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
+    security_opt: ['no-new-privileges:true']
+    environment:
+      ADMIN_TOKEN: ${VAULTWARDEN_ADMIN_TOKEN:?admin token required}
+      DATABASE_URL: postgresql://${VAULTWARDEN_DB_USER:?database user required}:${VAULTWARDEN_DB_PASSWORD:?database password required}@vaultwarden-postgres:5432/${VAULTWARDEN_DB_NAME:-vaultwarden}
+      DOMAIN: https://vaultwarden.${NETWORK_DOMAIN:-bricksandblocks.net}
+      SIGNUPS_ALLOWED: ${VAULTWARDEN_SIGNUPS_ALLOWED:-false}
+      INVITATIONS_ALLOWED: ${VAULTWARDEN_INVITATIONS_ALLOWED:-true}
+      SMTP_HOST: ${VAULTWARDEN_SMTP_HOST}
+      SMTP_PORT: ${VAULTWARDEN_SMTP_PORT:-587}
+      SMTP_FROM: ${VAULTWARDEN_SMTP_FROM}
+      SMTP_USERNAME: ${VAULTWARDEN_SMTP_USERNAME}
+      SMTP_PASSWORD: ${VAULTWARDEN_SMTP_PASSWORD}
+      SMTP_SECURITY: ${VAULTWARDEN_SMTP_SECURITY:-starttls}
+    ports:
+      - "${COMPOSE_PORT_HTTP:-8088}:80"
+      - "${COMPOSE_PORT_WS:-3012}:3012"
+    volumes:
+      - vaultwarden-data:/data
+    depends_on:
+      vaultwarden-postgres:
+        condition: service_healthy
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+  vaultwarden-postgres:
+    image: docker.io/library/postgres:16-alpine
+    container_name: vaultwarden-postgres
+    restart: unless-stopped
+    user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
+    environment:
+      POSTGRES_USER: ${VAULTWARDEN_DB_USER:?database user required}
+      POSTGRES_PASSWORD: ${VAULTWARDEN_DB_PASSWORD:?database password required}
+      POSTGRES_DB: ${VAULTWARDEN_DB_NAME:-vaultwarden}
+    volumes:
+      - vaultwarden-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  vaultwarden-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/vaultwarden/data"
+
+  vaultwarden-postgres-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/vaultwarden/postgres"
