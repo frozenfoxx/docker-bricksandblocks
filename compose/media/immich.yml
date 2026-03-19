@@ -1,4 +1,5 @@
 ---
+# Source: https://github.com/immich-app/immich/blob/main/docker/docker-compose.yml
 services:
   immich-server:
     container_name: immich-server
@@ -43,7 +44,7 @@ services:
     #   service: cpu # set to one of [armnn, cuda, rocm, openvino, openvino-wsl, rknn] for accelerated inference - use the `-wsl` version for WSL2 where applicable
 
   immich-redis:
-    image: docker.io/valkey/valkey:8@sha256:81db6d39e1bba3b3ff32bd3a1b19a6d69690f94a3954ec131277b9a26b95b3aa
+    image: docker.io/valkey/valkey:9@sha256:3eeb09785cd61ec8e3be35f8804c8892080f3ca21934d628abc24ee4ed1698f6
     container_name: immich-redis
     restart: unless-stopped
     healthcheck:
