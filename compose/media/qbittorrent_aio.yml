@@ -24,7 +24,7 @@ services:
    volumes:
      - gluetun-data:/gluetun
    extends:
-     file: ${ROOT_DIR-..}/lib/logging.yml
+     file: ${ROOT_DIR-../..}/lib/logging.yml
      service: logging-loki
 
   # gluetun_protonvpn-wg:
@@ -57,7 +57,7 @@ services:
   #   volumes:
   #     - gluetun-data:/gluetun
   #   extends:
-  #     file: ${ROOT_DIR-..}/lib/logging.yml
+  #     file: ${ROOT_DIR-../..}/lib/logging.yml
   #     service: logging-loki
 
  qbittorrent:
@@ -81,7 +81,7 @@ services:
      - qbittorrent-config:/config
      - qbittorrent-data:/data/downloads
    extends:
-     file: ${ROOT_DIR-..}/lib/logging.yml
+     file: ${ROOT_DIR-../..}/lib/logging.yml
      service: logging-loki
 
 volumes:
