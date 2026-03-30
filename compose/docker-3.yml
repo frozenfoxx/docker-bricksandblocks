@@ -1,6 +1,5 @@
 include:
-  - path: operations/gluetun.yml
-  - path: media/qbittorrent.yml
+  - path: operations/qbittorrent_aio.yml
   - path: media/beets.yml
   - path: media/prowlarr.yml
   - path: media/lidarr.yml

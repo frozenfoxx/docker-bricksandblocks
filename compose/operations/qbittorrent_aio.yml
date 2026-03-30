@@ -1,0 +1,107 @@
+services:
+ gluetun_protonvpn-ovpn:
+   image: qmcgaw/gluetun:latest
+   container_name: gluetun_protonvpn
+   restart: unless-stopped
+   cap_add:
+     - NET_ADMIN
+   devices:
+     - /dev/net/tun:/dev/net/tun
+   environment:
+     - OPENVPN_USER=${GLUETUN_OVPN_USERNAME} # Add +pmp to the username
+     - OPENVPN_PASSWORD=${GLUETUN_OVPN_PASSWORD}
+     - UPDATER_PERIOD=1h
+     - UPDATER_VPN_SERVICE_PROVIDERS=protonvpn
+     #- UPDATER_PROTONVPN_PASSWORD=${GLUETUN_UPDATER_PROTONVPN_PASSWORD}
+     #- UPDATER_PROTONVPN_USERNAME=${GLUETUN_UPDATER_PROTONVPN_USERNAME}
+     - VPN_PORT_FORWARDING=on
+     - VPN_SERVICE_PROVIDER=protonvpn
+     - SERVER_COUNTRIES=${GLUETUN_SERVER_COUNTRIES}
+   ports:
+     - 49893:49893 # qbitorrent WebUI
+     #- 6881:6881 # qbittorrent listening port for TCP
+     #- 6881:6881/udp # qbittorrent listening port UDP
+   volumes:
+     - gluetun-data:/gluetun
+   extends:
+     file: ${ROOT_DIR-..}/lib/logging.yml
+     service: logging-loki
+
+  # gluetun_protonvpn-wg:
+  #   image: qmcgaw/gluetun:latest
+  #   container_name: gluetun_protonvpn
+  #   restart: unless-stopped
+  #   cap_add:
+  #     - NET_ADMIN
+  #   devices:
+  #     - /dev/net/tun:/dev/net/tun
+  #   environment:
+  #     - UPDATER_PERIOD=1h
+  #     - UPDATER_VPN_SERVICE_PROVIDERS=protonvpn
+  #     # - UPDATER_PROTONVPN_PASSWORD=${GLUETUN_UPDATER_PROTONVPN_PASSWORD}
+  #     # - UPDATER_PROTONVPN_USERNAME=${GLUETUN_UPDATER_PROTONVPN_USERNAME}
+  #     - VPN_PORT_FORWARDING=on
+  #     - VPN_SERVICE_PROVIDER=protonvpn
+  #     - VPN_TYPE=wireguard
+  #     - WIREGUARD_PRIVATE_KEY=${GLUETUN_WIREGUARD_PRIVATE_KEY}
+  #     - WIREGUARD_ADDRESSES=${GLUETUN_WIREGUARD_ADDRESSES}
+  #     # - WIREGUARD_MTU=1300
+  #     - SERVER_COUNTRIES=${GLUETUN_SERVER_COUNTRIES}
+  #     # - BLOCK_MALICIOUS=off
+  #     # - BLOCK_SURVEILLANCE=off
+  #     # - BLOCK_ADS=off
+  #   ports:
+  #     - 49893:49893 # qbitorrent WebUI
+  #     #- 6881:6881 # qbittorrent listening port for TCP
+  #     #- 6881:6881/udp # qbittorrent listening port UDP
+  #   volumes:
+  #     - gluetun-data:/gluetun
+  #   extends:
+  #     file: ${ROOT_DIR-..}/lib/logging.yml
+  #     service: logging-loki
+
+ qbittorrent:
+   image: lscr.io/linuxserver/qbittorrent:latest
+   container_name: qbittorrent
+   restart: unless-stopped
+   network_mode: "service:gluetun_protonvpn-ovpn"
+   depends_on:
+     gluetun_protonvpn-ovpn:
+       condition: service_started
+   environment:
+     - PUID=1028 # 'staff' user
+     - PGID=50 # 'staff' group
+     - DOCKER_MODS=ghcr.io/t-anc/gsp-qbittorent-gluetun-sync-port-mod:main
+     - GSP_GTN_API_KEY=${GSP_GTN_API_KEY}
+     - GSP_MINIMAL_LOGS=false
+     #- TORRENTING_PORT="${QBITTORRENT_TOR_PORT}"
+     - TZ=America/Los_Angeles
+     - WEBUI_PORT=${QBITTORRENT_WEBUI-49893}
+   volumes:
+     - qbittorrent-config:/config
+     - qbittorrent-data:/data/downloads
+   extends:
+     file: ${ROOT_DIR-..}/lib/logging.yml
+     service: logging-loki
+
+volumes:
+  gluetun-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/gluetun"
+
+  qbittorrent-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/qbittorrent/config"
+
+  qbittorrent-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${MEDIA_HOST},nolock,soft,rw"
+      device: ":/volume1/Media/downloads"
