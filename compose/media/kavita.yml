@@ -10,28 +10,21 @@ services:
       - TZ=America/Los_Angeles
     ports:
       - 5000:5000
-    #labels:
-      #- "traefik.enable=true"
-      #- "traefik.http.routers.kavita.rule=Host(`kavita.${NETWORK_DOMAIN-bricksandblocks.net}`)"
-      #- "traefik.http.routers.kavita.entrypoints=websecure"
-      #- "traefik.http.routers.kavita.tls.certresolver=letsencrypt"
-      #- "traefik.http.routers.kavita.service=kavita"
-      #- "traefik.http.services.kavita.loadbalancer.server.port=5000"
-      #- "traefik.http.services.kavita.loadbalancer.server.scheme=http"
     volumes:
-      - kavita-data:/config
+      # - kavita-data:/config
+      - ${LOCAL_PREFIX-/local}/kavita:/config
       - kavita-library:/data:ro
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
 
 volumes:
-  kavita-data:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/kavita"
+  # kavita-data:
+  #   driver: local
+  #   driver_opts:
+  #     type: nfs
+  #     o: "addr=${DATA_HOST},nolock,soft,rw"
+  #     device: ":/volume1/Docker/kavita"
 
   kavita-library:
     driver: local
