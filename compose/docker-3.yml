@@ -6,8 +6,7 @@ include:
   - path: media/radarr.yml
   - path: media/sonarr.yml
   # - path: media/unpackerr.yml
-  - path: media/jellyseerr.yml
-  - path: media/overseerr.yml
+  - path: media/seerr.yml
   - path: media/metube.yml
   # - path: media/stacks.yml
     # env_file:
