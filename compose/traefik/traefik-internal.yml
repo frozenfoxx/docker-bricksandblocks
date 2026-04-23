@@ -8,6 +8,7 @@ services:
 
       # Entrypoints
       - "--entrypoints.p4.address=:1666"
+      - "--entrypoints.metrics.address=:8083"
       - "--entrypoints.mqtt.address=:1883"
       - "--entrypoints.mqttsecure.address=:8883"
       #- "--entrypoints.mqttwebsocket.address=:9001"
@@ -27,6 +28,13 @@ services:
       # Logging
       - "--log.level=${TRAEFIK_LOGLEVEL:-ERROR}" # Levels, DEBUG and ERROR
 
+      # Metrics
+      - "--metrics.prometheus=true"
+      - "--metrics.prometheus.entrypoint=metrics"
+      - "--metrics.prometheus.addentrypointlabels=true"
+      - "--metrics.prometheus.addrouterlabels=true"
+      - "--metrics.prometheus.addserviceslabels=true"
+
       # Providers
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
@@ -43,6 +51,7 @@ services:
       - "1666:1666" # P4
       - "1883:1883" # MQTT
       #- "8080:8080"
+      - "8083:8083" # Prometheus metrics (LAN-only)
       - "8883:8883" # MQTT
       #- "9001:9001"
     labels:
