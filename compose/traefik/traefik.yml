@@ -32,7 +32,7 @@ services:
       - "--metrics.prometheus=true"
       - "--metrics.prometheus.entrypoint=metrics"
       - "--metrics.prometheus.addentrypointslabels=true"
-      - "--metrics.prometheus.addrouterlabels=true"
+      - "--metrics.prometheus.addrouterslabels=true"
       - "--metrics.prometheus.addserviceslabels=true"
 
       # Providers
