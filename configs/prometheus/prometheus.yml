@@ -27,6 +27,11 @@ scrape_configs:
       - targets:
          - prometheus:9090
 
+  - job_name: traefik
+    file_sd_configs:
+      - files:
+        - 'targets-traefik.yml'
+
   - job_name: vector
     file_sd_configs:
       - files:
