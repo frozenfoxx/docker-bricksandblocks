@@ -31,7 +31,7 @@ services:
       # Metrics
       - "--metrics.prometheus=true"
       - "--metrics.prometheus.entrypoint=metrics"
-      - "--metrics.prometheus.addentrypointlabels=true"
+      - "--metrics.prometheus.addentrypointslabels=true"
       - "--metrics.prometheus.addrouterlabels=true"
       - "--metrics.prometheus.addserviceslabels=true"
 
