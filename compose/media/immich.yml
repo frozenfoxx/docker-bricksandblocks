@@ -7,7 +7,7 @@ services:
     restart: always
     volumes:
       - immich-data:/data
-      - immich-photos:/media/photos:ro
+      - immich-photos:/media/photos:rw
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - .env.immich
