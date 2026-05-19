@@ -96,7 +96,7 @@ volumes:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${MEDIA_HOST},nolock,soft,ro"
+      o: "addr=${MEDIA_HOST},nolock,soft,rw"
       device: ":/volume1/Media/Photos"
 
   # immich-postgres-data:
