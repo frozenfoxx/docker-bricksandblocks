@@ -6,8 +6,8 @@ services:
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     restart: always
     volumes:
-      - immich-data:/data
-      - immich-photos:/media/photos:rw
+      - immich-data:/data:rw
+      #- immich-photos:/data/library:rw
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - .env.immich
@@ -92,12 +92,12 @@ volumes:
       o: "addr=${DATA_HOST},nolock,soft,rw"
       device: ":/volume1/Docker/immich/model-cache"
 
-  immich-photos:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${MEDIA_HOST},nolock,soft,rw"
-      device: ":/volume1/Media/Photos"
+  # immich-photos:
+  #   driver: local
+  #   driver_opts:
+  #     type: nfs
+  #     o: "addr=${MEDIA_HOST},nolock,soft,rw"
+  #     device: ":/volume1/Media/Photos"
 
   # immich-postgres-data:
   #   driver: local
