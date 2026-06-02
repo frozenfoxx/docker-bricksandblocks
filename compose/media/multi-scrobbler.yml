@@ -1,0 +1,34 @@
+---
+services:
+  multi-scrobbler:
+    image: ghcr.io/foxxmd/multi-scrobbler:latest
+    container_name: multi-scrobbler
+    restart: unless-stopped
+    environment:
+      - PUID=1028 # 'staff' user
+      - PGID=50 # 'staff' group
+      - TZ=America/Los_Angeles
+      - BASE_URL=https://multi-scrobbler.${NETWORK_DOMAIN-bricksandblocks.net}
+    #labels:
+      #- "traefik.enable=true"
+      #- "traefik.http.routers.multi-scrobbler.rule=Host(`multi-scrobbler.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      #- "traefik.http.routers.multi-scrobbler.entrypoints=websecure"
+      #- "traefik.http.routers.multi-scrobbler.tls.certresolver=letsencrypt"
+      #- "traefik.http.routers.multi-scrobbler.service=multi-scrobbler"
+      #- "traefik.http.services.multi-scrobbler.loadbalancer.server.port=9078"
+      #- "traefik.http.services.multi-scrobbler.loadbalancer.server.scheme=http"
+    ports:
+      - "9078:9078"
+    volumes:
+      - multi-scrobbler-config:/config
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  multi-scrobbler-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/multi-scrobbler/config"
