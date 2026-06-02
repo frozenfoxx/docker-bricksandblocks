@@ -1,0 +1,11 @@
+[
+  {
+    "name": "plex",
+    "enable": true,
+    "data": {
+      "token": "<your-plex-token>",
+      "url": "http://<plex-host>:32400",
+      "usersAllow": ["<your-plex-username>"]
+    }
+  }
+]

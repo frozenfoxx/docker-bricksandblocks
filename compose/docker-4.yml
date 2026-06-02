@@ -3,6 +3,7 @@ include:
   - path: media/tautulli.yml
   - path: media/plex.yml
   - path: media/navidrome.yml
+  - path: media/multi-scrobbler.yml
   #- path: games/barotrauma/barotrauma.yml
   - path: games/zandronum/zandronum.yml
     env_file:

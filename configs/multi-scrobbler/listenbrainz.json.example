@@ -1,0 +1,12 @@
+[
+  {
+    "name": "listenbrainz",
+    "enable": true,
+    "configureAs": "client",
+    "data": {
+      "token": "<your-listenbrainz-token>",
+      "username": "<your-listenbrainz-username>",
+      "url": "https://api.listenbrainz.org"
+    }
+  }
+]
