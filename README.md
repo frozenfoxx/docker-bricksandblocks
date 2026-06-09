@@ -6,8 +6,19 @@ Docker deployment files for bricksandblocks.net
 
 * [Docker](https://docker.io)
 * [git](https://git-scm.com)
+* [Loki Docker Driver](https://grafana.com/docs/loki/latest/send-data/docker-driver/)
 * [Task](https://taskfile.dev)
 * [yq](https://github.com/mikefarah/yq)
+
+## Loki Docker Driver
+ 
+All services ship logs to Loki via the Loki Docker logging driver plugin. This must be installed on each host before deploying any services:
+ 
+```shell
+docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
+```
+ 
+> **Note for Synology DSM hosts:** the plugin must be installed over SSH as root. It survives container restarts but may need to be reinstalled after a DSM major version upgrade.
 
 # Configuration
 
@@ -15,7 +26,7 @@ Docker deployment files for bricksandblocks.net
 * Fill in appropriate values for `.env`
 * Run update and setup tasks
 
-```
+```shell
 task update
 task setup
 ```
