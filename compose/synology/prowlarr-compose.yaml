@@ -1,0 +1,20 @@
+services:
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    restart: unless-stopped
+    environment:
+      - PUID=1028 # 'staff' user
+      - PGID=50 # 'staff' group
+      - TZ=America/Los_Angeles
+    volumes:
+      - ${LOCAL_PREFIX-/volume1/Docker}/prowlarr/config:/config
+    ports:
+      - 9696:9696
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
