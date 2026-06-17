@@ -4,7 +4,7 @@ include:
   # - path: media/prowlarr.yml
   # - path: media/lidarr.yml
   # - path: media/radarr.yml
-  - path: media/sonarr.yml
+  # - path: media/sonarr.yml
   # - path: media/unpackerr.yml
   - path: media/seerr.yml
   - path: media/metube.yml
