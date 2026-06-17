@@ -9,6 +9,7 @@ services:
       - TZ=America/Los_Angeles
     volumes:
       - ${LOCAL_PREFIX-/volume1/Docker}/radarr/config:/config
+      - ${MEDIA_PREFIX-/volume1/Media}:/data
     ports:
       - 7878:7878
     logging:
@@ -29,6 +30,7 @@ services:
       - TZ=America/Los_Angeles
     volumes:
       - ${LOCAL_PREFIX-/volume1/Docker}/radarr-4k/config:/config
+      - ${MEDIA_PREFIX-/volume1/Media}:/data
     ports:
       - 7879:7878
     logging:
