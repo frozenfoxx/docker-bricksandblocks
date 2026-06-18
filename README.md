@@ -20,6 +20,18 @@ docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all
  
 > **Note for Synology DSM hosts:** the plugin must be installed over SSH as root. It survives container restarts but may need to be reinstalled after a DSM major version upgrade.
 
+## tun Kernel Module
+ 
+VPN-routed services — the `gluetun`-backed `qbittorrent_aio` stack — bind `/dev/net/tun`, which requires the host `tun` kernel module. Load it and persist it across reboots before deploying those services:
+ 
+```shell
+mkdir -p /etc/modules-load.d
+echo tun > /etc/modules-load.d/tun.conf
+modprobe tun
+```
+ 
+> **Note for Synology DSM hosts:** `systemd-modules-load.service` reads `/etc/modules-load.d/` at boot, but a DSM major version upgrade may clear the directory, so the file may need to be recreated afterward.
+
 # Configuration
 
 * Make a copy of `env.dist` called `.env`
