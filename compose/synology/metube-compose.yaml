@@ -8,7 +8,7 @@ services:
       - PGID=50 # 'staff' group
       - TZ=America/Los_Angeles
     volumes:
-      - ${MEDIA_PREFIX-/volume1/Media}/downloads:/downloads
+      - ${MEDIA_PREFIX-/volume1/Media}/downloads/MeTube:/downloads
     ports:
       - 8231:8081
     logging:
