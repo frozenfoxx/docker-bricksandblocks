@@ -1,0 +1,18 @@
+services:
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    restart: unless-stopped
+    command: -config.file=/etc/loki/loki-config.yaml
+    volumes:
+      - ${LOCAL_PREFIX-/volume1/Docker}/loki/config:/etc/loki
+      - ${LOCAL_PREFIX-/volume1/Docker}/loki/data:/data
+    ports:
+      - "3100:3100"
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
