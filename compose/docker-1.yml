@@ -4,7 +4,7 @@ include:
     #   - traefik/.env.traefik.debug
   - path: operations/mqtt.yml
   - path: operations/unpoller.yml
-  - path: operations/loki.yml
+  #- path: operations/loki.yml
   - path: dashboards/grafana.yml
   - path: prometheus/prometheus.yml
   - path: operations/notifiarr.yml
