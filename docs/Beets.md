@@ -1,13 +1,6 @@
-# Usage
+# Beets
 
-[beets](https://beets.io) is a music catalog organizer. While the container runs continually, import must be done via the command-line. Assuming the [compose](../compose/media/beets.yml) file has been used you can use the following to begin organizing:
-
-```shell
-docker exec -it beets /bin/bash
-beet import '/music/'
-```
-
-Most operations below are shown as one-liners (`docker exec -it beets beet ...`) so they copy-paste directly, but you can also drop into a shell as above and run the `beet` commands bare.
+[beets](https://beets.io) is a music catalog organizer.
 
 ## Paths
 
@@ -17,6 +10,17 @@ This is the [linuxserver.io](https://docs.linuxserver.io/images/docker-beets/) i
 - Library database: `/config/musiclibrary.blb`
 - Import statefile: `/config/state.pickle`
 - Music library mount: `/music` (import sources live here)
+
+# Usage
+
+While the container runs continually, import must be done via the command-line. Assuming the [compose](../compose/media/beets.yml) file has been used you can use the following to begin organizing:
+
+```shell
+docker exec -it beets /bin/bash
+beet import '/music/'
+```
+
+Most operations below are shown as one-liners (`docker exec -it beets beet ...`) so they copy-paste directly, but you can also drop into a shell as above and run the `beet` commands bare.
 
 ## Import Flags
 
