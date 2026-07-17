@@ -1,6 +1,6 @@
 include:
   # - path: media/qbittorrent_aio.yml
-  - path: media/beets.yml
+  # - path: media/beets.yml
   # - path: media/prowlarr.yml
   # - path: media/lidarr.yml
   # - path: media/radarr.yml
