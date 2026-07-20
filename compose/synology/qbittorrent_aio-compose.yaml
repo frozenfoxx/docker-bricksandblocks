@@ -40,7 +40,7 @@ services:
      image: lscr.io/linuxserver/qbittorrent:latest
      container_name: qbittorrent
      restart: unless-stopped
-     network_mode: "service:gluetun_protonvpn-ovpn"
+     network_mode: "service:gluetun_protonvpn-wg"
      depends_on:
        gluetun_protonvpn-wg:
          condition: service_started
