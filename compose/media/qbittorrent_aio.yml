@@ -17,6 +17,7 @@ services:
      #- UPDATER_PROTONVPN_PASSWORD=${GLUETUN_UPDATER_PROTONVPN_PASSWORD}
      #- UPDATER_PROTONVPN_USERNAME=${GLUETUN_UPDATER_PROTONVPN_USERNAME}
      - VPN_PORT_FORWARDING=on
+     - PORT_FORWARD_ONLY=on
      - VPN_SERVICE_PROVIDER=protonvpn
      - SERVER_COUNTRIES=${GLUETUN_SERVER_COUNTRIES}
    ports:
@@ -30,7 +31,7 @@ services:
      service: logging-loki
 
   # gluetun_protonvpn-wg:
-  #   image: qmcgaw/gluetun:latest
+  #  image: qmcgaw/gluetun:v3.41.1 # latest
   #   container_name: gluetun_protonvpn
   #   restart: unless-stopped
   #   cap_add:
@@ -42,14 +43,13 @@ services:
   #     - LOG_LEVEL=${GLUETUN_LOG_LEVEL-error}
   #     - UPDATER_PERIOD=1h
   #     - UPDATER_VPN_SERVICE_PROVIDERS=protonvpn
-  #     # - UPDATER_PROTONVPN_PASSWORD=${GLUETUN_UPDATER_PROTONVPN_PASSWORD}
-  #     # - UPDATER_PROTONVPN_USERNAME=${GLUETUN_UPDATER_PROTONVPN_USERNAME}
   #     - VPN_PORT_FORWARDING=on
+  #     - PORT_FORWARD_ONLY=on
   #     - VPN_SERVICE_PROVIDER=protonvpn
   #     - VPN_TYPE=wireguard
   #     - WIREGUARD_PRIVATE_KEY=${GLUETUN_WIREGUARD_PRIVATE_KEY}
   #     - WIREGUARD_ADDRESSES=${GLUETUN_WIREGUARD_ADDRESSES}
-  #     # - WIREGUARD_MTU=1300
+  #     - VPN_INTERFACE_MTU=${GLUETUN_VPN_INTERFACE_MTU-1320}
   #     - SERVER_COUNTRIES=${GLUETUN_SERVER_COUNTRIES}
   #     # - BLOCK_MALICIOUS=off
   #     # - BLOCK_SURVEILLANCE=off
