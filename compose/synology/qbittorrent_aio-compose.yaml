@@ -17,7 +17,6 @@ services:
       - VPN_SERVICE_PROVIDER=protonvpn
       - VPN_TYPE=wireguard
       - WIREGUARD_PRIVATE_KEY=${GLUETUN_WIREGUARD_PRIVATE_KEY}
-      - WIREGUARD_ADDRESSES=${GLUETUN_WIREGUARD_ADDRESSES}
       - VPN_INTERFACE_MTU=${GLUETUN_VPN_INTERFACE_MTU-1320}
       - SERVER_COUNTRIES=${GLUETUN_SERVER_COUNTRIES}
       # - BLOCK_MALICIOUS=off
@@ -43,7 +42,7 @@ services:
      restart: unless-stopped
      network_mode: "service:gluetun_protonvpn-ovpn"
      depends_on:
-       gluetun_protonvpn-ovpn:
+       gluetun_protonvpn-wg:
          condition: service_started
      environment:
        - PUID=1028 # 'staff' user
