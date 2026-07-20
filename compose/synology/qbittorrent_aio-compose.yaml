@@ -1,7 +1,6 @@
 services:
   gluetun_protonvpn-ovpn:
-    #image: qmcgaw/gluetun:latest
-    image: qmcgaw/gluetun:v3.41.0
+    image: qmcgaw/gluetun:v3.41.1 # latest
     container_name: gluetun_protonvpn
     restart: unless-stopped
     cap_add:
@@ -9,6 +8,7 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     environment:
+      - LOG_LEVEL=${GLUETUN_LOG_LEVEL-error}
       - OPENVPN_USER=${GLUETUN_OVPN_USERNAME} # Add +pmp to the username
       - OPENVPN_PASSWORD=${GLUETUN_OVPN_PASSWORD}
       - UPDATER_PERIOD=1h
