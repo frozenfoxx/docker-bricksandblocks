@@ -8,6 +8,7 @@ services:
    devices:
      - /dev/net/tun:/dev/net/tun
    environment:
+     - DNS_SERVER=on
      - LOG_LEVEL=${GLUETUN_LOG_LEVEL-error}
      - OPENVPN_USER=${GLUETUN_OVPN_USERNAME} # Add +pmp to the username
      - OPENVPN_PASSWORD=${GLUETUN_OVPN_PASSWORD}
@@ -37,6 +38,7 @@ services:
   #   devices:
   #     - /dev/net/tun:/dev/net/tun
   #   environment:
+  #     - DNS_SERVER=on
   #     - LOG_LEVEL=${GLUETUN_LOG_LEVEL-error}
   #     - UPDATER_PERIOD=1h
   #     - UPDATER_VPN_SERVICE_PROVIDERS=protonvpn
