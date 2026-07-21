@@ -6,7 +6,7 @@ services:
     user: "1028:50" # 'staff' user/group, owns the bind-mounted data dir
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/data'
+      - '--storage.tsdb.path=/data' # re-enabled: local storage on nas-1 (NFS lock limitation gone)
       - '--storage.tsdb.retention.time=${PROMETHEUS_RETENTION-30d}'
     ports:
       - "9090:9090"
@@ -28,11 +28,13 @@ services:
     user: "1028:50" # 'staff' user/group
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/data'
       - '--web.external-url=http://prometheus.${NETWORK_DOMAIN-bricksandblocks.net}:9093'
     ports:
       - "9093:9093"
     volumes:
       - ${LOCAL_PREFIX-/volume1/Docker}/alertmanager/config:/etc/alertmanager:ro
+      - ${LOCAL_PREFIX-/volume1/Docker}/alertmanager/data:/data
     logging:
       driver: loki
       options:
