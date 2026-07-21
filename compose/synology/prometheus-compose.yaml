@@ -3,10 +3,10 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus
     restart: unless-stopped
-    user: "1028:50" # 'staff' user/group, owns the bind-mounted data dir
+    user: "1028:50" # 'staff' user/group
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/data' # re-enabled: local storage on nas-1 (NFS lock limitation gone)
+      - '--storage.tsdb.path=/data'
       - '--storage.tsdb.retention.time=${PROMETHEUS_RETENTION-30d}'
     ports:
       - "9090:9090"
