@@ -1,0 +1,42 @@
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    user: "1028:50" # 'staff' user/group, owns the bind-mounted data dir
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/data'
+      - '--storage.tsdb.retention.time=${PROMETHEUS_RETENTION-30d}'
+    ports:
+      - "9090:9090"
+    volumes:
+      - ${LOCAL_PREFIX-/volume1/Docker}/prometheus/config:/etc/prometheus:ro
+      - ${LOCAL_PREFIX-/volume1/Docker}/prometheus/data:/data
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
+
+  alert-manager:
+    image: prom/alertmanager:latest
+    container_name: alert-manager
+    restart: unless-stopped
+    user: "1028:50" # 'staff' user/group
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--web.external-url=http://prometheus.${NETWORK_DOMAIN-bricksandblocks.net}:9093'
+    ports:
+      - "9093:9093"
+    volumes:
+      - ${LOCAL_PREFIX-/volume1/Docker}/alertmanager/config:/etc/alertmanager:ro
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
