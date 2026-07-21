@@ -4,9 +4,7 @@ include:
     #   - traefik/.env.traefik.debug
   - path: operations/mqtt.yml
   - path: operations/unpoller.yml
-  #- path: operations/loki.yml
   - path: dashboards/grafana.yml
-  - path: prometheus/prometheus.yml
   - path: operations/notifiarr.yml
   - path: operations/authentik.yml
     env_file:
@@ -14,16 +12,12 @@ include:
   - path: operations/wizarr.yml
   - path: tools/linkwarden.yml
   - path: tools/palmr.yml
-  #- path: games/foundryvtt.yml
-    #env_file:
-      #- games/.env.foundryvtt.new
   - path: tools/gitea.yml
   - path: tools/mealie.yml
   - path: tools/opengist.yml
   - path: tools/it-tools.yml
   - path: tools/omni-tools.yml
   - path: tools/stirling-pdf.yml
-  #- path: tools/searxng.yml
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun.yml
