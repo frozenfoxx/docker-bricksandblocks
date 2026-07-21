@@ -3,7 +3,6 @@ include:
     # env_file:
     #   - traefik/.env.traefik.debug
   - path: operations/mqtt.yml
-  - path: operations/unpoller.yml
   - path: dashboards/grafana.yml
   - path: operations/notifiarr.yml
   - path: operations/authentik.yml
