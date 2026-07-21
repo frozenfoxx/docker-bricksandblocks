@@ -1,0 +1,29 @@
+services:
+  multi-scrobbler:
+    image: ghcr.io/foxxmd/multi-scrobbler:latest
+    container_name: multi-scrobbler
+    restart: unless-stopped
+    environment:
+      - PUID=1028 # 'staff' user
+      - PGID=50 # 'staff' group
+      - TZ=America/Los_Angeles
+      - BASE_URL=https://multi-scrobbler.${NETWORK_DOMAIN-bricksandblocks.net}
+    #labels:
+      #- "traefik.enable=true"
+      #- "traefik.http.routers.multi-scrobbler.rule=Host(`multi-scrobbler.${NETWORK_DOMAIN-bricksandblocks.net}`)"
+      #- "traefik.http.routers.multi-scrobbler.entrypoints=websecure"
+      #- "traefik.http.routers.multi-scrobbler.tls.certresolver=letsencrypt"
+      #- "traefik.http.routers.multi-scrobbler.service=multi-scrobbler"
+      #- "traefik.http.services.multi-scrobbler.loadbalancer.server.port=9078"
+      #- "traefik.http.services.multi-scrobbler.loadbalancer.server.scheme=http"
+    ports:
+      - "9078:9078"
+    volumes:
+      - ${LOCAL_PREFIX-/volume1/Docker}/multi-scrobbler/config:/config
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
