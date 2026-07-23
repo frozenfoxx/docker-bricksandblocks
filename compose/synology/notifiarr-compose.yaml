@@ -1,9 +1,3 @@
----
-#networks:
-#  notifiarr:
-#    name: notifiarr
-#    external: true
-
 services:
   notifiarr:
     image: golift/notifiarr:latest
@@ -11,24 +5,19 @@ services:
     hostname: notifiarr
     restart: unless-stopped
     user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
-#    networks: [notifiarr]
     security_opt: ['no-new-privileges:true']
     #environment:
       #- DN_API_KEY=${NOTIFIARR_API_KEY}
     ports:
       - "5454:5454"
     volumes:
-      - notifiarr-config:/config
+      - ${LOCAL_PREFIX-/volume1/Docker}/notifiarr/config:/config
       - /var/run/utmp:/var/run/utmp
       - /etc/machine-id:/etc/machine-id
-    extends:
-      file: ${ROOT_DIR-../..}/lib/logging.yml
-      service: logging-loki
-
-volumes:
-  notifiarr-config:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/notifiarr/config"
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
