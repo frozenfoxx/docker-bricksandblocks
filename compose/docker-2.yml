@@ -7,7 +7,6 @@ include:
       - media/.env.immich
   - path: media/kavita.yml
   - path: media/jellyfin.yml
-  - path: dashboards/fenrus.yml
   - path: tools/huginn.yml
     env_file:
       - tools/.env.huginn

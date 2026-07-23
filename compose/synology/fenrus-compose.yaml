@@ -1,0 +1,23 @@
+services:
+  fenrus:
+    image: revenz/fenrus:latest
+    container_name: fenrus
+    restart: unless-stopped
+    user: "1028:50" # UID=1028, GID=50 ('staff' on non-Synology hosts)
+    security_opt: ['no-new-privileges:true']
+    cap_drop:
+      - ALL
+    environment:
+      #PORT: 3000
+      TZ: America/Los_Angeles
+    ports:
+      - 3041:3000
+    volumes:
+      - ${LOCAL_PREFIX-/volume1/Docker}/fenrus/data:/app/data
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
