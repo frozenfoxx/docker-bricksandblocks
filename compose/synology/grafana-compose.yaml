@@ -2,10 +2,14 @@ services:
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
-    restart: always
+    restart: unless-stopped
+    user: "1028:50" # UID=1028, GID=50 ('staff' on non-Synology hosts)
+    security_opt: ['no-new-privileges:true']
+    cap_drop:
+      - ALL
     environment:
-      - GF_PLUGINS_PREINSTALL="${GRAFANA_PLUGINS}"
-      - GF_SERVER_DOMAIN="grafana.${NETWORK_DOMAIN-bricksandblocks.net}"
+      - GF_PLUGINS_PREINSTALL=${GRAFANA_PLUGINS}
+      - GF_SERVER_DOMAIN=grafana.${NETWORK_DOMAIN-bricksandblocks.net}
     ports:
       - "3083:3000"
     volumes:
