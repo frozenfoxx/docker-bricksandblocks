@@ -1,0 +1,19 @@
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: always
+    environment:
+      - GF_PLUGINS_PREINSTALL="${GRAFANA_PLUGINS}"
+      - GF_SERVER_DOMAIN="grafana.${NETWORK_DOMAIN-bricksandblocks.net}"
+    ports:
+      - "3083:3000"
+    volumes:
+      - ${LOCAL_PREFIX-/volume1/Docker}/grafana/data:/var/lib/grafana
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
