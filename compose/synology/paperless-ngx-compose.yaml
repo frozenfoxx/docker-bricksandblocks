@@ -1,0 +1,66 @@
+services:
+  paperless-broker:
+    image: docker.io/library/redis:8
+    container_name: paperless-broker
+    restart: unless-stopped
+    volumes:
+      - ${LOCAL_PREFIX-/volume1/Docker}/paperless-ngx/redis:/data
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
+
+  paperless-db:
+    image: docker.io/library/postgres:17
+    container_name: paperless-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: paperless
+      POSTGRES_USER: ${PAPERLESS_DATABASE_USER}
+      POSTGRES_PASSWORD: ${PAPERLESS_DATABASE_PASSWORD}
+    volumes:
+      - ${LOCAL_PREFIX-/volume1/Docker}/paperless-ngx/postgres:/var/lib/postgresql/data
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
+
+  paperless-webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless-webserver
+    restart: unless-stopped
+    depends_on:
+      - paperless-db
+      - paperless-broker
+    environment:
+      PAPERLESS_CONSUMER_POLLING: ${PAPERLESS_CONSUMER_POLLING}
+      PAPERLESS_DBENGINE: postgresql
+      PAPERLESS_DBHOST: paperless-db
+      PAPERLESS_DBNAME: paperless
+      PAPERLESS_DBUSER: ${PAPERLESS_DATABASE_USER}
+      PAPERLESS_DBPASS: ${PAPERLESS_DATABASE_PASSWORD}
+      PAPERLESS_REDIS: redis://paperless-broker:6379
+      PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET_KEY-}
+      PAPERLESS_URL: https://paperless.${NETWORK_DOMAIN-bricksandblocks.net}
+      USERMAP_GID: ${USERMAP_GID-50}
+      USERMAP_UID: ${USERMAP_UID-1028}
+    ports:
+      - "8010:8000"
+    volumes:
+      - ${LOCAL_PREFIX-/volume1/Docker}/paperless-ngx/data:/usr/src/paperless/data
+      - ${LOCAL_PREFIX-/volume1/Docker}/paperless-ngx/media:/usr/src/paperless/media
+      - ${LOCAL_PREFIX-/volume1/Docker}/paperless-ngx/export:/usr/src/paperless/export
+      - ${SCANNER_PREFIX-/volume1/Scanner}/consume:/usr/src/paperless/consume
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
