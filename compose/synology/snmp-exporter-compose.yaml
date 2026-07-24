@@ -1,0 +1,20 @@
+services:
+  snmp-exporter:
+    image: prom/snmp-exporter:latest
+    container_name: snmp-exporter
+    restart: unless-stopped
+    user: "1028:50" # 'staff' user/group
+    command:
+      - '--config.file=/etc/snmp_exporter/snmp.yml'
+      - '--config.file=/etc/snmp_exporter/auth.yml'
+    ports:
+      - "9116:9116"
+    volumes:
+      - ${LOCAL_PREFIX-/volume1/Docker}/snmp-exporter/config/auth.yml:/etc/snmp_exporter/auth.yml
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"

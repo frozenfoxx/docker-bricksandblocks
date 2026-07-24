@@ -1,0 +1,10 @@
+auths:
+  synology:
+    community: public
+    security_level: authPriv
+    username: snmp
+    password: [snmpv3-password]
+    auth_protocol: SHA
+    priv_protocol: AES
+    priv_password: [snmpv3-privacy-password]
+    version: 3
