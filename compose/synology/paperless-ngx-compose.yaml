@@ -3,6 +3,13 @@ services:
     image: docker.io/library/redis:8
     container_name: paperless-broker
     restart: unless-stopped
+    security_opt: ['no-new-privileges:true']
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
     volumes:
       - ${LOCAL_PREFIX-/volume1/Docker}/paperless-ngx/redis:/data
     logging:
@@ -17,10 +24,17 @@ services:
     image: docker.io/library/postgres:17
     container_name: paperless-db
     restart: unless-stopped
+    security_opt: ['no-new-privileges:true']
     environment:
       POSTGRES_DB: paperless
       POSTGRES_USER: ${PAPERLESS_DATABASE_USER}
       POSTGRES_PASSWORD: ${PAPERLESS_DATABASE_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PAPERLESS_DATABASE_USER} -d paperless"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     volumes:
       - ${LOCAL_PREFIX-/volume1/Docker}/paperless-ngx/postgres:/var/lib/postgresql/data
     logging:
@@ -35,9 +49,12 @@ services:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     container_name: paperless-webserver
     restart: unless-stopped
+    security_opt: ['no-new-privileges:true']
     depends_on:
-      - paperless-db
-      - paperless-broker
+      paperless-db:
+        condition: service_healthy
+      paperless-broker:
+        condition: service_healthy
     environment:
       PAPERLESS_CONSUMER_POLLING: ${PAPERLESS_CONSUMER_POLLING}
       PAPERLESS_DBENGINE: postgresql
@@ -47,6 +64,7 @@ services:
       PAPERLESS_DBPASS: ${PAPERLESS_DATABASE_PASSWORD}
       PAPERLESS_REDIS: redis://paperless-broker:6379
       PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET_KEY-}
+      PAPERLESS_TIME_ZONE: ${PAPERLESS_TIME_ZONE-America/Los_Angeles}
       PAPERLESS_URL: https://paperless.${NETWORK_DOMAIN-bricksandblocks.net}
       USERMAP_GID: ${USERMAP_GID-50}
       USERMAP_UID: ${USERMAP_UID-1028}
