@@ -3,14 +3,15 @@ services:
     image: prom/snmp-exporter:latest
     container_name: snmp-exporter
     restart: unless-stopped
-    user: "1028:50" # 'staff' user/group
+    user: "1028:50" # UID=1028, GID=50 ('staff' on non-Synology hosts)
+    security_opt: ['no-new-privileges:true']
     command:
       - '--config.file=/etc/snmp_exporter/snmp.yml'
       - '--config.file=/etc/snmp_exporter/auth.yml'
     ports:
       - "9116:9116"
     volumes:
-      - ${LOCAL_PREFIX-/volume1/Docker}/snmp-exporter/config/auth.yml:/etc/snmp_exporter/auth.yml
+      - ${LOCAL_PREFIX-/volume1/Docker}/snmp-exporter/config:/etc/snmp_exporter:ro
     logging:
       driver: loki
       options:
