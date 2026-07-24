@@ -3,7 +3,6 @@ services:
     image: revenz/fenrus:latest
     container_name: fenrus
     restart: unless-stopped
-    user: "1028:50" # UID=1028, GID=50 ('staff' on non-Synology hosts)
     security_opt: ['no-new-privileges:true']
     cap_drop:
       - ALL
