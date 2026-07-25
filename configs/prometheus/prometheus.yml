@@ -27,6 +27,23 @@ scrape_configs:
       - targets:
          - prometheus:9090
 
+  - job_name: 'synology'
+    scrape_interval: 60s
+    file_sd_configs:
+      - files:
+        - 'targets-snmp-synology.yml'
+    metrics_path: /snmp
+    params:
+      module: [synology, if_mib, ucd_system_stats, ucd_memory, system]
+      auth: [synology]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: host.fqdn:9116
+
   - job_name: 'traefik'
     file_sd_configs:
       - files:
