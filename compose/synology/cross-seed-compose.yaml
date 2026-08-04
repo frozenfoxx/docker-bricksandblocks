@@ -1,6 +1,6 @@
 services:
   cross-seed:
-    image: ghcr.io/cross-seed/cross-seed@latest
+    image: ghcr.io/cross-seed/cross-seed:latest
     container_name: cross-seed
     restart: unless-stopped
     command: daemon
