@@ -1,0 +1,21 @@
+services:
+  cross-seed:
+    image: ghcr.io/cross-seed/cross-seed@sha256:93418ffe42ccda770706b10294b46f8642bd1f6da4ca57b4c11b1b220f54e3d3 # v6.13.7
+    container_name: cross-seed
+    restart: unless-stopped
+    command: daemon
+    user: "1028:50" # 'staff' user/group; cross-seed has no PUID/PGID support
+    environment:
+      - TZ=America/Los_Angeles
+    volumes:
+      - ${LOCAL_PREFIX-/volume1/Docker}/cross-seed/config:/config
+      - ${MEDIA_PREFIX-/volume1/Media}:/data
+    ports:
+      - 2468:2468
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
