@@ -1,0 +1,26 @@
+services:
+  diun:
+    image: crazymax/diun:latest
+    container_name: diun
+    hostname: "${HOSTNAME-synology}"
+    restart: unless-stopped
+    command: serve
+    security_opt: ['no-new-privileges:true']
+    environment:
+      - HOSTNAME=${HOSTNAME-synology}
+      - LOG_LEVEL=${DIUN_LOGLEVEL-info}
+      - LOG_JSON=false
+      - PUID=1028 # 'staff' user
+      - PGID=50 # 'staff' group
+      - TZ=America/Los_Angeles
+    volumes:
+      - ${LOCAL_PREFIX-/volume1/Docker}/diun/config:/etc/diun:ro
+      - ${LOCAL_PREFIX-/volume1/Docker}/diun/data:/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
