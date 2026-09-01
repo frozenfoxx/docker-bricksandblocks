@@ -1,0 +1,66 @@
+---
+services:
+  horde-mongodb:
+    image: mongo:7.0.5-jammy
+    container_name: horde-mongodb
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${HORDE_MONGODB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${HORDE_MONGODB_PASSWD}
+    command: --quiet --logpath /dev/null
+    ports:
+      - 27017:27017
+    volumes:
+      - horde-mongodb:/data/db
+
+  horde-redis:
+    image: redis:6.2-alpine
+    container_name: horde-redis
+    restart: always
+    ports:
+      - 30002:30002
+    command: redis-server --save 60 1 --port 30002 --loglevel warning
+    volumes: 
+      - horde-redis:/data
+
+  horde-server:
+    image: ghcr.io/epicgames/horde-server:latest
+    container_name: horde-server
+    restart: always
+    environment:
+      # Horde uses standard configuration from ASP.NET, allowing values to be set through env vars and files.
+      # See https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/
+      # To configure via config file, see the mounted directory and file ./data/server.json.
+      # The env vars below are set as they're configured through Docker Compose
+      Horde__HttpPort: 13340
+      Horde__Http2Port: 13342
+      Horde__RedisConnectionConfig: redis:30002
+      Horde__DatabaseConnectionString: mongodb://horde:dbPass123@mongodb:27017/Horde?authSource=admin
+    ports:
+      - 13340:13340 # HTTP/1
+      - 13342:13342 # HTTP/2
+    volumes:
+      - horde-server:/app/Data
+
+# Provide persistence between container restarts for MongoDB and Redis
+volumes:
+  horde-mongodb:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/horde/mongodb"
+
+  horde-redis:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/horde/redis"
+
+  horde-server:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/horde/server"
