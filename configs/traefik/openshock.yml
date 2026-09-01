@@ -1,0 +1,94 @@
+###############################################################################
+# OpenShock dynamic configuration (Traefik file provider)                     #
+#                                                                             #
+# Drop this into the directory Traefik watches (`--providers.file.directory`,  #
+# the `traefik-conf` volume mounted at /conf). Traefik reloads it on change.   #
+#                                                                             #
+# The file provider does NOT expand environment variables, so replace the      #
+# placeholders below before use:                                              #
+#   openshock.bricksandblocks.net -> the domain the WebUI is served on         #
+#   nas-1.bricksandblocks.net     -> the host running openshock-compose.yaml   #
+#   8060/8061/8062/8063           -> the published ports from that compose     #
+#                                     file, if you changed them                #
+###############################################################################
+
+http:
+  routers:
+    # WebUI, served at the apex of the OpenShock domain. The share/code/token
+    # short links are rewritten into the SPA's hash routes by the middlewares.
+    openshock-webui:
+      rule: "Host(`openshock.bricksandblocks.net`)"
+      entryPoints:
+        - websecure
+      service: openshock-webui
+      middlewares:
+        - openshock-share-redirect
+        - openshock-code-redirect
+        - openshock-token-redirect
+      tls:
+        certResolver: letsencrypt
+
+    openshock-api:
+      rule: "Host(`api.openshock.bricksandblocks.net`)"
+      entryPoints:
+        - websecure
+      service: openshock-api
+      tls:
+        certResolver: letsencrypt
+
+    # Live Control Gateway. Websocket upgrades are proxied as-is.
+    openshock-gateway:
+      rule: "Host(`gateway.openshock.bricksandblocks.net`)"
+      entryPoints:
+        - websecure
+      service: openshock-gateway
+      tls:
+        certResolver: letsencrypt
+
+    # Hangfire dashboard, shares the WebUI host. The explicit priority keeps it
+    # ahead of the WebUI router regardless of rule-length ordering.
+    openshock-cron:
+      rule: "Host(`openshock.bricksandblocks.net`) && PathPrefix(`/hangfire`)"
+      priority: 100
+      entryPoints:
+        - websecure
+      service: openshock-cron
+      tls:
+        certResolver: letsencrypt
+
+  middlewares:
+    openshock-share-redirect:
+      redirectRegex:
+        regex: "^https://openshock.bricksandblocks.net/s/(.*)"
+        replacement: "https://openshock.bricksandblocks.net/#/public/proxy/shares/links/${1}"
+
+    openshock-code-redirect:
+      redirectRegex:
+        regex: "^https://openshock.bricksandblocks.net/c/(.*)"
+        replacement: "https://openshock.bricksandblocks.net/#/public/proxy/shares/code/${1}"
+
+    openshock-token-redirect:
+      redirectRegex:
+        regex: "^https://openshock.bricksandblocks.net/t/(.*)"
+        replacement: "https://openshock.bricksandblocks.net/#/public/proxy/token/${1}"
+
+  services:
+    openshock-webui:
+      loadBalancer:
+        servers:
+          - url: "http://nas-1.bricksandblocks.net:8060"
+
+    openshock-api:
+      loadBalancer:
+        servers:
+          - url: "http://nas-1.bricksandblocks.net:8061"
+
+    openshock-gateway:
+      loadBalancer:
+        servers:
+          - url: "http://nas-1.bricksandblocks.net:8062"
+
+    openshock-cron:
+      loadBalancer:
+        servers:
+          - url: "http://nas-1.bricksandblocks.net:8063"

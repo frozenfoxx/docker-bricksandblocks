@@ -1,0 +1,149 @@
+services:
+  openshock-postgres:
+    image: docker.io/library/postgres:17
+    container_name: openshock-postgres
+    restart: unless-stopped
+    security_opt: ['no-new-privileges:true']
+    environment:
+      POSTGRES_DB: ${OPENSHOCK_PG_DB-openshock}
+      POSTGRES_USER: ${OPENSHOCK_PG_USER-openshock}
+      POSTGRES_PASSWORD: ${OPENSHOCK_PG_PASS}
+      TZ: ${TZ-America/Los_Angeles}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    volumes:
+      - ${LOCAL_PREFIX-/volume1/Docker}/openshock/postgres:/var/lib/postgresql/data
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
+
+  openshock-redis:
+    image: docker.io/redis/redis-stack-server:latest
+    container_name: openshock-redis
+    restart: unless-stopped
+    security_opt: ['no-new-privileges:true']
+    environment:
+      - REDIS_ARGS=--notify-keyspace-events KEA
+      - TZ=${TZ-America/Los_Angeles}
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 30s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+    volumes:
+      - ${LOCAL_PREFIX-/volume1/Docker}/openshock/redis:/data
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
+
+  openshock-api:
+    image: ghcr.io/openshock/api:latest
+    container_name: openshock-api
+    restart: unless-stopped
+    security_opt: ['no-new-privileges:true']
+    depends_on:
+      openshock-postgres:
+        condition: service_healthy
+      openshock-redis:
+        condition: service_healthy
+    environment:
+      OPENSHOCK__DB__CONN: Host=openshock-postgres;Port=5432;Database=${OPENSHOCK_PG_DB-openshock};Username=${OPENSHOCK_PG_USER-openshock};Password=${OPENSHOCK_PG_PASS}
+      OPENSHOCK__REDIS__HOST: openshock-redis
+      OPENSHOCK__FRONTEND__BASEURL: https://${OPENSHOCK_DOMAIN-openshock.bricksandblocks.net}
+      OPENSHOCK__FRONTEND__SHORTURL: https://${OPENSHOCK_DOMAIN-openshock.bricksandblocks.net}
+      OPENSHOCK__FRONTEND__COOKIEDOMAIN: ${OPENSHOCK_DOMAIN-openshock.bricksandblocks.net}
+      OPENSHOCK__TURNSTILE__ENABLE: ${OPENSHOCK_TURNSTILE_ENABLE-false}
+      TZ: ${TZ-America/Los_Angeles}
+    ports:
+      - "8061:80"
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
+
+  openshock-webui:
+    image: ghcr.io/openshock/webui:latest
+    container_name: openshock-webui
+    restart: unless-stopped
+    security_opt: ['no-new-privileges:true']
+    environment:
+      OPENSHOCK_NAME: ${OPENSHOCK_NAME-OpenShock}
+      OPENSHOCK_URL: ${OPENSHOCK_DOMAIN-openshock.bricksandblocks.net}
+      OPENSHOCK_SHARE_URL: https://${OPENSHOCK_DOMAIN-openshock.bricksandblocks.net}
+      OPENSHOCK_API_URL: https://${OPENSHOCK_API_SUBDOMAIN-api}.${OPENSHOCK_DOMAIN-openshock.bricksandblocks.net}
+      TZ: ${TZ-America/Los_Angeles}
+    ports:
+      - "8060:80"
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
+
+  openshock-lcg:
+    image: ghcr.io/openshock/live-control-gateway:latest
+    container_name: openshock-lcg
+    restart: unless-stopped
+    security_opt: ['no-new-privileges:true']
+    depends_on:
+      openshock-postgres:
+        condition: service_healthy
+      openshock-redis:
+        condition: service_healthy
+    environment:
+      OPENSHOCK__DB__CONN: Host=openshock-postgres;Port=5432;Database=${OPENSHOCK_PG_DB-openshock};Username=${OPENSHOCK_PG_USER-openshock};Password=${OPENSHOCK_PG_PASS}
+      OPENSHOCK__REDIS__HOST: openshock-redis
+      OPENSHOCK__LCG__COUNTRYCODE: ${OPENSHOCK_LCG_COUNTRYCODE-US}
+      OPENSHOCK__LCG__FQDN: ${OPENSHOCK_GATEWAY_SUBDOMAIN-gateway}.${OPENSHOCK_DOMAIN-openshock.bricksandblocks.net}
+      TZ: ${TZ-America/Los_Angeles}
+    ports:
+      - "8062:80"
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
+
+  openshock-cron:
+    image: ghcr.io/openshock/cron:latest
+    container_name: openshock-cron
+    restart: unless-stopped
+    security_opt: ['no-new-privileges:true']
+    depends_on:
+      openshock-postgres:
+        condition: service_healthy
+      openshock-redis:
+        condition: service_healthy
+    environment:
+      OPENSHOCK__DB__CONN: Host=openshock-postgres;Port=5432;Database=${OPENSHOCK_PG_DB-openshock};Username=${OPENSHOCK_PG_USER-openshock};Password=${OPENSHOCK_PG_PASS}
+      OPENSHOCK__REDIS__HOST: openshock-redis
+      TZ: ${TZ-America/Los_Angeles}
+    ports:
+      - "8063:780"
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.${NETWORK_DOMAIN-bricksandblocks.net}:3100/loki/api/v1/push"
+        loki-retries: 5
+        max-size: 100m
+        mode: "non-blocking"
