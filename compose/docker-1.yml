@@ -15,6 +15,8 @@ include:
   - path: tools/omni-tools.yml
   - path: tools/stirling-pdf.yml
   - path: media/seerr.yml
+  - path: media/plex.yml
+  - path: media/tautulli.yml
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun.yml
