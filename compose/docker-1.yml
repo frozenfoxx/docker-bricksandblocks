@@ -14,7 +14,6 @@ include:
   - path: tools/it-tools.yml
   - path: tools/omni-tools.yml
   - path: tools/stirling-pdf.yml
-  - path: media/navidrome.yml
   - path: media/seerr.yml
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
