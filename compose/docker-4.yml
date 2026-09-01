@@ -1,10 +1,6 @@
 include:
   - path: media/tautulli.yml
   - path: media/plex.yml
-  - path: media/navidrome.yml
-  - path: games/zandronum/zandronum.yml
-    env_file:
-      - games/zandronum/.env.lexicon
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun.yml
