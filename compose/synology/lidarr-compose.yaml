@@ -9,6 +9,9 @@ services:
       - TZ=America/Los_Angeles
     volumes:
       - ${LOCAL_PREFIX-/volume1/Docker}/lidarr/config:/config
+      # Extended with arr-scripts: https://github.com/RandomNinjaAtk/arr-scripts/blob/main/lidarr/readme.md
+      - ${LOCAL_PREFIX-/volume1/Docker}/lidarr/custom-services:/custom-services.d
+      - ${LOCAL_PREFIX-/volume1/Docker}/lidarr/custom-cont-init:/custom-cont-init.d
       - ${MEDIA_PREFIX-/volume1/Media}:/data
     ports:
       - 8786:8686

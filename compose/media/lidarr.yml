@@ -10,7 +10,12 @@ services:
       - TZ=America/Los_Angeles
     volumes:
       #- lidarr-config:/config
+      #- lidarr-custom-services:/custom-services.d
+      #- lidarr-custom-cont-init:/custom-cont-init.d
       - ${LOCAL_PREFIX-/local}/lidarr/config:/config
+      # Extended with arr-scripts: https://github.com/RandomNinjaAtk/arr-scripts/blob/main/lidarr/readme.md
+      - ${LOCAL_PREFIX-/local}/lidarr/custom-services:/custom-services.d
+      - ${LOCAL_PREFIX-/local}/lidarr/custom-cont-init:/custom-cont-init.d
       - lidarr-data:/data
     ports:
       - 8786:8686
@@ -25,6 +30,20 @@ volumes:
   #    type: nfs
   #    o: "addr=${DATA_HOST},nolock,soft,rw"
   #    device: ":/volume1/Docker/lidarr/config"
+
+  #lidarr-custom-services:
+  #  driver: local
+  #  driver_opts:
+  #    type: nfs
+  #    o: "addr=${DATA_HOST},nolock,soft,rw"
+  #    device: ":/volume1/Docker/lidarr/custom-services"
+
+  #lidarr-custom-cont-init:
+  #  driver: local
+  #  driver_opts:
+  #    type: nfs
+  #    o: "addr=${DATA_HOST},nolock,soft,rw"
+  #    device: ":/volume1/Docker/lidarr/custom-cont-init"
 
   lidarr-data:
     driver: local
