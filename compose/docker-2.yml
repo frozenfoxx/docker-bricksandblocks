@@ -5,6 +5,7 @@ include:
   - path: media/immich.yml
     env_file:
       - media/.env.immich
+  - path: media/bookorbit.yml
   - path: media/kavita.yml
   - path: media/jellyfin.yml
   - path: tools/huginn.yml
