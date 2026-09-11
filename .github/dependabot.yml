@@ -1,11 +1,29 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+# Dependabot version updates for Docker Compose files.
+# https://docs.github.com/code-security/dependabot/dependabot-options-reference
+#
+# "directories" is expanded with Ruby's Dir.glob against a clone of the repo,
+# so "/compose/**/[!.]*" is a genuine recursive scan of every subdirectory.
+# The "[!.]" guard skips the "." entries that File::FNM_DOTMATCH would
+# otherwise return, which would fetch every directory a second time.
+#
+# A directory with no matching files is skipped, not fatal. The job only
+# fails if *every* listed directory comes up empty.
+#
+# Note: the docker-compose fetcher matches on filename, not content:
+#   /(docker-)?compose(-[\w]+)?(?>\.[\w-]+)?\.ya?ml/i
+# So "grafana-compose.yaml" is scanned and "grafana.yml" is ignored,
+# no matter how the directories are configured.
 
 version: 2
 updates:
-  - package-ecosystem: "docker-compose" # See documentation for possible values
-    directory: "/compose" # Location of package manifests
+  - package-ecosystem: "docker-compose"
+    directories:
+      - "/compose"
+      - "/compose/**/[!.]*"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+      container-images:
+        patterns:
+          - "*"
