@@ -65,6 +65,11 @@ tasks:
         vars:
           CLI_ARGS: "compose/{{.HOSTNAME}}.yml"
 
+  dtop:
+    desc: "Container performance dashboard"
+    cmds:
+      - task: docker:dtop
+
   lint:
     desc: Check the syntax on scripts
     cmds:
