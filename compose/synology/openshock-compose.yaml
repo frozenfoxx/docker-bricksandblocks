@@ -1,6 +1,6 @@
 services:
   openshock-postgres:
-    image: docker.io/library/postgres:17
+    image: docker.io/library/postgres:18
     container_name: openshock-postgres
     restart: unless-stopped
     security_opt: ['no-new-privileges:true']
