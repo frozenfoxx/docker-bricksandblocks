@@ -1,0 +1,96 @@
+---
+# Source: https://github.com/bookorbit/bookorbit/blob/main/docker-compose.yml
+services:
+  bookorbit:
+    image: ghcr.io/bookorbit/bookorbit:latest
+    container_name: bookorbit
+    restart: unless-stopped
+    init: true
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      POSTGRES_HOST: bookorbit-postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${BOOKORBIT_DATABASE_USER}
+      POSTGRES_PASSWORD: ${BOOKORBIT_DATABASE_PASSWD}
+      POSTGRES_DB: ${BOOKORBIT_DATABASE_NAME-bookorbit}
+      JWT_SECRET: ${BOOKORBIT_JWT_SECRET}
+      SETUP_BOOTSTRAP_TOKEN: ${BOOKORBIT_SETUP_BOOTSTRAP_TOKEN}
+      APP_URL: https://bookorbit.${NETWORK_DOMAIN-bricksandblocks.net}
+      # Top of the library folder picker, keeps the rest of the container root hidden
+      LIBRARY_BROWSE_ROOT: /library
+      # Raise for very large libraries, 250K+ books
+      NODE_MAX_OLD_SPACE_SIZE: ${BOOKORBIT_NODE_MAX_OLD_SPACE_SIZE-2048}
+      PUID: 1028 # 'staff' user
+      PGID: 50 # 'staff' group
+      TZ: America/Los_Angeles
+    ports:
+      - "3880:3000"
+    volumes:
+      - bookorbit-library:/library
+      # - bookorbit-data:/data
+      - ${LOCAL_PREFIX-/local}/bookorbit/data:/data
+    depends_on:
+      bookorbit-postgres:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 30s
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+  bookorbit-postgres:
+    image: pgvector/pgvector:pg18 # Postgres 18 + pgvector
+    container_name: bookorbit-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${BOOKORBIT_DATABASE_USER}
+      POSTGRES_PASSWORD: ${BOOKORBIT_DATABASE_PASSWD}
+      POSTGRES_DB: ${BOOKORBIT_DATABASE_NAME-bookorbit}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      # - bookorbit-postgres-data:/var/lib/postgresql/data
+      - ${LOCAL_PREFIX-/local}/bookorbit-postgres/data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  bookorbit-library:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${MEDIA_HOST},nolock,soft,rw"
+      device: ":/volume1/Media/Library"
+
+  # bookorbit-data:
+  #   driver: local
+  #   driver_opts:
+  #     type: nfs
+  #     o: "addr=${DATA_HOST},nolock,soft,rw"
+  #     device: ":/volume1/Docker/bookorbit/data"
+
+  # bookorbit-postgres-data:
+  #   driver: local
+  #   driver_opts:
+  #     type: nfs
+  #     o: "addr=${DATA_HOST},nolock,soft,rw"
+  #     device: ":/volume1/Docker/bookorbit-postgres/data"
