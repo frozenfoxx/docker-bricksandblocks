@@ -50,7 +50,7 @@ services:
       AUTHENTIK_EMAIL__FROM: ${AUTHENTIK_EMAIL}
 
     volumes:
-      - authentik-media:/data/media
+      - authentik-data:/data
       - authentik-templates:/templates
     ports:
       - "${COMPOSE_PORT_HTTP:-9000}:9000"
@@ -93,7 +93,7 @@ services:
     user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - authentik-media:/data/media
+      - authentik-data:/data
       - authentik-certs:/certs
       - authentik-templates:/templates
     depends_on:
@@ -111,12 +111,12 @@ volumes:
       o: "addr=${DATA_HOST},nolock,soft,rw"
       device: ":/volume1/Docker/authentik/certs"
 
-  authentik-media:
+  authentik-data:
     driver: local
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/authentik/media"
+      device: ":/volume1/Docker/authentik/data"
 
   authentik-postgres-data:
     driver: local
