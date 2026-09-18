@@ -21,24 +21,6 @@ services:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
 
-  authentik-redis:
-    image: docker.io/library/redis:alpine
-    container_name: authentik-redis
-    restart: unless-stopped
-    command: --save 60 1 --loglevel warning
-    user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
-    volumes:
-      - authentik-redis:/data
-    healthcheck:
-      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 3s
-    extends:
-      file: ${ROOT_DIR-../..}/lib/logging.yml
-      service: logging-loki
-
   authentik:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2026.8.3}
     container_name: authentik
@@ -47,11 +29,15 @@ services:
     user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
     environment:
       AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:?secret key required}
-      AUTHENTIK_REDIS__HOST: authentik-redis
       AUTHENTIK_POSTGRESQL__HOST: authentik-postgres
       AUTHENTIK_POSTGRESQL__USER: ${AUTHENTIK_PG_USER:-authentik}
       AUTHENTIK_POSTGRESQL__NAME: ${AUTHENTIK_PG_DB:-authentik}
       AUTHENTIK_POSTGRESQL__PASSWORD: ${AUTHENTIK_PG_PASSWORD}
+
+      # Required from 2026.11, recommended from 2026.8
+      AUTHENTIK_WEB__BASE_URL: ${AUTHENTIK_WEB_BASE_URL}
+      # Proxies allowed to set X-Forwarded-* headers (Traefik on this host)
+      AUTHENTIK_LISTEN__TRUSTED_PROXY_CIDRS: ${AUTHENTIK_TRUSTED_PROXY_CIDRS:-172.16.0.0/12,10.0.0.0/8,192.168.0.0/16}
 
       # Email config
       AUTHENTIK_EMAIL__HOST: ${AUTHENTIK_EMAIL_HOST}
@@ -64,15 +50,13 @@ services:
       AUTHENTIK_EMAIL__FROM: ${AUTHENTIK_EMAIL}
 
     volumes:
-      - authentik-media:/media
+      - authentik-media:/data/media
       - authentik-templates:/templates
     ports:
       - "${COMPOSE_PORT_HTTP:-9000}:9000"
       - "${COMPOSE_PORT_HTTPS:-9443}:9443"
     depends_on:
       authentik-postgres:
-        condition: service_healthy
-      authentik-redis:
         condition: service_healthy
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
@@ -85,7 +69,6 @@ services:
     command: worker
     environment:
       AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:?secret key required}
-      AUTHENTIK_REDIS__HOST: authentik-redis
       AUTHENTIK_POSTGRESQL__HOST: authentik-postgres
       AUTHENTIK_POSTGRESQL__USER: ${AUTHENTIK_PG_USER:-authentik}
       AUTHENTIK_POSTGRESQL__NAME: ${AUTHENTIK_PG_DB:-authentik}
@@ -110,13 +93,11 @@ services:
     user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - authentik-media:/media
+      - authentik-media:/data/media
       - authentik-certs:/certs
       - authentik-templates:/templates
     depends_on:
       authentik-postgres:
-        condition: service_healthy
-      authentik-redis:
         condition: service_healthy
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
@@ -143,13 +124,6 @@ volumes:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
       device: ":/volume1/Docker/authentik/postgres"
-
-  authentik-redis:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/authentik/redis"
 
   authentik-templates:
     driver: local
