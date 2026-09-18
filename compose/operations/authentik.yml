@@ -40,7 +40,7 @@ services:
       service: logging-loki
 
   authentik:
-    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2025.6.3}
+    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2026.8.3}
     container_name: authentik
     restart: unless-stopped
     command: server
@@ -58,9 +58,9 @@ services:
       AUTHENTIK_EMAIL__PORT: ${AUTHENTIK_EMAIL_PORT}
       AUTHENTIK_EMAIL__USERNAME: ${AUTHENTIK_EMAIL_USER}
       AUTHENTIK_EMAIL__PASSWORD: ${AUTHENTIK_EMAIL_PASSWORD}
-      AUTHENTIK_EMAIL__USE_TLS: true
-      AUTHENTIK_EMAIL__USE_SSL: false
-      AUTHENTIK_EMAIL__TIMEOUT: 10
+      AUTHENTIK_EMAIL__USE_TLS: ${AUTHENTIK_EMAIL_USE_TLS:-true}
+      AUTHENTIK_EMAIL__USE_SSL: ${AUTHENTIK_EMAIL_USE_SSL:-false}
+      AUTHENTIK_EMAIL__TIMEOUT: ${AUTHENTIK_EMAIL_TIMEOUT:-10}
       AUTHENTIK_EMAIL__FROM: ${AUTHENTIK_EMAIL}
 
     volumes:
@@ -79,7 +79,7 @@ services:
       service: logging-loki
 
   authentik-worker:
-    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2025.6.3}
+    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2026.8.3}
     container_name: authentik-worker
     restart: unless-stopped
     command: worker
@@ -90,6 +90,17 @@ services:
       AUTHENTIK_POSTGRESQL__USER: ${AUTHENTIK_PG_USER:-authentik}
       AUTHENTIK_POSTGRESQL__NAME: ${AUTHENTIK_PG_DB:-authentik}
       AUTHENTIK_POSTGRESQL__PASSWORD: ${AUTHENTIK_PG_PASSWORD}
+
+      # Email config (the worker sends all mail, so it needs these too)
+      AUTHENTIK_EMAIL__HOST: ${AUTHENTIK_EMAIL_HOST}
+      AUTHENTIK_EMAIL__PORT: ${AUTHENTIK_EMAIL_PORT}
+      AUTHENTIK_EMAIL__USERNAME: ${AUTHENTIK_EMAIL_USER}
+      AUTHENTIK_EMAIL__PASSWORD: ${AUTHENTIK_EMAIL_PASSWORD}
+      AUTHENTIK_EMAIL__USE_TLS: ${AUTHENTIK_EMAIL_USE_TLS:-true}
+      AUTHENTIK_EMAIL__USE_SSL: ${AUTHENTIK_EMAIL_USE_SSL:-false}
+      AUTHENTIK_EMAIL__TIMEOUT: ${AUTHENTIK_EMAIL_TIMEOUT:-10}
+      AUTHENTIK_EMAIL__FROM: ${AUTHENTIK_EMAIL}
+
     # `user: root` and the docker socket volume are optional.
     # See more for the docker socket integration here:
     # https://goauthentik.io/docs/outposts/integrations/docker
@@ -117,7 +128,7 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/authentik/certs"  
+      device: ":/volume1/Docker/authentik/certs"
 
   authentik-media:
     driver: local
