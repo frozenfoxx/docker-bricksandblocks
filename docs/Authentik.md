@@ -16,9 +16,13 @@ Configuration comes from two places. Version pins live in `compose/operations/.e
 
 Email is sent by the worker, not the server, so both containers carry the `AUTHENTIK_EMAIL__*` variables.
 
-# Usage
+File storage is the NFS volume `authentik-data`, mounted at `/data` on the server and the worker, with uploads written to `/data/media`. `AUTHENTIK_STORAGE__FILE__PATH` defaults to `/data`; a volume mounted directly at `/data/media` is treated as legacy storage, readable but not writable.
 
-## Deployment
+User-facing flows are assigned on the brand (Brands → the `bricksandblocks.net` brand): authentication, invalidation, recovery, and user settings. The enrollment flow is deliberately left unset so no sign-up link appears; enrollment happens by invitation link only.
+
+## Procedures
+
+### Deploying
 
 ```shell
 task setup:secrets
@@ -26,19 +30,19 @@ task deploy:host HOSTNAME=docker-1
 docker logs --follow authentik
 ```
 
-## Creating a user
+### Creating a user
 
-Directory → Users → Create. Assign groups at creation; application access is granted by binding a group to an application, not by user.
+Normal path is an invitation — see below. Directory → Users → Create makes an account directly, for service accounts or when no mailbox exists yet; such an account has no MFA device and is pushed into TOTP setup at first login.
 
-To have the user set their own password, use Directory → Users → the user → Email recovery link, or send an invitation from Directory → Invitations.
+Assign groups at creation. Application access is granted by binding a group to an application, not per user.
 
-## Resetting a user
+### Resetting a user
 
 Directory → Users → the user → Update password sets one directly. Preferred instead: Email recovery link, which sends a self-service reset and requires working SMTP.
 
 To force a reset at next login, set the user's `Password change date` to the past or attach a password-change stage to the authentication flow.
 
-## Recovering admin access
+### Recovering admin access
 
 With shell access on `docker-1`, a recovery link can be minted for any user without going through a login:
 
@@ -50,7 +54,7 @@ This is the break-glass path. The default `akadmin` account has been deleted; ad
 
 > **Note:** keep at least two admin accounts with enrolled MFA devices, or one admin plus verified shell access to `docker-1`.
 
-## Rotating the secret key
+### Rotating the secret key
 
 ```shell
 openssl rand -base64 60 | tr -d '\n'
@@ -58,7 +62,37 @@ openssl rand -base64 60 | tr -d '\n'
 
 Update `AUTHENTIK_SECRET_KEY` in the `authentik-bricksandblocks` secret, then `task setup:secrets` and redeploy. All sessions are invalidated and every user must log in again. Nothing stored becomes unreadable — the key signs, it does not encrypt at rest.
 
-## Upgrading
+### Inviting a user
+
+Enrollment is invitation-only: `default-enrollment-flow` begins with the `enrollment-invitation` stage, which has "Continue flow without invitation" off, and the brand has no enrollment flow set.
+
+Directory → Invitations → Create, with flow `default-enrollment-flow`, single use, and an expiry. Copy the resulting link and send it:
+
+```
+https://authentik.bricksandblocks.net/if/flow/default-enrollment-flow/?itoken=<token>
+```
+
+The invited user sets username and password, verifies their email, enrols TOTP, and is shown recovery codes once before being logged in. Add them to the groups their applications are bound to — an account in no group reaches no application.
+
+### Adding an application
+
+1. Applications → Providers → Create → OAuth2/OpenID Provider: confidential client, redirect URI in `Strict` mode, default scopes.
+2. Applications → Applications → Create with a slug matching the discovery URL the application will use, and select the provider.
+3. Set the application's policy engine mode to `ALL`.
+4. Bind the group permitted to use it (Policy / Group / User Bindings → Group tab), order `0`, failure `Don't Pass`.
+
+The discovery URL is `https://authentik.bricksandblocks.net/application/o/<slug>/.well-known/openid-configuration`, and returns 404 if the slug is wrong or no application references the provider.
+
+### Requiring MFA
+
+MFA is enforced globally by `default-authentication-mfa-validation`, bound into `default-authentication-flow`:
+
+* Device classes: TOTP, WebAuthn, Static — any one satisfies login
+* Not configured action: `Configure`, with `default-authenticator-totp-setup` as the configuration stage
+
+A user with no device is pushed into TOTP setup at next login. Passkeys and additional devices are optional and self-service from `/if/user/` → Settings → MFA Devices, which lists a device type only if its setup stage has a Configuration flow assigned.
+
+### Upgrading
 
 Authentik forbids skipping major versions. Upgrade to the latest patch of each `major.minor` in sequence; the server refuses to start and logs `RuntimeError: Major version skips are not allowed` otherwise.
 
@@ -70,11 +104,11 @@ Per hop:
 4. Watch `docker logs --follow authentik` until migrations finish.
 5. Log in, then confirm the worker is processing tasks under System → Tasks.
 
-Check each release's notes for compose changes before the hop. Past examples: 2025.10 removed Redis (service, volume, `AUTHENTIK_REDIS__HOST`, `depends_on`; deploy with `--remove-orphans`), 2025.12 moved media from `/media` to `/data/media` and enforced unique group names, 2026.8 added trusted-proxy enforcement and `AUTHENTIK_WEB__BASE_URL`.
+Check each release's notes for compose changes before the hop. Past examples: 2025.10 removed Redis (service, volume, `AUTHENTIK_REDIS__HOST`, `depends_on`; deploy with `--remove-orphans`), 2025.12 moved file storage to `/data` (media under `/data/media`) and enforced unique group names, 2026.8 added trusted-proxy enforcement and `AUTHENTIK_WEB__BASE_URL`.
 
 Outposts must run the same version as the server; upgrade them in the same window.
 
-## Backing up and restoring
+### Backing up and restoring
 
 The database is the entire state. Snapshot the NFS directory `/volume1/Docker/authentik/postgres` on `nas-1`, or dump it:
 
@@ -84,9 +118,9 @@ docker exec authentik-postgres pg_dump -U authentik authentik > authentik-$(date
 
 Restore by stopping the stack, replacing the data directory from snapshot, and redeploying the tag that produced it — an older image cannot run a newer schema.
 
-# Troubleshooting
+## Troubleshooting
 
-## Failed upgrade
+### Failed upgrade
 
 Check `docker logs authentik` for the migration error. Migrations run in the server container on start.
 
@@ -101,7 +135,7 @@ docker exec -it authentik-postgres psql -U authentik -d authentik \
   -c "SELECT name, count(*) FROM authentik_core_group GROUP BY name HAVING count(*) > 1;"
 ```
 
-## Server or worker exits immediately
+### Server or worker exits immediately
 
 Recent versions run a Rust supervisor around the Python process. `the server has exited unexpectedly` or `one or more workers have exited unexpectedly` is the supervisor reporting a dead child — the real error is earlier in the log:
 
@@ -117,7 +151,7 @@ docker compose -f compose/docker-1.yml run --rm authentik server
 
 Both containers dying identically points to something shared: config, database, or version. Only one dying points to that container's own configuration.
 
-## Email not sending
+### Email not sending
 
 Email is sent by the worker. Confirm both containers actually received the settings:
 
@@ -129,11 +163,11 @@ Empty values mean the secret is missing keys or `task setup:secrets` has not run
 
 Port `587` needs `AUTHENTIK_EMAIL_USE_TLS=true` and `AUTHENTIK_EMAIL_USE_SSL=false`; port `465` needs the reverse.
 
-## Login redirects to http or mixed content is blocked
+### Login redirects to http or mixed content is blocked
 
 From 2026.8, Authentik only honours `X-Forwarded-*` headers from addresses in `AUTHENTIK_TRUSTED_PROXY_CIDRS`. If Traefik's source address is outside that list, HTTPS requests are treated as HTTP. With ports published on the host, the source is a Docker bridge address on `docker-1`, not Traefik's LAN address — check the peer address in the server log and set the value accordingly.
 
-## Worker not processing tasks
+### Worker not processing tasks
 
 Check System → Tasks in the admin interface and `docker logs authentik-worker`. Workers that fail to fork after a database restart or version change are a known issue; the documented remedy is Postgres maintenance followed by a restart:
 
@@ -143,6 +177,16 @@ docker exec -it authentik-postgres psql -U authentik -d authentik -c "REINDEX DA
 docker restart authentik-worker
 ```
 
-## SECRET_KEY security warning
+### Icon upload fails with no file backend configured
+
+The storage volume is mounted at the wrong path. `authentik-data` must mount at `/data`, not `/data/media`, on both the server and the worker; media is then written to `/data/media` inside it. Confirm the directory is writable by the container user:
+
+```shell
+docker exec authentik ls -la /data
+```
+
+The `media` directory should be owned by `1028`. On `nas-1` the backing path is `/volume1/Docker/authentik/data`, which needs `chown -R 1028:50` plus the usual `synoacltool` grants.
+
+### SECRET_KEY security warning
 
 `(security.W009) Your SECRET_KEY has less than 50 characters` means the key is too short or too low in entropy. Rotate it per the procedure above.
