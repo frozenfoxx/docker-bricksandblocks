@@ -56,14 +56,20 @@ services:
       paperless-broker:
         condition: service_healthy
     environment:
+      PAPERLESS_APPS: allauth.socialaccount.providers.openid_connect
       PAPERLESS_CONSUMER_POLLING: ${PAPERLESS_CONSUMER_POLLING}
       PAPERLESS_DBENGINE: postgresql
       PAPERLESS_DBHOST: paperless-db
       PAPERLESS_DBNAME: paperless
       PAPERLESS_DBUSER: ${PAPERLESS_DATABASE_USER}
       PAPERLESS_DBPASS: ${PAPERLESS_DATABASE_PASSWORD}
+      PAPERLESS_LOGOUT_REDIRECT_URL: .../application/o/paperless/end-session/
       PAPERLESS_REDIS: redis://paperless-broker:6379
       PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET_KEY-}
+      PAPERLESS_SOCIAL_ACCOUNT_SYNC_GROUPS: "true"
+      PAPERLESS_SOCIAL_AUTO_SIGNUP: "true"
+      PAPERLESS_SOCIALACCOUNT_ALLOW_SIGNUPS: "true"
+      PAPERLESS_SOCIALACCOUNT_PROVIDERS: '{"openid_connect":{"OAUTH_PKCE_ENABLED":true,"SCOPE":["openid","profile","email"],"APPS":[{"provider_id":"authentik","name":"authentik","client_id":"${PAPERLESS_OIDC_CLIENT_ID}","secret":"${PAPERLESS_OIDC_CLIENT_SECRET}","settings":{"server_url":"https://authentik.${NETWORK_DOMAIN-bricksandblocks.net}/application/o/paperless/.well-known/openid-configuration","fetch_userinfo":true}}]}}'
       PAPERLESS_TIME_ZONE: ${PAPERLESS_TIME_ZONE-America/Los_Angeles}
       PAPERLESS_URL: https://paperless.${NETWORK_DOMAIN-bricksandblocks.net}
       USERMAP_GID: ${USERMAP_GID-50}
