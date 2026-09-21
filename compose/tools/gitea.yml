@@ -15,19 +15,15 @@ services:
       - GITEA__database__NAME=${GITEA_DATABASE_NAME-gitea}
       - GITEA__database__USER=${GITEA_DATABASE_USER}
       - GITEA__database__PASSWD=${GITEA_DATABASE_PASSWD}
+      - GITEA__oauth2_client__ENABLE_AUTO_REGISTRATION=true
+      - GITEA__oauth2_client__ACCOUNT_LINKING=auto
+      - GITEA__oauth2_client__USERNAME=preferred_username
+      - GITEA__oauth2_client__UPDATE_AVATAR=true
 #    networks:
 #      - gitea
     ports:
       - "3000:3000"
       - "2022:22"
-    #labels:
-      #- "traefik.enable=true"
-      #- "traefik.http.routers.gitea.rule=Host(`gitea.${NETWORK_DOMAIN-bricksandblocks.net}`)"
-      #- "traefik.http.routers.gitea.entrypoints=websecure"
-      #- "traefik.http.routers.gitea.tls.certresolver=letsencrypt"
-      #- "traefik.http.routers.gitea.service=gitea"
-      #- "traefik.http.services.gitea.loadbalancer.server.port=3000"
-      #- "traefik.http.services.gitea.loadbalancer.server.scheme=http"
     volumes:
       - gitea-data:/data
       - /etc/timezone:/etc/timezone:ro

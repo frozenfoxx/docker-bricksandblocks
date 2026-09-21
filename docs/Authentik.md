@@ -79,9 +79,32 @@ The invited user sets username and password, verifies their email, enrols TOTP, 
 1. Applications → Providers → Create → OAuth2/OpenID Provider: confidential client, redirect URI in `Strict` mode, default scopes.
 2. Applications → Applications → Create with a slug matching the discovery URL the application will use, and select the provider.
 3. Set the application's policy engine mode to `ALL`.
-4. Bind the group permitted to use it (Policy / Group / User Bindings → Group tab), order `0`, failure `Don't Pass`.
+4. Bind **one** group for access (Policy / Group / User Bindings → Group tab), order `0`, failure `Don't Pass`. Groups appear on the Group tab of that dialog, not in the policy picker.
 
 The discovery URL is `https://authentik.bricksandblocks.net/application/o/<slug>/.well-known/openid-configuration`, and returns 404 if the slug is wrong or no application references the provider.
+
+> **Note:** with policy engine mode `ALL`, every binding must pass, so two group bindings mean the user must be in both. Grant access with a single group and use additional groups only for role mapping inside the application (as Grafana does with `grafana-admins` and `grafana-editors`). Multiple groups for access need mode `ANY` instead.
+
+Applications also need a **Launch URL** to appear in the user library; `blank://blank` hides them deliberately. Access and visibility are separate — "Check Access" can pass while the tile is missing.
+
+### Per-application notes
+
+Grafana (`grafana`): OAuth config lives in Grafana's database via Administration → Authentication → Generic OAuth, not in [compose](../compose/synology/grafana-compose.yaml); the compose file only sets `GF_SERVER_ROOT_URL`. Access is granted by `grafana-users`; `grafana-admins` and `grafana-editors` drive `role_attribute_path`. Grafana links OAuth identities to local users by login, and a conflicting local account fails the login with "user sync failed" — delete the local account before its first SSO login, or set `GF_AUTH_OAUTH_ALLOW_INSECURE_EMAIL_LOOKUP`.
+
+Gitea (`gitea`): the auth source is created in Site Administration → Identity & Access → Authentication Sources, named `authentik` so the callback matches `https://gitea.bricksandblocks.net/user/oauth2/authentik/callback`. Additional Scopes must be `email profile`. Account linking is set in app.ini on the NFS volume, not by env var:
+
+```ini
+[oauth2_client]
+ENABLE_AUTO_REGISTRATION = true
+ACCOUNT_LINKING = auto
+USERNAME = preferred_username
+```
+
+Enable **Skip Local 2FA** on the source so authentik's MFA is not duplicated by Gitea's own TOTP. To retire local logins entirely, set `ENABLE_PASSWORD_SIGNIN_FORM = false` under `[service]`.
+
+> **Note:** `GITEA__section__KEY` environment variables are written into app.ini at every container start, overwriting hand-edited values for those keys. The `[database]` section is generated this way; `[oauth2_client]` and `[service]` are hand-edited.
+
+BookOrbit (`bookorbit`): OIDC is configured in BookOrbit's own admin UI under Settings → OIDC / SSO and stored in its database; no environment variables carry the client ID or secret. Record the client secret in the password manager, since a database rebuild loses it.
 
 ### Requiring MFA
 
@@ -186,6 +209,23 @@ docker exec authentik ls -la /data
 ```
 
 The `media` directory should be owned by `1028`. On `nas-1` the backing path is `/volume1/Docker/authentik/data`, which needs `chown -R 1028:50` plus the usual `synoacltool` grants.
+
+### Application reports a missing email or username claim
+
+The application received only the `openid` scope. Both ends must agree:
+
+* authentik — Applications → Providers → the provider → the selected scope mappings must include `email` and `profile`; `groups` is carried inside `profile`
+* the application — it must actually request them. Grafana ships GitHub-style defaults (`user:email`) that must be replaced with `openid email profile`; Gitea sends only what is listed in the auth source's **Additional Scopes** field (`email profile`)
+
+Symptoms differ by application: Grafana probes `<api_url>/emails` and reports a 404 from authentik's error page, Gitea reports `missing fields: email,preferred_username`.
+
+### An application is missing from a user's library
+
+Access and visibility are separate. Run **Check Access** on the application for that user first.
+
+If access is granted but the tile is missing: confirm the application has a Launch URL, then re-save the application — the per-user library list is cached, and a stale entry survives logout. `docker restart authentik` clears it if re-saving does not.
+
+If access is denied: check group membership, and check for a second binding while the policy engine mode is `ALL`.
 
 ### SECRET_KEY security warning
 
