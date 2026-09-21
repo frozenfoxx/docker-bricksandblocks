@@ -1,27 +1,21 @@
 ---
 services:
   jellyfin:
-    image: jellyfin/jellyfin:latest
+    image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
     restart: always
     environment:
-      - PUID=1000
+      - PUID=1028 # 'staff' user
       - PGID=50 # 'staff' group
       - TZ=America/Los_Angeles
-      - JELLYFIN_PublishedServerUrl=jellyfin.${NETWORK_DOMAIN-bricksandblocks.net}
+      - JELLYFIN_PublishedServerUrl=https://jellyfin.${NETWORK_DOMAIN-bricksandblocks.net}
+      # Optional hardware transcoding mods, see https://mods.linuxserver.io/?mod=jellyfin
+      #- DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel
     ports:
       - 8096:8096
       - 8920:8920 #optional
       - 7359:7359/udp #optional
       - 1900:1900/udp #optional
-    #labels:
-      #- "traefik.enable=true"
-      #- "traefik.http.routers.jellyfin.rule=Host(`jellyfin.${NETWORK_DOMAIN-bricksandblocks.net}`)"
-      #- "traefik.http.routers.jellyfin.entrypoints=websecure"
-      #- "traefik.http.routers.jellyfin.tls.certresolver=letsencrypt"
-      #- "traefik.http.routers.jellyfin.service=jellyfin"
-      #- "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
-      #- "traefik.http.services.jellyfin.loadbalancer.server.scheme=http"
     volumes:
       # - jellyfin-data:/config
       - ${LOCAL_PREFIX-/local}/jellyfin/config:/config
