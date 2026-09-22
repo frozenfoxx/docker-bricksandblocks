@@ -23,7 +23,22 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "containers"
+    commit-message:
+      prefix: "deps"
+    # Split by risk so the routine digest churn lands in one reviewable PR
+    # and anything that needs a maintenance window lands in its own.
     groups:
       container-images:
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      container-images-major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
