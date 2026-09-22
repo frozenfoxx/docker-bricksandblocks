@@ -4,6 +4,7 @@ services:
     image: ghcr.io/linkwarden/linkwarden:latest
     container_name: linkwarden
     restart: always
+    user: "1028:50" # UID=1028, 'staff' user, GID=50, 'staff' group
     environment:
       - AUTOSCROLL_TIMEOUT=${LINKWARDEN_AUTOSCROLL-30}
       # Authentik SSO, issuer must not have a trailing slash
@@ -34,6 +35,7 @@ services:
     image: postgres:16-alpine
     container_name: linkwarden-postgres
     restart: always
+    user: "1028:50" # UID=1028, 'staff' user, GID=50, 'staff' group
     environment:
       - POSTGRES_USER=${LINKWARDEN_DATABASE_USER}
       - POSTGRES_PASSWORD=${LINKWARDEN_DATABASE_PASSWD}
