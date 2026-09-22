@@ -23,7 +23,7 @@ services:
     ports:
       - "3080:3000"
     volumes:
-      - linkwarden-data:/data/data
+      - ${LOCAL_PREFIX-/local}/linkwarden/data:/data/data
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
@@ -35,13 +35,13 @@ services:
     image: postgres:16-alpine
     container_name: linkwarden-postgres
     restart: always
-    user: "1028:50" # UID=1028, 'staff' user, GID=50, 'staff' group
     environment:
       - POSTGRES_USER=${LINKWARDEN_DATABASE_USER}
       - POSTGRES_PASSWORD=${LINKWARDEN_DATABASE_PASSWD}
       - POSTGRES_DB=${LINKWARDEN_DATABASE_NAME-linkwarden}
     volumes:
-      - linkwarden-postgres-data:/var/lib/postgresql/data
+      # Databases use a local bind mount, not NFS, see ../../docs/Backups.md
+      - ${LOCAL_PREFIX-/local}/linkwarden-postgres:/var/lib/postgresql/data
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
@@ -50,18 +50,3 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
-
-volumes:
-  linkwarden-data:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/linkwarden"
-
-  linkwarden-postgres-data:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/linkwarden-postgres"
