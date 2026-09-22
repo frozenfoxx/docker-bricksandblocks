@@ -3,8 +3,7 @@ include:
     # env_file:
     #   - traefik/.env.traefik.debug
   - path: operations/authentik-compose.yml
-    env_file:
-      - operations/.env.authentik
+  - path: operations/authentik-ldap-compose.yml
   - path: operations/wizarr.yml
   - path: tools/linkwarden-compose.yml
   - path: tools/palmr.yml

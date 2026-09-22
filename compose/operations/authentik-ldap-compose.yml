@@ -1,0 +1,18 @@
+---
+services:
+  authentik-ldap:
+    image: ghcr.io/goauthentik/ldap:2026.8.3
+    container_name: authentik-ldap
+    restart: unless-stopped
+    user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
+    environment:
+      # Outposts must run the same version as the authentik server
+      AUTHENTIK_HOST: https://authentik.${NETWORK_DOMAIN-bricksandblocks.net}
+      AUTHENTIK_INSECURE: "false"
+      AUTHENTIK_TOKEN: ${AUTHENTIK_LDAP_TOKEN:?outpost token required}
+    ports:
+      - "389:3389"   # LDAP / StartTLS
+      - "636:6636"   # LDAPS
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
