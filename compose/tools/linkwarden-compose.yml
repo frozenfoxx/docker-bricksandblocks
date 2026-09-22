@@ -6,9 +6,15 @@ services:
     restart: always
     environment:
       - AUTOSCROLL_TIMEOUT=${LINKWARDEN_AUTOSCROLL-30}
+      # Authentik SSO, issuer must not have a trailing slash
+      - AUTHENTIK_CLIENT_ID=${LINKWARDEN_OIDC_CLIENT_ID}
+      - AUTHENTIK_CLIENT_SECRET=${LINKWARDEN_OIDC_CLIENT_SECRET}
+      - AUTHENTIK_CUSTOM_NAME=${LINKWARDEN_OIDC_NAME-Authentik}
+      - AUTHENTIK_ISSUER=https://authentik.${NETWORK_DOMAIN-bricksandblocks.net}/application/o/linkwarden
       - DATABASE_URL=postgres://${LINKWARDEN_DATABASE_USER}:${LINKWARDEN_DATABASE_PASSWD}@linkwarden-postgres:5432/${LINKWARDEN_DATABASE_NAME-linkwarden}
-      - NEXTAUTH_URL=http://linkwarden.${NETWORK_DOMAIN-bricksandblocks.net}:3000/api/v1/auth
+      - NEXTAUTH_URL=https://linkwarden.${NETWORK_DOMAIN-bricksandblocks.net}/api/v1/auth
       - NEXTAUTH_SECRET=${LINKWARDEN_SECRET}
+      - NEXT_PUBLIC_AUTHENTIK_ENABLED=${LINKWARDEN_OIDC_ENABLED-true}
       - NEXT_PUBLIC_DISABLE_REGISTRATION=${LINKWARDEN_DISABLE_REGISTRATION-true} # Note: set false to enable signups
       - PAGINATION_TAKE_COUNT=${LINKWARDEN_PAGINATION_COUNT-50}
       - RE_ARCHIVE_LIMIT=${LINKWARDEN_ARCHIVE_LIMIT-5}

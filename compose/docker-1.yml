@@ -6,7 +6,7 @@ include:
     env_file:
       - operations/.env.authentik
   - path: operations/wizarr.yml
-  - path: tools/linkwarden.yml
+  - path: tools/linkwarden-compose.yml
   - path: tools/palmr.yml
   - path: tools/gitea.yml
   - path: tools/mealie.yml
