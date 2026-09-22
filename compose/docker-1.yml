@@ -2,7 +2,7 @@ include:
   - path: traefik/traefik.yml
     # env_file:
     #   - traefik/.env.traefik.debug
-  - path: operations/authentik.yml
+  - path: operations/authentik-compose.yml
     env_file:
       - operations/.env.authentik
   - path: operations/wizarr.yml
