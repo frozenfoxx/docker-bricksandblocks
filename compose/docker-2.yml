@@ -13,4 +13,4 @@ include:
   - path: media/fmd2.yml
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
-  - path: containers/diun.yml
+  - path: containers/diun-compose.yml
