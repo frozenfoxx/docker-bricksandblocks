@@ -3,6 +3,7 @@ services:
     image: ghcr.io/asciimoo/hister:latest
     container_name: hister
     restart: unless-stopped
+    user: "1028:50" # 'staff' user/group
     security_opt:
       - no-new-privileges:true
     cap_drop:
