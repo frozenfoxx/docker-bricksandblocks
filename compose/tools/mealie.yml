@@ -24,14 +24,15 @@ services:
       POSTGRES_SERVER: mealie-postgres
       POSTGRES_PORT: 5432
       POSTGRES_DB: mealie
-    #labels:
-      #- "traefik.enable=true"
-      #- "traefik.http.routers.mealie.rule=Host(`mealie.${NETWORK_DOMAIN-bricksandblocks.net}`)"
-      #- "traefik.http.routers.mealie.entrypoints=websecure"
-      #- "traefik.http.routers.mealie.tls.certresolver=letsencrypt"
-      #- "traefik.http.routers.mealie.service=mealie"
-      #- "traefik.http.services.mealie.loadbalancer.server.port=9000"
-      #- "traefik.http.services.mealie.loadbalancer.server.scheme=http"
+      # OIDC via authentik
+      OIDC_AUTH_ENABLED: true
+      OIDC_PROVIDER_NAME: authentik
+      OIDC_CONFIGURATION_URL: https://authentik.${NETWORK_DOMAIN-bricksandblocks.net}/application/o/mealie/.well-known/openid-configuration
+      OIDC_CLIENT_ID: ${MEALIE_OIDC_CLIENT_ID:?OIDC client ID required}
+      OIDC_CLIENT_SECRET: ${MEALIE_OIDC_CLIENT_SECRET:?OIDC client secret required}
+      OIDC_USER_GROUP: mealie-users
+      OIDC_ADMIN_GROUP: mealie-admins
+      OIDC_REQUIRES_EMAIL_VERIFICATION: false
     ports:
         - "9925:9000"
     volumes:
