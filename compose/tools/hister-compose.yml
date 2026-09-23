@@ -3,7 +3,6 @@ services:
     image: ghcr.io/asciimoo/hister:latest
     container_name: hister
     restart: unless-stopped
-    user: "1028:50" # 'staff' user/group
     security_opt:
       - no-new-privileges:true
     cap_drop:
@@ -15,6 +14,9 @@ services:
     environment:
       HISTER__SERVER__ADDRESS: 0.0.0.0:4433
       HISTER__SERVER__BASE_URL: https://hister.${NETWORK_DOMAIN-bricksandblocks.net}
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
 
 volumes:
   hister-data:
