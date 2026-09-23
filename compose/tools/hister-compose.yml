@@ -24,6 +24,13 @@ services:
         dbname=${HISTER_DATABASE_NAME-hister}
         sslmode=disable
         TimeZone=America/Los_Angeles
+      # Multi-user mode, OIDC users are created on first login from preferred_username
+      HISTER__APP__USER_HANDLING: true
+      # OIDC via authentik, callback: /api/oauth/callback?provider=oidc
+      HISTER__SERVER__OAUTH__OIDC__CONFIGURATION_URL: https://authentik.${NETWORK_DOMAIN-bricksandblocks.net}/application/o/hister/.well-known/openid-configuration
+      HISTER__SERVER__OAUTH__OIDC__CLIENT_ID: ${HISTER_OIDC_CLIENT_ID:?OIDC client ID required}
+      HISTER__SERVER__OAUTH__OIDC__CLIENT_SECRET: ${HISTER_OIDC_CLIENT_SECRET:?OIDC client secret required}
+      HISTER__SERVER__OAUTH_ONLY: ${HISTER_OAUTH_ONLY-false}
     depends_on:
       hister-postgres:
         condition: service_healthy
