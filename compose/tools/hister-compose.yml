@@ -1,0 +1,24 @@
+services:
+  hister:
+    image: ghcr.io/asciimoo/hister:latest
+    container_name: hister
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    ports:
+      - '4433:4433'
+    volumes:
+      - hister_data:/hister/data
+    environment:
+      HISTER__SERVER__ADDRESS: 0.0.0.0:4433
+      HISTER__SERVER__BASE_URL: https://hister.${NETWORK_DOMAIN-bricksandblocks.net}
+
+volumes:
+  hister-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/hister/data"
