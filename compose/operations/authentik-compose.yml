@@ -66,6 +66,7 @@ services:
     image: ghcr.io/goauthentik/server:2026.8.3
     container_name: authentik-worker
     restart: unless-stopped
+    user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
     command: worker
     environment:
       AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:?secret key required}
@@ -83,16 +84,7 @@ services:
       AUTHENTIK_EMAIL__USE_SSL: ${AUTHENTIK_EMAIL_USE_SSL:-false}
       AUTHENTIK_EMAIL__TIMEOUT: ${AUTHENTIK_EMAIL_TIMEOUT:-10}
       AUTHENTIK_EMAIL__FROM: ${AUTHENTIK_EMAIL}
-
-    # `user: root` and the docker socket volume are optional.
-    # See more for the docker socket integration here:
-    # https://goauthentik.io/docs/outposts/integrations/docker
-    # Removing `user: root` also prevents the worker from fixing the permissions
-    # on the mounted folders, so when removing this make sure the folders have the correct UID/GID
-    # (1000:1000 by default)
-    user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
       - authentik-data:/data
       - authentik-certs:/certs
       - authentik-templates:/templates
