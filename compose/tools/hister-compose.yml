@@ -1,3 +1,4 @@
+---
 services:
   hister:
     image: ghcr.io/asciimoo/hister:latest
@@ -10,18 +11,43 @@ services:
     ports:
       - '4433:4433'
     volumes:
-      - hister-data:/hister/data
+      - ${LOCAL_PREFIX-/local}/hister/data:/hister/data
     environment:
       HISTER__SERVER__ADDRESS: 0.0.0.0:4433
       HISTER__SERVER__BASE_URL: https://hister.${NETWORK_DOMAIN-bricksandblocks.net}
+      # A value containing '=' is treated as a PostgreSQL DSN
+      HISTER__SERVER__DATABASE: >-
+        host=hister-postgres
+        port=5432
+        user=${HISTER_DATABASE_USER}
+        password=${HISTER_DATABASE_PASSWD}
+        dbname=${HISTER_DATABASE_NAME-hister}
+        sslmode=disable
+        TimeZone=America/Los_Angeles
+    depends_on:
+      hister-postgres:
+        condition: service_healthy
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
 
-volumes:
-  hister-data:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${DATA_HOST},nolock,soft,rw"
-      device: ":/volume1/Docker/hister/data"
+  hister-postgres:
+    image: pgvector/pgvector:pg18 # Postgres 18 + pgvector, required for semantic search
+    container_name: hister-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${HISTER_DATABASE_USER}
+      POSTGRES_PASSWORD: ${HISTER_DATABASE_PASSWD}
+      POSTGRES_DB: ${HISTER_DATABASE_NAME-hister}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ${LOCAL_PREFIX-/local}/hister-postgres/data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
