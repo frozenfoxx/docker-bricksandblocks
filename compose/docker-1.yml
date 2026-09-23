@@ -6,7 +6,7 @@ include:
   - path: operations/authentik-ldap-compose.yml
   - path: operations/wizarr.yml
   - path: tools/linkwarden-compose.yml
-  - path: tools/linkwarden-hister.yml
+  - path: tools/hister-compose.yml
   - path: tools/palmr.yml
   - path: tools/gitea.yml
   - path: tools/mealie.yml
