@@ -8,7 +8,7 @@ include:
   - path: tools/hister-compose.yml
   - path: tools/gitea.yml
   - path: tools/mealie.yml
-  - path: tools/opengist.yml
+  - path: tools/opengist-compose.yml
   - path: tools/it-tools.yml
   - path: tools/omni-tools.yml
   - path: tools/stirling-pdf.yml
