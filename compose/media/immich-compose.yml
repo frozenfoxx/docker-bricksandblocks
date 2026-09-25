@@ -1,13 +1,11 @@
 ---
-# Source: https://github.com/immich-app/immich/blob/main/docker/docker-compose.yml
 services:
   immich-server:
+    image: ghcr.io/immich-app/immich-server:v3.2.2@sha256:79cc1623323d5894922686d8743b4780181428f98eecbfb58ce12c41ef02d1ea # v3.2.2
     container_name: immich-server
-    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     restart: always
     volumes:
       - immich-data:/data:rw
-      #- immich-photos:/data/library:rw
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - .env.immich
@@ -26,8 +24,8 @@ services:
 
   immich-machine-learning:
     # For hardware acceleration, add one of -[armnn, cuda, rocm, openvino, rknn] to the image tag.
-    # Example tag: ${IMMICH_VERSION:-release}-cuda
-    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
+    # Example tag: v3.2.2-cuda, with that tag's own digest
+    image: ghcr.io/immich-app/immich-machine-learning:v3.2.2@sha256:60dfcf266a9ef3b7376f5678e8c980d4fb61db5fc48c078fe8a326ab1535d60d # v3.2.2
     container_name: immich-machine-learning
     volumes:
       - immich-model-cache:/cache
@@ -54,7 +52,7 @@ services:
       service: logging-loki
 
   immich-postgres:
-    image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23 # Postgres 14 + VectorChord 0.4.3 + pgvecto.rs 0.2.0
+    image: ghcr.io/immich-app/postgres:18-vectorchord1.1.1@sha256:e53734de78ebf59a92261033c7dca61f789d925b79e7b68883f65b016cf27ed7 # Postgres 18 + VectorChord 1.1.1 + pgvector 0.8.5
     container_name: immich-postgres
     shm_size: 128mb
     restart: unless-stopped
@@ -66,8 +64,10 @@ services:
       # Uncomment the DB_STORAGE_TYPE: 'HDD' var if your database isn't stored on SSDs
       DB_STORAGE_TYPE: 'HDD'
     volumes:
-      #- immich-postgres-data:/var/lib/postgresql/data
-      - ${LOCAL_PREFIX-/local}/immich-postgres:/var/lib/postgresql/data
+      # Postgres 18+ keeps data under /var/lib/postgresql/<major>/docker, so mount the parent.
+      # Major version changes need a dump and restore, see ../../docs/Postgres.md
+      #- immich-postgres-data:/var/lib/postgresql
+      - ${LOCAL_PREFIX-/local}/immich-postgres:/var/lib/postgresql
     extends:
       file: ${ROOT_DIR-..}/lib/logging.yml
       service: logging-loki
@@ -91,13 +91,6 @@ volumes:
       type: nfs
       o: "addr=${DATA_HOST},nolock,soft,rw"
       device: ":/volume1/Docker/immich/model-cache"
-
-  # immich-photos:
-  #   driver: local
-  #   driver_opts:
-  #     type: nfs
-  #     o: "addr=${MEDIA_HOST},nolock,soft,rw"
-  #     device: ":/volume1/Media/Photos"
 
   # immich-postgres-data:
   #   driver: local
