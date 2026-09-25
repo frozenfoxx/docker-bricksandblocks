@@ -4,7 +4,6 @@ include:
     #   - traefik/.env.traefik.debug
   - path: operations/authentik-compose.yml
   - path: operations/authentik-ldap-compose.yml
-  - path: operations/wizarr.yml
   - path: tools/linkwarden-compose.yml
   - path: tools/hister-compose.yml
   - path: tools/palmr.yml
