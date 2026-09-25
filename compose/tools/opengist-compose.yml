@@ -1,0 +1,31 @@
+services:
+  opengist:
+    image: ghcr.io/thomiceli/opengist:1.15.2
+    container_name: opengist
+    restart: unless-stopped
+    ports:
+      - "6157:6157" # HTTP port
+      #- "2222:2222" # SSH port, can be removed if you don't use SSH
+    environment:
+      OG_EXTERNAL_URL: https://opengist.${NETWORK_DOMAIN-bricksandblocks.net}
+      # OIDC via authentik, callback: /oauth/openid-connect/callback
+      OG_OIDC_PROVIDER_NAME: authentik
+      OG_OIDC_DISCOVERY_URL: https://authentik.${NETWORK_DOMAIN-bricksandblocks.net}/application/o/opengist/.well-known/openid-configuration
+      OG_OIDC_CLIENT_KEY: ${OPENGIST_OIDC_CLIENT_ID:?OIDC client ID required}
+      OG_OIDC_SECRET: ${OPENGIST_OIDC_CLIENT_SECRET:?OIDC client secret required}
+      # Admin rights re-synced from authentik group membership on every login
+      OG_OIDC_GROUP_CLAIM_NAME: groups
+      OG_OIDC_ADMIN_GROUP: opengist-admins
+    volumes:
+      - opengist-data:/opengist
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+volumes:
+  opengist-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${DATA_HOST},nolock,soft,rw"
+      device: ":/volume1/Docker/opengist/data"
