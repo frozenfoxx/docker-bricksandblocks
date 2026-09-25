@@ -32,7 +32,7 @@ services:
         condition: service_healthy
 
   linkwarden-postgres:
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     container_name: linkwarden-postgres
     restart: always
     environment:
@@ -41,7 +41,9 @@ services:
       - POSTGRES_DB=${LINKWARDEN_DATABASE_NAME-linkwarden}
     volumes:
       # Databases use a local bind mount, not NFS, see ../../docs/Backups.md
-      - ${LOCAL_PREFIX-/local}/linkwarden-postgres:/var/lib/postgresql/data
+      # Postgres 18+ keeps data under /var/lib/postgresql/<major>/docker, so mount the parent.
+      # Major version changes need a dump and restore, see ../../docs/Postgres.md
+      - ${LOCAL_PREFIX-/local}/linkwarden-postgres:/var/lib/postgresql
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
