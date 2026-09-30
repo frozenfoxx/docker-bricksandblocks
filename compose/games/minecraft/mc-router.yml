@@ -1,0 +1,22 @@
+# Routes Minecraft Java connections to the right server by the hostname the
+# player typed. Deploy once per host, before any minecraft.yml instances.
+networks:
+  minecraft:
+    name: minecraft
+
+services:
+  mc-router:
+    image: itzg/mc-router:latest
+    container_name: mc-router
+    restart: unless-stopped
+    environment:
+      IN_DOCKER: "true"
+    networks:
+      - minecraft
+    ports:
+      - "25565:25565/tcp"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    extends:
+      file: ${ROOT_DIR-../../..}/lib/logging.yml
+      service: logging-loki

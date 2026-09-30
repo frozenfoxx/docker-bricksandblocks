@@ -1,0 +1,58 @@
+# One Minecraft server per env file. The top-level name keeps instances in
+# separate projects so they don't replace each other; see docs/Minecraft.md.
+name: minecraft-${MINECRAFT_INSTANCE-main}
+
+networks:
+  minecraft:
+    external: true
+
+services:
+  minecraft:
+    image: itzg/minecraft-server:latest
+    container_name: minecraft-${MINECRAFT_INSTANCE-main}
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    environment:
+      EULA: "TRUE"
+      TYPE: "${MINECRAFT_TYPE-PAPER}"
+      VERSION: "${MINECRAFT_VERSION-LATEST}"
+      MEMORY: "${MINECRAFT_MEMORY-4G}"
+      USE_AIKAR_FLAGS: "true"
+      TZ: "America/Los_Angeles"
+
+      # Server list
+      SERVER_NAME: "${MINECRAFT_SERVERNAME-Cult of Foxx}"
+      MOTD: "${MINECRAFT_MOTD-Cult of Foxx}"
+
+      # Access
+      ONLINE_MODE: "true"
+      ENABLE_WHITELIST: "true"
+      ENFORCE_WHITELIST: "true"
+      WHITELIST: "${MINECRAFT_WHITELIST-}"
+      OPS: "${MINECRAFT_OPS-}"
+
+      # Gameplay
+      MODE: "${MINECRAFT_MODE-survival}"
+      DIFFICULTY: "${MINECRAFT_DIFFICULTY-normal}"
+      PVP: "${MINECRAFT_PVP-false}"
+      MAX_PLAYERS: "${MINECRAFT_MAX_PLAYERS-10}"
+      SPAWN_PROTECTION: "${MINECRAFT_SPAWN_PROTECTION-16}"
+
+      # Performance
+      VIEW_DISTANCE: "${MINECRAFT_VIEW_DISTANCE-10}"
+      SIMULATION_DISTANCE: "${MINECRAFT_SIMULATION_DISTANCE-8}"
+      PLAYER_IDLE_TIMEOUT: "${MINECRAFT_IDLE_TIMEOUT-30}"
+
+      # Plugins/mods, comma-separated Modrinth project slugs
+      MODRINTH_PROJECTS: "${MINECRAFT_MODRINTH_PROJECTS-}"
+    labels:
+      - "mc-router.host=${MINECRAFT_HOST-${MINECRAFT_INSTANCE-main}.mc.${NETWORK_DOMAIN-bricksandblocks.net}}"
+    networks:
+      - minecraft
+    volumes:
+      # Local disk rather than NFS: chunk saves are latency-sensitive.
+      - ${LOCAL_PREFIX-/local}/minecraft-${MINECRAFT_INSTANCE-main}:/data
+    extends:
+      file: ${ROOT_DIR-../../..}/lib/logging.yml
+      service: logging-loki
