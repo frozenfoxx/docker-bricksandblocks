@@ -13,6 +13,8 @@ services:
       #- "--entrypoints.mqttwebsocket.address=:9001"
       #- "--entrypoints.ssh.address=:2022"
       - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       - "--entrypoints.websecure.address=:443"
 
       # Certificate Resolvers
@@ -52,11 +54,6 @@ services:
       - "8083:8083" # Prometheus metrics (LAN-only)
       - "8883:8883" # MQTT
       #- "9001:9001"
-    labels:
-      - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
-      - "traefik.http.routers.http-catchall.entrypoints=web"
-      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
-      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
     volumes:
       - traefik-certs:/certs
       - traefik-conf:/conf
