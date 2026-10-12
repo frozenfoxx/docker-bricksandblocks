@@ -1,0 +1,55 @@
+---
+# Nightscout (cgm-remote-monitor), served at nightscout.${NETWORK_DOMAIN}. TLS
+# terminates at Traefik, which forwards plain HTTP to 14337.
+# See ../../docs/Nightscout.md
+services:
+  nightscout:
+    image: nightscout/cgm-remote-monitor:latest
+    container_name: nightscout
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      TZ: America/Los_Angeles
+      # Traefik serves HTTPS
+      INSECURE_USE_HTTP: "true"
+      NIGHTSCOUT_HOSTNAME: 0.0.0.0
+      BASE_URL: https://nightscout.${NETWORK_DOMAIN-bricksandblocks.net}
+      MONGO_CONNECTION: mongodb://nightscout-mongo:27017/nightscout
+      # At least 12 characters, used by Trio uploads and admin login
+      API_SECRET: ${NIGHTSCOUT_API_SECRET:?API secret required}
+      # denied requires a token for every visit, followers get read tokens from Admin Tools
+      AUTH_DEFAULT_ROLES: ${NIGHTSCOUT_AUTH_DEFAULT_ROLES-denied}
+      DISPLAY_UNITS: ${NIGHTSCOUT_DISPLAY_UNITS-mg/dl}
+      # Plugins, openaps renders Trio's loop status and predictions
+      # See https://github.com/nightscout/cgm-remote-monitor#plugins
+      ENABLE: ${NIGHTSCOUT_ENABLE-careportal boluscalc food bwp cage sage iage bage iob cob basal pump openaps override dbsize}
+      SHOW_FORECAST: openaps
+      SHOW_PLUGINS: openaps pump iob cob sage cage
+      DEVICESTATUS_ADVANCED: "true"
+      PUMP_FIELDS: reservoir battery clock
+    ports:
+      - "14337:1337"
+    depends_on:
+      nightscout-mongo:
+        condition: service_healthy
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki
+
+  nightscout-mongo:
+    image: mongo:5.0 # Patch updates only, upstream pins 5.0.x; needs a CPU with AVX
+    container_name: nightscout-mongo
+    restart: unless-stopped
+    volumes:
+      # Databases use a local bind mount, not NFS, see ../../docs/Backups.md
+      # Back up with ../../scripts/backup_nightscout.sh, not a file copy
+      - ${LOCAL_PREFIX-/local}/nightscout-mongo/data:/data/db
+    healthcheck:
+      test: ["CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    extends:
+      file: ${ROOT_DIR-../..}/lib/logging.yml
+      service: logging-loki

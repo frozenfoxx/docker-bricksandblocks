@@ -1,0 +1,31 @@
+###############################################################################
+# Nightscout dynamic configuration (Traefik file provider)                    #
+#                                                                             #
+# Drop this into the directory Traefik watches (`--providers.file.directory`,  #
+# the `traefik-conf` volume mounted at /conf). Traefik reloads it on change.   #
+#                                                                             #
+# The file provider does NOT expand environment variables, so replace the      #
+# placeholders below before use:                                              #
+#   nightscout.bricksandblocks.net -> the domain Nightscout is served on       #
+#   docker-1.bricksandblocks.net   -> the host running nightscout.yml          #
+#   14337                          -> the published port from that compose     #
+#                                     file, if you changed it                  #
+###############################################################################
+
+http:
+  routers:
+    # Trio uploads and caregiver apps use the same host; the realtime socket.io
+    # connection is proxied as-is.
+    nightscout:
+      rule: "Host(`nightscout.bricksandblocks.net`)"
+      entryPoints:
+        - websecure
+      service: nightscout
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    nightscout:
+      loadBalancer:
+        servers:
+          - url: "http://docker-2.bricksandblocks.net:14337"

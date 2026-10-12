@@ -32,6 +32,11 @@ tasks:
     cmds:
       - ./scripts/backup_local.sh
 
+  backup:nightscout:
+    desc: Dump the Nightscout database to the data host
+    cmds:
+      - ./scripts/backup_nightscout.sh
+
   clean:
     desc: Clean unused containers, images, and volumes
     cmds:
