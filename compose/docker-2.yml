@@ -11,6 +11,7 @@ include:
     env_file:
       - tools/.env.huginn
   - path: media/fmd2.yml
+  - path: tools/nightscout.yml
   - path: prometheus/cadvisor.yml
   - path: prometheus/node_exporter.yml
   - path: containers/diun-compose.yml
