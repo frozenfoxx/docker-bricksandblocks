@@ -7,7 +7,7 @@
 # The file provider does NOT expand environment variables, so replace the      #
 # placeholders below before use:                                              #
 #   nightscout.bricksandblocks.net -> the domain Nightscout is served on       #
-#   docker-1.bricksandblocks.net   -> the host running nightscout.yml          #
+#   docker-2.bricksandblocks.net   -> the host running nightscout.yml          #
 #   14337                          -> the published port from that compose     #
 #                                     file, if you changed it                  #
 ###############################################################################
