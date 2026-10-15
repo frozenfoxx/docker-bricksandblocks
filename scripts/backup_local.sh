@@ -44,10 +44,10 @@ usage()
 ## Argument parsing
 while [[ "$1" != "" ]]; do
     case $1 in
-        -d | --data-prefix )          LOCAL_PREFIX="${2}"
+        -d | --data-prefix )          DATA_PREFIX="${2}"
                                       shift
                                       ;;
-        -l | --local-prefix )         DATA_PREFIX="${2}"
+        -l | --local-prefix )         LOCAL_PREFIX="${2}"
                                       shift
                                       ;;
         -h | --help )                 usage
