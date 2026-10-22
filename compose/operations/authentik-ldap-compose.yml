@@ -1,7 +1,7 @@
 ---
 services:
   authentik-ldap:
-    image: ghcr.io/goauthentik/ldap:2026.8.4
+    image: ghcr.io/goauthentik/ldap:2026.8.5
     container_name: authentik-ldap
     restart: unless-stopped
     user: 1028:50 # UID=1028, 'staff' user, GID=50, 'staff' group
