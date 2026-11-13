@@ -1,7 +1,7 @@
 ---
 services:
   immich-server:
-    image: ghcr.io/immich-app/immich-server:v3.2.4@sha256:d317916b28090c33eb36b308464ea391f8b7df1d850fcfea227a39ec879718c2 # v3.2.4
+    image: ghcr.io/immich-app/immich-server:v3.4.1@sha256:7c489add298fc2f92cda4c777de6462aa206877e04087b815f62c7664af0b53b # v3.2.4
     container_name: immich-server
     restart: always
     volumes:
