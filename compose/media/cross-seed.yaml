@@ -1,6 +1,6 @@
 services:
   cross-seed:
-    image: ghcr.io/cross-seed/cross-seed@sha256:93418ffe42ccda770706b10294b46f8642bd1f6da4ca57b4c11b1b220f54e3d3 # v6.13.7
+    image: ghcr.io/cross-seed/cross-seed@sha256:c310f84e040b82c140424f6377fa36487335261037175ef9cec3aefc92b93076 # v6.13.9
     container_name: cross-seed
     restart: unless-stopped
     command: daemon
