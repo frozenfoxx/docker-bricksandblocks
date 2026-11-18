@@ -75,7 +75,7 @@ services:
       - ${LOCAL_PREFIX-/volume1/Docker}/romm/redis:/redis-data
       - ${LOCAL_PREFIX-/volume1/Docker}/romm/config:/romm/config
       - ${LOCAL_PREFIX-/volume1/Docker}/romm/assets:/romm/assets
-      - ${GAMES_PREFIX-/volume1/Games}/roms:/romm/library
+      - ${GAMES_PREFIX-/volume1/Games}:/romm/library
     logging:
       driver: loki
       options:
