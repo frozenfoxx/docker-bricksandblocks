@@ -1,24 +1,22 @@
 services:
   romm-db:
-    image: docker.io/library/mariadb:11.8
+    image: docker.io/library/postgres:18
     container_name: romm-db
     restart: unless-stopped
     security_opt: ['no-new-privileges:true']
     environment:
-      MARIADB_ROOT_PASSWORD: ${ROMM_DB_ROOT_PASSWORD}
-      MARIADB_DATABASE: romm
-      MARIADB_USER: ${ROMM_DB_USER-romm-user}
-      MARIADB_PASSWORD: ${ROMM_DB_PASSWORD}
+      POSTGRES_DB: romm
+      POSTGRES_USER: ${ROMM_DB_USER-romm-user}
+      POSTGRES_PASSWORD: ${ROMM_DB_PASSWORD}
     healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-      start_period: 30s
-      start_interval: 10s
+      test: ["CMD-SHELL", "pg_isready -U ${ROMM_DB_USER-romm-user} -d romm"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 30s
     volumes:
-      # Database stays on local disk: InnoDB over NFS is slow and unsafe
-      - ${LOCAL_PREFIX-/local}/romm/mysql:/var/lib/mysql
+      # Database stays on local disk: Postgres over NFS is slow and unsafe
+      - ${LOCAL_PREFIX-/local}/romm/postgres:/var/lib/postgresql
     extends:
       file: ${ROOT_DIR-../..}/lib/logging.yml
       service: logging-loki
@@ -34,7 +32,10 @@ services:
         condition: service_healthy
         restart: true
     environment:
+      ROMM_BASE_URL: https://romm.${NETWORK_DOMAIN-bricksandblocks.net}
+      ROMM_DB_DRIVER: postgresql
       DB_HOST: romm-db
+      DB_PORT: 5432
       DB_NAME: romm
       DB_USER: ${ROMM_DB_USER-romm-user}
       DB_PASSWD: ${ROMM_DB_PASSWORD}
@@ -49,13 +50,19 @@ services:
       STEAMGRIDDB_API_KEY: ${ROMM_STEAMGRIDDB_API_KEY-}
       SCAN_WORKERS: ${ROMM_SCAN_WORKERS-4}
       WEB_SERVER_CONCURRENCY: ${ROMM_WEB_SERVER_CONCURRENCY-4}
-      # Authentik SSO (see docs/Authentik.md); leave OIDC_ENABLED=false until the provider exists
+      # Authentik SSO (application slug 'romm'); leave OIDC_ENABLED=false until the provider exists
       OIDC_ENABLED: ${ROMM_OIDC_ENABLED-false}
       OIDC_PROVIDER: authentik
       OIDC_CLIENT_ID: ${ROMM_OIDC_CLIENT_ID-}
       OIDC_CLIENT_SECRET: ${ROMM_OIDC_CLIENT_SECRET-}
       OIDC_REDIRECT_URI: https://romm.${NETWORK_DOMAIN-bricksandblocks.net}/api/oauth/openid
-      OIDC_SERVER_APPLICATION_URL: https://authentik.${NETWORK_DOMAIN-bricksandblocks.net}/application/o/romm/
+      OIDC_SERVER_APPLICATION_URL: https://authentik.${NETWORK_DOMAIN-bricksandblocks.net}/application/o/romm
+      OIDC_RP_INITIATED_LOGOUT: "true"
+      OIDC_END_SESSION_ENDPOINT: https://authentik.${NETWORK_DOMAIN-bricksandblocks.net}/application/o/romm/end-session/
+      # Group-to-role mapping: once OIDC_CLAIM_ROLES is set, every user must match a mapped group
+      OIDC_CLAIM_ROLES: ${ROMM_OIDC_CLAIM_ROLES-}
+      OIDC_ROLE_ADMIN: ${ROMM_OIDC_ROLE_ADMIN-}
+      OIDC_ROLE_VIEWER: ${ROMM_OIDC_ROLE_VIEWER-}
       TZ: America/Los_Angeles
     ports:
       - "8085:8080"
