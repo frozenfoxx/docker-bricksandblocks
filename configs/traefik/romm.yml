@@ -1,0 +1,33 @@
+###############################################################################
+# RomM dynamic configuration (Traefik file provider)                          #
+#                                                                             #
+# Drop this into the directory the internal Traefik watches                    #
+# (`--providers.file.directory`, the `traefik-conf` volume mounted at /conf,   #
+# i.e. /volume1/Docker/traefik/conf-internal). Traefik reloads it on change.   #
+#                                                                             #
+# The file provider does NOT expand environment variables, so replace the      #
+# placeholders below before use:                                              #
+#   romm.bricksandblocks.net  -> the domain RomM is served on                  #
+#   nas-1.bricksandblocks.net -> the host running romm-compose.yaml            #
+#   8085                      -> the published port from that compose file,    #
+#                                if you changed it                            #
+#                                                                             #
+# HTTPS is required: EmulatorJS needs SharedArrayBuffer, which browsers only   #
+# allow on a secure origin. Traefik terminates TLS; RomM stays plain HTTP.     #
+###############################################################################
+
+http:
+  routers:
+    romm:
+      rule: "Host(`romm.bricksandblocks.net`)"
+      entryPoints:
+        - websecure
+      service: romm
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    romm:
+      loadBalancer:
+        servers:
+          - url: "http://nas-1.bricksandblocks.net:8085"
