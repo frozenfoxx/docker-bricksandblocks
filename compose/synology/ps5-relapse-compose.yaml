@@ -1,6 +1,6 @@
 services:
   relapse-dns:
-    image: alpine:3.20
+    image: alpine:3.24
     container_name: relapse-dns
     # Host networking so dnsmasq can bind UDP/TCP 53 without port-map quirks.
     # Requires Docker on Linux (Docker Desktop "host" mode is not equivalent).
