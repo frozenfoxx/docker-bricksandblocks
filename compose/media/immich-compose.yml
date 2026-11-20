@@ -1,7 +1,7 @@
 ---
 services:
   immich-server:
-    image: ghcr.io/immich-app/immich-server:v3.4.1@sha256:7c489add298fc2f92cda4c777de6462aa206877e04087b815f62c7664af0b53b # v3.4.1
+    image: ghcr.io/immich-app/immich-server:v3.4.2@sha256:fc880c1bf665b4aab1e74c15e56ab871225989cd546536e6b77e771869af06bd # v3.4.2
     container_name: immich-server
     restart: always
     volumes:
@@ -24,8 +24,8 @@ services:
 
   immich-machine-learning:
     # For hardware acceleration, add one of -[armnn, cuda, rocm, openvino, rknn] to the image tag.
-    # Example tag: v3.4.1-cuda, with that tag's own digest
-    image: ghcr.io/immich-app/immich-machine-learning:v3.4.1@sha256:8adebf414256f6e4f837bfbb66fa94f14f4da7260e3a1d65cbba49e4e35d8764 # v3.4.1
+    # Example tag: v3.4.2-cuda, with that tag's own digest
+    image: ghcr.io/immich-app/immich-machine-learning:v3.4.2@sha256:739405742a79bd7447227c553bb62ed5491aa36acf00bc667af7f9c93b6fae91 # v3.4.2
     container_name: immich-machine-learning
     volumes:
       - immich-model-cache:/cache
@@ -52,7 +52,7 @@ services:
       service: logging-loki
 
   immich-postgres:
-    image: ghcr.io/immich-app/postgres:18-vectorchord1.1.1@sha256:e53734de78ebf59a92261033c7dca61f789d925b79e7b68883f65b016cf27ed7 # Postgres 18 + VectorChord 1.1.1 + pgvector 0.8.5
+    image: ghcr.io/immich-app/postgres:18-vectorchord1.1.1@sha256:f7388adc1e3414800a71506528917f4f5615249f5fe7a872b1e1431e01b72ad7 # Postgres 18 + VectorChord 1.1.1 + pgvector 0.8.5
     container_name: immich-postgres
     shm_size: 128mb
     restart: unless-stopped
